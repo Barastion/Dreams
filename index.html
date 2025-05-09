@@ -74,7 +74,7 @@
             </main>
 
             <footer class="footer">
-                <p>© 2024 Barastion Dreamscape. Wszystkie prawa zastrzeżone.</p>
+                <p>© 2025 Barastion Dreamscape. Wszystkie prawa zastrzeżone.</p>
                 <p class="footer-link">
                     <a href="#" id="adminLink">Napisz nowy post – sekcja twórcy</a>
                 </p>
@@ -178,7 +178,7 @@
                     if (user && user.email === 'lukasz13d@gmail.com') {
                         console.log('Użytkownik zalogowany:', user.email);
                         adminModal.style.display = 'none';
-                        // Nie otwieraj postModal automatycznie
+                        postModal.style.display = 'block'; // Otwórz postModal dla zalogowanego autora
                     } else {
                         console.log('Brak zalogowanego użytkownika lub nieprawidłowy email.');
                         adminModal.style.display = 'none';
