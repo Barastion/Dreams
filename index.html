@@ -97,10 +97,10 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
+    <!-- Firebase SDK (starsza wersja dla kompatybilności) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
 
     <!-- Logika aplikacji -->
     <script>
@@ -151,18 +151,19 @@
             const introFull = document.getElementById('introFull');
             const closeForm = document.getElementById('closeForm');
 
-            // Ukryj oba modale na starcie
+            // Ukryj modale na starcie
             adminModal.style.display = 'none';
             postModal.style.display = 'none';
 
-            // Sprawdź stan zalogowania na starcie
+            // Sprawdź stan zalogowania
             auth.onAuthStateChanged((user) => {
                 if (user && user.email === 'lukasz13d@gmail.com') {
                     console.log('Użytkownik zalogowany:', user.email);
                     // Nie otwieraj postModal automatycznie
                 } else {
                     console.log('Brak zalogowanego użytkownika lub nieprawidłowy email.');
-                    postModal.style.display = 'none'; // Upewnij się, że postModal jest zamknięty
+                    postModal.style.display = 'none';
+                    adminModal.style.display = 'none';
                 }
             });
 
@@ -193,7 +194,7 @@
             adminLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 adminModal.style.display = 'block';
-                postModal.style.display = 'none'; // Upewnij się, że postModal jest zamknięty
+                postModal.style.display = 'none';
                 console.log('Otwarto modal logowania.');
             });
 
