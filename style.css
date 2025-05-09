@@ -274,8 +274,8 @@ h2 {
 }
 
 .large-modal {
-    max-width: 1200px; /* 3x szersze */
-    min-height: 600px; /* 2x wyższe */
+    max-width: 1200px;
+    min-height: 600px;
     padding: 30px;
 }
 
@@ -349,7 +349,7 @@ input:focus, textarea:focus {
 
 textarea {
     resize: vertical;
-    min-height: 300px; /* Większe pole tekstowe */
+    min-height: 300px;
 }
 
 .form-buttons {
@@ -408,7 +408,7 @@ textarea {
 /* Spinner ładowania */
 .loading-spinner {
     border: 3px solid #444444;
-    border-top: 3px solid #ffd700;
+    border-top: casually solid #ffd700;
     border-radius: 50%;
     width: 25px;
     height: 25px;
