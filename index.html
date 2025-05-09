@@ -76,7 +76,7 @@
             </main>
 
             <footer class="footer">
-                <p>&copy; 2025 Barastion Dreamscape. Wszelkie prawa zastrzeżone.</p>
+                <p>© 2025 Barastion Dreamscape. Wszelkie prawa zastrzeżone.</p>
                 <p class="footer-link"><a href="https://lukas-baran.github.io/Barastion-Watchtower/" target="_blank">Odwiedź Barastion Watchtower</a></p>
             </footer>
         </div>
@@ -85,7 +85,7 @@
     <!-- Modal logowania -->
     <div id="adminModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close">×</span>
             <h2>Zaloguj się</h2>
             <p>Zaloguj się, aby dodać nowy post. Dostęp tylko dla autora.</p>
             <button id="googleLogin" class="btn btn-google">
@@ -101,7 +101,7 @@
     <!-- Modal dodawania posta -->
     <div id="postModal" class="modal">
         <div class="modal-content large-modal">
-            <span class="close">&times;</span>
+            <span class="close">×</span>
             <h2>Dodaj nowy sen</h2>
             <form id="dreamForm" class="post-form">
                 <div class="form-group">
@@ -129,16 +129,6 @@
 
     <!-- Skrypty -->
     <script type="module">
-        // Obsługa błędów globalnych
-        window.addEventListener('error', (event) => {
-            console.error('Błąd globalny:', event);
-            const networkStatus = document.getElementById('networkStatus');
-            if (event.message.includes('firebase')) {
-                networkStatus.textContent = 'Błąd ładowania Firebase SDK. Sprawdź połączenie.';
-                networkStatus.style.display = 'block';
-            }
-        });
-
         try {
             // Import Firebase
             import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
@@ -177,32 +167,19 @@
             const closeForm = document.getElementById('closeForm');
 
             // Sprawdzenie elementów
-            if (!adminModal || !postModal || !adminLink || !googleLogin || !closes || !networkStatus || !postsList || !archiveList || !dreamForm || !postsLoading || !archiveLoading || !closeForm) {
-                console.error('Brak wymaganych elementów DOM:', {
+            if (!adminModal || !postModal || !adminLink || !googleLogin || !closes.length || !networkStatus || !postsList || !archiveList || !dreamForm || !postsLoading || !archiveLoading || !closeForm) {
+                console.error('Brak elementów DOM:', {
                     adminModal, postModal, adminLink, googleLogin, closes, networkStatus,
                     postsList, archiveList, dreamForm, postsLoading, archiveLoading, closeForm
                 });
                 networkStatus.textContent = 'Błąd: Brak elementów strony.';
                 networkStatus.style.display = 'block';
-                throw new Error('Brak wymaganych elementów DOM');
+                throw new Error('Brak elementów DOM');
             }
 
             // Inicjalny stan modalów
             adminModal.style.display = 'none';
             postModal.style.display = 'none';
-
-            // Obsługa stanu autoryzacji
-            onAuthStateChanged(auth, (user) => {
-                if (user && user.email === 'lukasz13d@gmail.com') {
-                    console.log('Zalogowano:', user.email);
-                    adminModal.style.display = 'none';
-                    postModal.style.display = 'block';
-                } else {
-                    console.log('Brak zalogowanego użytkownika lub nieprawidłowy email.');
-                    adminModal.style.display = 'none';
-                    postModal.style.display = 'none';
-                }
-            });
 
             // Status sieci
             function updateNetworkStatus() {
@@ -265,6 +242,18 @@
                     alert(`Błąd logowania: ${error.message} (Kod: ${error.code})`);
                     networkStatus.textContent = 'Błąd logowania. Sprawdź konsolę.';
                     networkStatus.style.display = 'block';
+                }
+            });
+
+            // Obsługa stanu autoryzacji
+            onAuthStateChanged(auth, (user) => {
+                if (user && user.email === 'lukasz13d@gmail.com') {
+                    console.log('Zalogowano:', user.email);
+                    // Nie otwieramy modala automatycznie
+                } else {
+                    console.log('Brak zalogowanego użytkownika lub nieprawidłowy email.');
+                    adminModal.style.display = 'none';
+                    postModal.style.display = 'none';
                 }
             });
 
@@ -376,8 +365,10 @@
         } catch (error) {
             console.error('Błąd inicjalizacji Firebase:', error);
             const networkStatus = document.getElementById('networkStatus');
-            networkStatus.textContent = 'Krytyczny błąd Firebase. Sprawdź konsolę.';
-            networkStatus.style.display = 'block';
+            if (networkStatus) {
+                networkStatus.textContent = 'Krytyczny błąd Firebase. Sprawdź konsolę.';
+                networkStatus.style.display = 'block';
+            }
         }
     </script>
 
@@ -386,8 +377,9 @@
         const expandIntro = document.getElementById('expandIntro');
         const collapseIntro = document.getElementById('collapseIntro');
         const introFull = document.getElementById('introFull');
+        const networkStatus = document.getElementById('networkStatus');
 
-        if (expandIntro && collapseIntro && introFull) {
+        if (expandIntro && collapseIntro && introFull && networkStatus) {
             expandIntro.addEventListener('click', (e) => {
                 e.preventDefault();
                 introFull.style.display = 'block';
@@ -402,9 +394,10 @@
             });
         } else {
             console.error('Brak elementów intro:', { expandIntro, collapseIntro, introFull });
-            const networkStatus = document.getElementById('networkStatus');
-            networkStatus.textContent = 'Błąd: Brak elementów wstępu.';
-            networkStatus.style.display = 'block';
+            if (networkStatus) {
+                networkStatus.textContent = 'Błąd: Brak elementów wstępu.';
+                networkStatus.style.display = 'block';
+            }
         }
     </script>
 </body>
