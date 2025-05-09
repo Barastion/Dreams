@@ -11,7 +11,6 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://*.firebaseio.com https://*.firebasedatabase.app; connect-src 'self' https://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com;">
     <title>Barastion Dreamscape – Dziennik Snów</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="diabelek.png">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -100,11 +99,12 @@
     </div>
 
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
-    <!-- Logika aplikacji -->
-    <script>
+    <script type="module">
+        // Importowanie Firebase
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+        import { getDatabase, ref, push, onValue, orderByChild, limitToLast } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js';
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+
         // Konfiguracja Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBdVZRNj5-ni4rqhlYoN7jJKd4lwMWZG-Q",
@@ -117,14 +117,15 @@
         };
 
         // Inicjalizacja Firebase
+        let app, db, auth;
         try {
-            firebase.initializeApp(firebaseConfig);
+            app = initializeApp(firebaseConfig);
+            db = getDatabase(app);
+            auth = getAuth(app);
         } catch (error) {
             console.error('Błąd inicjalizacji Firebase:', error.message);
             alert('Błąd inicjalizacji Firebase: ' + error.message);
         }
-        const db = firebase.database();
-        const auth = firebase.auth();
 
         // Elementy DOM
         const adminModal = document.getElementById('adminModal');
@@ -189,15 +190,15 @@
 
         // Logowanie przez Google
         googleLogin.addEventListener('click', () => {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider)
                 .then((result) => {
                     if (result.user.email === 'lukasz13d@gmail.com') {
                         adminModal.style.display = 'none';
                         postModal.style.display = 'block';
                     } else {
                         alert('Dostęp tylko dla autora (lukasz13d@gmail.com).');
-                        auth.signOut();
+                        signOut(auth);
                     }
                 })
                 .catch((error) => {
@@ -207,7 +208,8 @@
         });
 
         // Wyświetlanie 5 najnowszych postów
-        db.ref('posts').orderByChild('createdAt').limitToLast(5).on('value', (snapshot) => {
+        const postsRef = ref(db, 'posts');
+        onValue(orderByChild(postsRef, 'createdAt').limitToLast(5), (snapshot) => {
             postsList.innerHTML = '';
             postsLoading.classList.add('show');
             const posts = [];
@@ -236,7 +238,7 @@
         });
 
         // Wyświetlanie starszych postów jako banerki
-        db.ref('posts').orderByChild('createdAt').on('value', (snapshot) => {
+        onValue(postsRef, (snapshot) => {
             archiveList.innerHTML = '';
             archiveLoading.classList.add('show');
             const allPosts = [];
@@ -252,7 +254,7 @@
                     <span class="expand-arrow">▶</span>
                 `;
                 archiveItem.addEventListener('click', () => {
-                    db.ref(`posts/${post.id}`).once('value').then((snapshot) => {
+                    onValue(ref(db, `posts/${post.id}`), (snapshot) => {
                         const fullPost = snapshot.val();
                         postsList.innerHTML = `
                             <div class="post">
@@ -262,7 +264,7 @@
                                 <div class="post-content">${fullPost.content}</div>
                             </div>
                         `;
-                    }).catch((error) => {
+                    }, (error) => {
                         console.error('Błąd ładowania posta:', error.message);
                         alert('Błąd ładowania posta: ' + error.message);
                     });
@@ -289,13 +291,13 @@
             const postDate = now.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric' });
             const postTime = now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
 
-            db.ref('posts').push({
+            push(ref(db, 'posts'), {
                 title,
                 dreamDate,
                 content,
                 postDate,
                 postTime,
-                createdAt: firebase.database.ServerValue.TIMESTAMP
+                createdAt: Date.now()
             })
             .then(() => {
                 alert('Sen zapisany pomyślnie!');
