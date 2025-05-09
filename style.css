@@ -1,153 +1,417 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #1e1e1e;
-    color: #ffffff;
+/* Reset stylów */
+* {
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Podstawowe style strony */
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+    color: #ffffff;
     line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
+/* Główny kontener */
 .container {
-    max-width: 960px;
+    max-width: 1200px;
     margin: 0 auto;
-    background-color: #2d2d2d;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    flex: 1;
 }
 
-.image-frame {
-    max-width: 700px;
-    margin: 0 auto 20px;
-}
-
-.image-frame img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-}
-
-header {
+/* Nagłówek */
+.header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    animation: fadeIn 1s ease-in;
 }
 
-header h1 {
-    font-size: 2.5em;
-    color: #ffeb3b;
-    text-shadow: 0 0 10px rgba(255, 235, 59, 0.5);
+.logo-frame {
+    width: 70%;
+    max-width: 800px;
+    margin: 0 auto 20px;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: 2px solid #444444;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-main {
-    margin-bottom: 30px;
+.logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.02);
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffd700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    white-space: pre-line;
+    margin-bottom: 10px;
+}
+
+.header-subtitle {
+    font-size: 1rem;
+    color: #cccccc;
+    margin-top: 10px;
+}
+
+/* Sekcje */
+h2 {
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: #cccccc;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.section-description {
+    font-size: 1rem;
+    color: #888888;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.posts-container, .archive-container {
+    margin-bottom: 40px;
+}
+
+/* Posty */
+.posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .post {
-    background-color: #333333;
-    padding: 15px;
+    background: #333333;
+    padding: 20px;
     border-radius: 8px;
-    margin-bottom: 20px;
-    max-width: 700px;
+    width: 70%;
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.5s ease-in;
 }
 
-.post-date {
-    font-size: 0.8em;
-    color: #cccccc;
-    text-align: center;
-}
-
-.post h3 {
-    font-size: 1.2em;
-    color: #ffeb3b;
-    text-align: center;
-    margin: 10px 0;
-}
-
-.post p {
-    margin: 5px 0;
+.post-meta {
+    font-size: 0.9rem;
+    color: #888888;
+    margin-bottom: 10px;
     text-align: left;
 }
 
-.comments-section {
-    margin-top: 15px;
-    font-size: 0.8em;
+.post-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffd700;
+    text-align: center;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.post-data, .post-content {
+    font-size: 1rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.post-data::before {
+    content: "Data: ";
+    font-weight: 700;
     color: #cccccc;
 }
 
-#archive-list {
-    list-style: none;
-    padding: 0;
+.post-content::before {
+    content: "Treść: ";
+    font-weight: 700;
+    color: #cccccc;
 }
 
-#archive-list li {
-    display: inline-block;
-    margin-right: 15px;
+.no-posts {
+    font-size: 1rem;
+    color: #888888;
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Archiwum */
+.archive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.archive-item {
+    background: #444444;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #ffffff;
+    transition: background 0.3s, transform 0.2s;
+    animation: fadeIn 0.7s ease-in;
+}
+
+.archive-item:hover {
+    background: #555555;
+    transform: translateY(-2px);
+}
+
+/* Stopka */
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #444444;
+    margin-top: 40px;
+}
+
+.footer p {
+    font-size: 0.9rem;
+    color: #888888;
     margin-bottom: 10px;
 }
 
-#archive-list a {
-    color: #ffeb3b;
+.footer-link a {
+    color: #ffd700;
     text-decoration: none;
+    transition: color 0.3s;
 }
 
-#archive-list a:hover {
+.footer-link a:hover {
+    color: #e6c200;
     text-decoration: underline;
 }
 
-footer {
-    text-align: center;
-    font-size: 0.9em;
-    color: #cccccc;
+.footer-note {
+    font-size: 0.8rem;
+    color: #666666;
 }
 
-footer a {
-    color: #ffeb3b;
-    text-decoration: none;
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in;
 }
 
-footer a:hover {
-    text-decoration: underline;
-}
-
-.auth-container {
-    background-color: #333333;
+.modal-content {
+    background: #333333;
+    width: 90%;
+    max-width: 500px;
+    margin: 50px auto;
     padding: 20px;
     border-radius: 8px;
-    max-width: 400px;
-    margin: 20px auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.auth-container h2 {
-    color: #ffeb3b;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.auth-container input, .auth-container textarea {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #444444;
-    color: #ffffff;
-}
-
-.auth-container button {
-    width: 100%;
-    padding: 10px;
-    background: linear-gradient(135deg, #cfae02, #a68e02);
-    border: none;
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
     cursor: pointer;
+    color: #ffffff;
+    transition: color 0.3s;
 }
 
-.auth-container button:hover {
-    filter: brightness(1.1);
+.close:hover {
+    color: #ffd700;
+}
+
+.modal-note {
+    font-size: 0.9rem;
+    color: #888888;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Formularz */
+.post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 1rem;
+    color: #cccccc;
+    margin-bottom: 5px;
+}
+
+input, textarea {
+    background: #444444;
+    border: none;
+    padding: 10px;
+    color: #ffffff;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+input:focus, textarea:focus {
+    background: #555555;
+    outline: none;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Przyciski */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.btn-google {
+    background: #ffffff;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-submit {
+    background: #ffd700;
+    color: #1a1a1a;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-google:hover {
+    background: #f0f0f0;
+}
+
+.btn-submit:hover {
+    background: #e6c200;
+}
+
+/* Spinner ładowania */
+.loading-spinner {
+    border: 4px solid #444444;
+    border-top: 4px solid #ffd700;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+    display: none;
+}
+
+#postsLoading.show, #archiveLoading.show {
+    display: block;
+}
+
+/* Status sieci */
+.network-status {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.9rem;
+    background: #a00;
+    color: #ffffff;
+    display: none;
+}
+
+.network-status.offline {
+    display: block;
+}
+
+/* Animacje */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .logo-frame, .post {
+        width: 90%;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .archive-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 20px auto;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .post-title {
+        font-size: 1.3rem;
+    }
+
+    .post-meta, .footer p {
+        font-size: 0.8rem;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
 }
