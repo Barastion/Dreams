@@ -1,235 +1,272 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+    <!-- Meta tagi dla SEO i bezpieczeństwa -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Barastion Dreamscape - Dziennik Snów. Wyjątkowe opowieści ze świata snów.">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' https://www.gstatic.com https://*.firebaseio.com; connect-src 'self' https://*.firebaseio.com wss://*.firebaseio.com">
-    <title>Barastion Dreamscape - Dziennik Snów</title>
+    <meta name="description" content="Barastion Dreamscape – Dziennik Snów, osobista podróż przez świat snów autora Barastion.">
+    <meta name="title" content="Barastion Dreamscape – Dziennik Snów">
+    <meta name="author" content="Barastion">
+    <meta name="keywords" content="sny, dziennik snów, Barastion, blog, marzenia senne, twórczość">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://*.firebaseio.com https://*.firebasedatabase.app; connect-src 'self' https://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com;">
+    <!-- Tytuł strony -->
+    <title>Barastion Dreamscape – Dziennik Snów</title>
+    <!-- Style i favicon -->
     <link rel="stylesheet" href="style.css">
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+    <link rel="icon" type="image/png" href="diabelek.png">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Status sieci -->
+    <div id="networkStatus" class="network-status"></div>
+
+    <!-- Główny kontener -->
     <div class="container">
-        <div class="image-frame">
-            <img src="https://firebasestorage.googleapis.com/v0/b/dziennik-snow.appspot.com/o/Dreamscape_logo.jpg?alt=media" alt="Barastion Dreamscape">
-        </div>
-        <header>
-            <h1>Barastion Dreamscape<br>- Dziennik Snów</h1>
+        <!-- Nagłówek -->
+        <header class="header">
+            <!-- Ramka na logo -->
+            <div class="logo-frame">
+                <img src="Dreamscape_logo.jpg" alt="Barastion Dreamscape Logo" class="logo">
+            </div>
+            <!-- Tytuł w dwóch liniach -->
+            <h1>Barastion Dreamscape<br>– Dziennik Snów</h1>
+            <p class="header-subtitle">Osobista podróż przez świat snów autora Barastion</p>
         </header>
+
+        <!-- Główna treść -->
         <main>
-            <section id="latest-posts">
-                <h2>Najnowsze wpisy</h2>
-                <div id="posts-container"></div>
+            <!-- Sekcja najnowszych postów -->
+            <section class="posts-container">
+                <h2>Najnowsze sny</h2>
+                <p class="section-description">Przeczytaj trzy najnowsze wpisy z mojego dziennika snów</p>
+                <div class="loading-spinner" id="postsLoading"></div>
+                <div id="postsList" class="posts-list"></div>
             </section>
-            <section id="archive">
-                <h2>Archiwum</h2>
-                <ul id="archive-list"></ul>
-                <div id="archive-post"></div>
+
+            <!-- Sekcja archiwum -->
+            <section class="archive-container">
+                <h2>Starsze sny</h2>
+                <p class="section-description">Przeglądaj wszystkie moje sny w archiwum</p>
+                <div class="loading-spinner" id="archiveLoading"></div>
+                <div id="archiveList" class="archive-grid"></div>
             </section>
         </main>
-        <footer>
+
+        <!-- Stopka -->
+        <footer class="footer">
             <p>© 2024 Barastion Dreamscape. Wszystkie prawa zastrzeżone.</p>
-            <p><a href="#" id="admin-login">Napisz nowy post - sekcja twórcy</a></p>
+            <p class="footer-link">
+                <a href="#" id="adminLink">Napisz nowy post – sekcja twórcy</a>
+            </p>
+            <p class="footer-link">
+                <a href="terms.html" target="_blank">Regulamin</a>
+            </p>
+            <p class="footer-note">Stworzone z pasją przez Barastion</p>
         </footer>
     </div>
 
-    <!-- Formularz logowania admina -->
-    <div id="admin-login-form" style="display: none;">
-        <div class="auth-container">
-            <h2>Logowanie admina</h2>
-            <form id="admin-form">
-                <input type="password" id="admin-password" placeholder="Hasło" required>
-                <button type="submit">Zaloguj się</button>
-            </form>
+    <!-- Modal logowania -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <h2>Sekcja twórcy</h2>
+            <p>Zaloguj się, aby dodać nowy sen do dziennika.</p>
+            <button id="googleLogin" class="btn btn-google">Zaloguj się przez Google</button>
+            <p class="modal-note">Tylko autor (Barastion) może dodawać nowe posty.</p>
         </div>
     </div>
 
-    <!-- Formularz dodawania wpisu -->
-    <div id="admin-post-form" style="display: none;">
-        <div class="auth-container">
-            <h2>Dodaj nowy wpis</h2>
-            <form id="post-form">
-                <input type="text" id="post-title" placeholder="Tytuł (np. Rozdział XXII)" required>
-                <input type="date" id="dream-date" required>
-                <textarea id="post-content" placeholder="Treść snu" required></textarea>
-                <button type="submit">Opublikuj</button>
+    <!-- Modal formularza nowego posta -->
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <h2>Nowy sen</h2>
+            <p>Wypełnij poniższy formularz, aby dodać nowy sen.</p>
+            <form id="dreamForm" class="post-form">
+                <div class="form-group">
+                    <label for="postTitle">Tytuł posta:</label>
+                    <input type="text" id="postTitle" required placeholder="np. Rozdział XXII">
+                </div>
+                <div class="form-group">
+                    <label for="dreamDate">Data snu:</label>
+                    <input type="text" id="dreamDate" required placeholder="np. 09.05.2025">
+                </div>
+                <div class="form-group">
+                    <label for="postContent">Treść snu:</label>
+                    <textarea id="postContent" required placeholder="Opisz swój sen..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-submit">Zapisz sen</button>
             </form>
+            <p class="modal-note">Twój sen zostanie zapisany w bazie danych.</p>
         </div>
     </div>
 
-    <!-- Formularz komentarza -->
-    <div id="comment-form" style="display: none;">
-        <div class="auth-container">
-            <h2>Napisz komentarz</h2>
-            <form id="comment-submit-form">
-                <input type="text" id="comment-nick" placeholder="Nick (3-15 znaków)" required>
-                <textarea id="comment-content" placeholder="Treść (3-500 znaków)" required></textarea>
-                <button type="submit">Dodaj komentarz</button>
-            </form>
-        </div>
-    </div>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
 
+    <!-- JavaScript zaimplementowany w index.html -->
     <script>
-        // Konfiguracja Firebase (wstaw swoje dane z konsoli Firebase)
+        // Konfiguracja Firebase
         const firebaseConfig = {
-            apiKey: "TWOJ_API_KEY",
+            apiKey: "AIzaSyD5z_8jA3Yml6z2cECrAOkW2i5iT8UkbN0",
             authDomain: "dziennik-snow.firebaseapp.com",
+            databaseURL: "https://dziennik-snow-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "dziennik-snow",
             storageBucket: "dziennik-snow.appspot.com",
-            messagingSenderId: "TWOJ_MESSAGING_SENDER_ID",
-            appId: "TWOJ_APP_ID"
+            messagingSenderId: "1041128277683",
+            appId: "1:1041128277683:web:8bdfa137c75e0c3bced7dd"
         };
 
         // Inicjalizacja Firebase
         firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
         const auth = firebase.auth();
-        const db = firebase.firestore();
 
-        // Funkcja formatująca datę z YYYY-MM-DD na DD.MM.YYYY
-        function formatDate(dateStr) {
-            const [year, month, day] = dateStr.split('-');
-            return `${day}.${month}.${year}`;
-        }
+        // Elementy DOM
+        const adminModal = document.getElementById('adminModal');
+        const postModal = document.getElementById('postModal');
+        const adminLink = document.getElementById('adminLink');
+        const googleLogin = document.getElementById('googleLogin');
+        const closes = document.querySelectorAll('.close');
+        const networkStatus = document.getElementById('networkStatus');
+        const postsList = document.getElementById('postsList');
+        const archiveList = document.getElementById('archiveList');
+        const dreamForm = document.getElementById('dreamForm');
+        const postsLoading = document.getElementById('postsLoading');
+        const archiveLoading = document.getElementById('archiveLoading');
 
-        // Ładowanie 3 najnowszych wpisów
-        function loadLatestPosts() {
-            db.collection('posts').orderBy('createdAt', 'desc').limit(3).get().then(snapshot => {
-                const postsContainer = document.getElementById('posts-container');
-                postsContainer.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const post = doc.data();
-                    const formattedDreamDate = formatDate(post.dreamDate);
-                    postsContainer.innerHTML += `
+        // Status sieci
+        window.addEventListener('online', () => {
+            networkStatus.classList.remove('offline');
+            networkStatus.style.display = 'none';
+        });
+        window.addEventListener('offline', () => {
+            networkStatus.classList.add('offline');
+            networkStatus.style.display = 'block';
+            networkStatus.textContent = 'Brak połączenia z internetem. Sprawdź połączenie.';
+        });
+
+        // Otwieranie modala logowania
+        adminLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            adminModal.style.display = 'block';
+        });
+
+        // Zamykanie modali
+        closes.forEach(close => {
+            close.addEventListener('click', () => {
+                adminModal.style.display = 'none';
+                postModal.style.display = 'none';
+            });
+        });
+
+        // Logowanie przez Google
+        googleLogin.addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    if (result.user.email === 'lukasz13d@gmail.com') {
+                        adminModal.style.display = 'none';
+                        postModal.style.display = 'block';
+                    } else {
+                        alert('Dostęp tylko dla autora (lukasz13d@gmail.com).');
+                        auth.signOut();
+                    }
+                })
+                .catch((error) => {
+                    console.error('Błąd logowania:', error.message);
+                    alert('Błąd logowania: ' + error.message);
+                });
+        });
+
+        // Wyświetlanie 3 najnowszych postów
+        db.ref('posts').orderByChild('createdAt').limitToLast(3).on('value', (snapshot) => {
+            postsList.innerHTML = '';
+            postsLoading.classList.add('show');
+            const posts = [];
+            snapshot.forEach((child) => {
+                posts.push({ id: child.key, ...child.val() });
+            });
+            if (posts.length === 0) {
+                postsList.innerHTML = '<p class="no-posts">Brak postów do wyświetlenia.</p>';
+            } else {
+                posts.reverse().forEach((post) => {
+                    const postDiv = document.createElement('div');
+                    postDiv.className = 'post';
+                    postDiv.innerHTML = `
+                        <div class="post-meta">Opublikowano ${post.postDate} o ${post.postTime}</div>
+                        <h3 class="post-title">${post.title}</h3>
+                        <div class="post-data">${post.dreamDate}</div>
+                        <div class="post-content">${post.content}</div>
+                    `;
+                    postsList.appendChild(postDiv);
+                });
+            }
+            postsLoading.classList.remove('show');
+        }, (error) => {
+            console.error('Błąd ładowania postów:', error.message);
+            alert('Błąd ładowania postów: ' + error.message);
+        });
+
+        // Wyświetlanie listy starszych postów
+        db.ref('posts').orderByChild('createdAt').on('value', (snapshot) => {
+            archiveList.innerHTML = '';
+            archiveLoading.classList.add('show');
+            snapshot.forEach((child) => {
+                const post = child.val();
+                const archiveItem = document.createElement('div');
+                archiveItem.className = 'archive-item';
+                archiveItem.textContent = post.title;
+                archiveItem.addEventListener('click', () => {
+                    postsList.innerHTML = `
                         <div class="post">
-                            <p class="post-date">Opublikowano ${post.postDate} o ${post.postTime}</p>
-                            <h3>${post.title}</h3>
-                            <p><strong>Data:</strong> ${formattedDreamDate}</p>
-                            <p><strong>Treść:</strong> ${post.content}</p>
-                            <div class="comments-section">
-                                <p>Liczba komentarzy: <span id="comment-count-${doc.id}">0</span> | <a href="#" class="write-comment" data-post-id="${doc.id}">Napisz komentarz</a></p>
-                            </div>
+                            <div class="post-meta">Opublikowano ${post.postDate} o ${post.postTime}</div>
+                            <h3 class="post-title">${post.title}</h3>
+                            <div class="post-data">${post.dreamDate}</div>
+                            <div class="post-content">${post.content}</div>
                         </div>
                     `;
-                    db.collection('comments').where('postId', '==', doc.id).get().then(commentSnapshot => {
-                        document.getElementById(`comment-count-${doc.id}`).textContent = commentSnapshot.size;
-                    });
                 });
-
-                // Obsługa "Napisz komentarz"
-                document.querySelectorAll('.write-comment').forEach(link => {
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const postId = e.target.getAttribute('data-post-id');
-                        document.getElementById('comment-form').style.display = 'block';
-                        document.getElementById('comment-submit-form').onsubmit = async (e) => {
-                            e.preventDefault();
-                            const nick = document.getElementById('comment-nick').value;
-                            const content = document.getElementById('comment-content').value;
-                            if (nick.length < 3 || nick.length > 15) {
-                                alert(nick.length < 3 ? 'Za krótki nick' : 'Za długi nick');
-                                return;
-                            }
-                            if (content.length < 3 || content.length > 500) {
-                                alert(content.length < 3 ? 'Za krótka treść' : 'Za długa treść');
-                                return;
-                            }
-                            await db.collection('comments').add({
-                                postId,
-                                nick,
-                                content,
-                                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                            });
-                            document.getElementById('comment-form').style.display = 'none';
-                            loadLatestPosts();
-                        };
-                    });
-                });
+                archiveList.appendChild(archiveItem);
             });
-        }
+            archiveLoading.classList.remove('show');
+        }, (error) => {
+            console.error('Błąd ładowania archiwum:', error.message);
+            alert('Błąd ładowania archiwum: ' + error.message);
+        });
 
-        // Ładowanie archiwum
-        function loadArchive() {
-            db.collection('posts').orderBy('createdAt', 'desc').get().then(snapshot => {
-                const archiveList = document.getElementById('archive-list');
-                archiveList.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const post = doc.data();
-                    archiveList.innerHTML += `<li><a href="#" class="archive-link" data-post-id="${doc.id}">${post.title}</a></li>`;
-                });
+        // Dodawanie nowego posta
+        dreamForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('postTitle').value;
+            const dreamDate = document.getElementById('dreamDate').value;
+            const content = document.getElementById('postContent').value;
+            const now = new Date();
+            const postDate = now.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            const postTime = now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
 
-                document.querySelectorAll('.archive-link').forEach(link => {
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const postId = e.target.getAttribute('data-post-id');
-                        db.collection('posts').doc(postId).get().then(doc => {
-                            const post = doc.data();
-                            const formattedDreamDate = formatDate(post.dreamDate);
-                            document.getElementById('archive-post').innerHTML = `
-                                <div class="post">
-                                    <p class="post-date">Opublikowano ${post.postDate} o ${post.postTime}</p>
-                                    <h3>${post.title}</h3>
-                                    <p><strong>Data:</strong> ${formattedDreamDate}</p>
-                                    <p><strong>Treść:</strong> ${post.content}</p>
-                                </div>
-                            `;
-                        });
-                    });
-                });
+            db.ref('posts').push({
+                title,
+                dreamDate,
+                content,
+                postDate,
+                postTime,
+                createdAt: firebase.database.ServerValue.TIMESTAMP
+            })
+            .then(() => {
+                alert('Sen zapisany pomyślnie!');
+                dreamForm.reset();
+                postModal.style.display = 'none';
+            })
+            .catch((error) => {
+                console.error('Błąd zapisu posta:', error.message);
+                alert('Błąd zapisu posta: ' + error.message);
             });
-        }
-
-        // Logowanie admina
-        document.getElementById('admin-login').addEventListener('click', (e) => {
-            e.preventDefault();
-            document.getElementById('admin-login-form').style.display = 'block';
         });
-
-        document.getElementById('admin-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const password = document.getElementById('admin-password').value;
-            try {
-                await auth.signInWithEmailAndPassword('barastion@example.com', password);
-                document.getElementById('admin-login-form').style.display = 'none';
-                document.getElementById('admin-post-form').style.display = 'block';
-            } catch (error) {
-                alert('Błędne hasło');
-            }
-        });
-
-        // Dodawanie nowego wpisu
-        document.getElementById('post-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const title = document.getElementById('post-title').value;
-            const dreamDate = document.getElementById('dream-date').value;
-            const content = document.getElementById('post-content').value;
-            const postDate = new Date().toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            const postTime = new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
-
-            try {
-                await db.collection('posts').add({
-                    title,
-                    dreamDate,
-                    content,
-                    postDate,
-                    postTime,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                alert('Wpis dodano pomyślnie!');
-                document.getElementById('admin-post-form').style.display = 'none';
-                loadLatestPosts();
-                loadArchive();
-            } catch (error) {
-                alert('Błąd: ' + error.message);
-            }
-        });
-
-        // Inicjalizacja strony
-        loadLatestPosts();
-        loadArchive();
     </script>
 </body>
 </html>
