@@ -7,10 +7,10 @@
 
 /* Podstawowe style strony */
 body {
-    font-family: 'Helvetica', Arial, sans-serif; /* Helvetica z fallbackiem */
+    font-family: 'Helvetica', Arial, sans-serif;
     background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
     color: #ffffff;
-    line-height: 1.4; /* Mniejszy line-height dla kompaktowości */
+    line-height: 1.4;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -35,14 +35,14 @@ body {
 /* Nagłówek */
 .header {
     text-align: center;
-    margin-bottom: 25px; /* Mniejszy margines */
+    margin-bottom: 25px;
     animation: fadeIn 1s ease-in;
 }
 
 .logo-frame {
     width: 60%;
     max-width: 600px;
-    margin: 0 auto 12px; /* Mniejszy margines */
+    margin: 0 auto 12px;
     aspect-ratio: 16 / 9;
     overflow: hidden;
     border: 2px solid #444444;
@@ -62,7 +62,7 @@ body {
 }
 
 h1 {
-    font-size: 1.8rem; /* Mniejsza czcionka dla spójności */
+    font-size: 1.8rem;
     font-weight: 700;
     color: #ffd700;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
@@ -71,24 +71,24 @@ h1 {
 }
 
 .header-subtitle {
-    font-size: 0.8rem; /* Mniejsza czcionka */
+    font-size: 0.8rem;
     color: #cccccc;
     margin-top: 6px;
 }
 
 /* Sekcje */
 h2 {
-    font-size: 1.3rem; /* Mniejsza czcionka */
+    font-size: 1.3rem;
     font-weight: 400;
     color: #cccccc;
-    margin-bottom: 10px; /* Mniejszy margines */
+    margin-bottom: 10px;
     text-align: left;
 }
 
 /* Mniejsze prostokąty dla sekcji */
 .section-box {
-    background: #252525; /* Ciemniejsza szarość, jak Watchtower */
-    padding: 12px; /* Mniejsze paddingi */
+    background: #252525;
+    padding: 12px;
     border-radius: 6px;
     margin-bottom: 25px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
@@ -100,15 +100,15 @@ h2 {
 }
 
 .intro-text, .intro-full p {
-    font-size: 0.9rem; /* Mniejsza czcionka */
+    font-size: 0.9rem;
     color: #ffffff;
-    margin-bottom: 10px; /* Mniejszy margines */
+    margin-bottom: 10px;
     text-align: left;
-    line-height: 1.4; /* Kompaktowy tekst */
+    line-height: 1.4;
 }
 
 .intro-toggle {
-    font-size: 0.8rem; /* Mniejsza czcionka */
+    font-size: 0.8rem;
     color: #ffd700;
     text-decoration: underline;
     cursor: pointer;
@@ -127,7 +127,7 @@ h2 {
 .posts-list {
     display: flex;
     flex-direction: column;
-    gap: 12px; /* Mniejsze odstępy */
+    gap: 12px;
 }
 
 .post {
@@ -254,33 +254,40 @@ h2 {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8); /* Ciemniejsze tło */
+    background: rgba(0, 0, 0, 0.8);
     z-index: 1000;
-    display: flex; /* Flexbox dla wyśrodkowania */
+    display: flex;
     justify-content: center;
     align-items: center;
     animation: fadeIn 0.3s ease-in;
 }
 
 .modal-content {
-    background: #252525; /* Ciemniejsza szarość, jak Watchtower */
+    background: #252525;
     width: 90%;
-    max-width: 400px; /* Mniejszy modal dla schludności */
+    max-width: 400px;
     padding: 20px;
     border-radius: 8px;
     position: relative;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    text-align: center; /* Wyśrodkowanie tekstu */
+    text-align: center;
+}
+
+.large-modal {
+    max-width: 1200px; /* 3x szersze */
+    min-height: 600px; /* 2x wyższe */
+    padding: 30px;
 }
 
 .close {
     position: absolute;
     top: 10px;
     right: 15px;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     cursor: pointer;
     color: #ffffff;
     transition: color 0.3s;
+    z-index: 1001;
 }
 
 .close:hover {
@@ -288,9 +295,9 @@ h2 {
 }
 
 .modal h2 {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: #ffd700;
-    margin-bottom: 12px;
+    margin-bottom: 15px;
 }
 
 .modal p {
@@ -309,7 +316,7 @@ h2 {
 .post-form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 }
 
 .form-group {
@@ -319,7 +326,7 @@ h2 {
 }
 
 label {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #cccccc;
     margin-bottom: 5px;
 }
@@ -327,11 +334,12 @@ label {
 input, textarea {
     background: #333333;
     border: none;
-    padding: 8px;
+    padding: 10px;
     color: #ffffff;
     border-radius: 4px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     transition: background 0.3s;
+    width: 100%;
 }
 
 input:focus, textarea:focus {
@@ -341,21 +349,21 @@ input:focus, textarea:focus {
 
 textarea {
     resize: vertical;
-    min-height: 150px;
+    min-height: 300px; /* Większe pole tekstowe */
 }
 
 .form-buttons {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     justify-content: flex-end;
 }
 
 /* Przyciski */
 .btn {
-    padding: 8px 16px;
+    padding: 10px 20px;
     border: none;
     border-radius: 4px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     cursor: pointer;
     transition: background 0.3s, transform 0.2s;
 }
@@ -367,7 +375,7 @@ textarea {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    width: 100%; /* Pełna szerokość dla schludności */
+    width: 100%;
     margin: 10px 0;
 }
 
@@ -456,6 +464,11 @@ textarea {
         width: 90%;
     }
 
+    .large-modal {
+        max-width: 90%;
+        min-height: 500px;
+    }
+
     h1 {
         font-size: 1.6rem;
     }
@@ -484,7 +497,16 @@ textarea {
     }
 
     .btn {
-        padding: 6px 12px;
-        font-size: 0.8rem;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+
+    .large-modal {
+        max-width: 95%;
+        min-height: 400px;
+    }
+
+    textarea {
+        min-height: 200px;
     }
 }
