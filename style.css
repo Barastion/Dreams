@@ -18,7 +18,7 @@ body {
 
 /* Główny kontener */
 .container {
-    max-width: 1000px; /* Mniejszy niż w Watchtower dla większej czytelności */
+    max-width: 1000px;
     margin: 0 auto;
     padding: 15px;
     flex: 1;
@@ -40,7 +40,7 @@ body {
 }
 
 .logo-frame {
-    width: 60%; /* Mniejszy rozmiar logo */
+    width: 60%;
     max-width: 600px;
     margin: 0 auto 15px;
     aspect-ratio: 16 / 9;
@@ -62,7 +62,7 @@ body {
 }
 
 h1 {
-    font-size: 2rem; /* Mniejszy tytuł */
+    font-size: 2rem;
     font-weight: 700;
     color: #ffd700;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
@@ -130,7 +130,7 @@ h2 {
 }
 
 .post {
-    background: #3a3a3a; /* Ciemniejsze tło dla postów */
+    background: #3a3a3a;
     padding: 15px;
     border-radius: 6px;
     width: 80%;
@@ -169,7 +169,7 @@ h2 {
     font-size: 0.95rem;
     color: #ffffff;
     text-align: left;
-    white-space: pre-wrap; /* Zachowuje formatowanie akapitów i przerw */
+    white-space: pre-wrap;
 }
 
 .no-posts {
@@ -223,7 +223,7 @@ h2 {
 /* Stopka */
 .footer {
     text-align: center;
-    padding: 15px 0;
+    padding: 15px RSV;
     border-top: 1px solid #444444;
     margin-top: 30px;
 }
@@ -325,7 +325,7 @@ input:focus, textarea:focus {
 
 textarea {
     resize: vertical;
-    min-height: 180px; /* Duże pole na treść */
+    min-height: 180px;
 }
 
 .form-buttons {
