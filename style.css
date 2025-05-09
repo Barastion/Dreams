@@ -5,12 +5,17 @@
     box-sizing: border-box;
 }
 
+/* Zmienne */
+:root {
+    --primary-yellow: #ffeb3b; /* Żółty z Watchtower */
+}
+
 /* Podstawowe style strony */
 body {
-    font-family: 'Helvetica', Arial, sans-serif;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Zmieniono na font z Watchtower */
+    background: #1e1e1e; /* Zmieniono na tło z Watchtower */
     color: #ffffff;
-    line-height: 1.4;
+    line-height: 1.6; /* Zmieniono na 1.6 z Watchtower */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -18,37 +23,37 @@ body {
 
 /* Główny kontener */
 .container {
-    max-width: 1200px; /* Szerszy kontener dla większej przestrzeni */
+    max-width: 960px; /* Zmieniono na 960px z Watchtower */
     margin: 0 auto;
-    padding: 15px;
+    padding: 20px; /* Zmieniono na 20px z Watchtower */
     flex: 1;
 }
 
 /* Szary prostokąt jako tło sekcji roboczej */
 .content-wrapper {
-    background: #2d2d2d; /* Jasnoszary prostokąt tła */
-    border-radius: 6px;
-    padding: 15px;
+    background: #2d2d2d;
+    border-radius: 8px;
+    padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    max-width: 1100px; /* Szerszy prostokąt tła */
+    max-width: 960px;
     margin: 0 auto;
 }
 
 /* Nagłówek */
 .header {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px; /* Zmieniono na 20px z Watchtower */
     animation: fadeIn 1s ease-in;
 }
 
 .logo-frame {
-    width: 80%; /* 80% szerokości .content-wrapper */
-    max-width: 880px; /* 80% z 1100px */
+    width: 100%;
+    max-width: 640px; /* Zmieniono na 640px z Watchtower */
     margin: 0 auto 12px;
     aspect-ratio: 16 / 9;
     overflow: hidden;
-    border: 2px solid #444444;
-    border-radius: 6px;
+    border: 2px solid #555555; /* Zmieniono na #555555 z Watchtower */
+    border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -64,48 +69,48 @@ body {
 }
 
 h1 {
-    font-size: 1.4rem; /* Bez zmian */
+    font-size: 1.4rem;
     font-weight: 700;
-    color: #ffd700;
+    color: var(--primary-yellow);
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     white-space: pre-line;
-    margin-bottom: 4px; /* Mniejszy odstęp */
+    margin-bottom: 4px;
 }
 
 .header-subtitle {
-    font-size: 1.2rem; /* Mniejsza czcionka dla "– Dziennik Snów" */
+    font-size: 1.2rem;
     color: #cccccc;
-    margin: 2px 0; /* Mniejszy odstęp */
+    margin: 2px 0;
 }
 
 .header-subtitle:last-of-type {
-    font-size: 1.1rem; /* Jeszcze mniejsza dla "Osobista podróż..." */
+    font-size: 1.1rem;
 }
 
 /* Sekcje */
 h2 {
     font-size: 1.3rem;
     font-weight: 400;
-    color: #ffd700; /* Żółta czcionka, jak tytuł */
+    color: var(--primary-yellow);
     margin-bottom: 10px;
     text-align: left;
 }
 
 /* Mniejsze prostokąty dla sekcji */
 .section-box {
-    background: #252525; /* Ciemniejsze tło sekcji */
-    padding: 12px;
-    border-radius: 6px;
-    margin-bottom: 25px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    max-width: 880px; /* 80% szerokości .content-wrapper (1100px * 0.8) */
+    background: #2d2d2d;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
 }
 
 /* Sekcja wprowadzająca */
 .intro-container {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .intro-text, .intro-full p {
@@ -113,12 +118,12 @@ h2 {
     color: #ffffff;
     margin-bottom: 10px;
     text-align: left;
-    line-height: 1.4;
+    line-height: 1.6;
 }
 
 .intro-toggle {
     font-size: 0.8rem;
-    color: #ffd700;
+    color: var(--primary-yellow);
     text-decoration: underline;
     cursor: pointer;
     display: inline-block;
@@ -130,7 +135,7 @@ h2 {
 
 /* Posty */
 .posts-container {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .posts-list {
@@ -141,13 +146,13 @@ h2 {
 
 .post {
     background: #3a3a3a;
-    padding: 12px;
-    border-radius: 6px;
+    padding: 20px;
+    border-radius: 8px;
     width: 100%;
-    max-width: 800px; /* Nieco węższe posty */
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     animation: fadeIn 0.5s ease-in;
 }
 
@@ -161,7 +166,7 @@ h2 {
 .post-title {
     font-size: 1.2rem;
     font-weight: 700;
-    color: #ffd700;
+    color: var(--primary-yellow);
     text-align: center;
     margin-bottom: 8px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
@@ -191,21 +196,21 @@ h2 {
 
 /* Archiwum */
 .archive-container {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .archive-list {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    max-width: 800px; /* Nieco węższe archiwum */
+    max-width: 800px;
     margin: 0 auto;
 }
 
 .archive-item {
     background: #444444;
     padding: 8px;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 0.8rem;
     color: #ffffff;
@@ -227,7 +232,7 @@ h2 {
 
 .expand-arrow {
     font-size: 0.7rem;
-    color: #ffd700;
+    color: var(--primary-yellow);
 }
 
 /* Stopka */
@@ -235,7 +240,7 @@ h2 {
     text-align: center;
     padding: 12px 0;
     border-top: 1px solid #444444;
-    margin-top: 25px;
+    margin-top: 20px;
 }
 
 .footer p {
@@ -245,7 +250,7 @@ h2 {
 }
 
 .footer-link a {
-    color: #ffd700;
+    color: var(--primary-yellow);
     text-decoration: none;
     transition: color 0.3s;
 }
@@ -272,12 +277,12 @@ h2 {
 }
 
 .modal-content {
-    background: #252525;
+    background: #2d2d2d;
     width: 90%;
     max-width: 400px;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -285,9 +290,9 @@ h2 {
 }
 
 .large-modal {
-    max-width: 1200px;
+    max-width: 800px; /* Zmieniono z 1200px na 800px dla spójności z Watchtower */
     min-height: 600px;
-    padding: 30px;
+    padding: 20px;
 }
 
 .close {
@@ -302,12 +307,12 @@ h2 {
 }
 
 .close:hover {
-    color: #ffd700;
+    color: var(--primary-yellow);
 }
 
 .modal h2 {
     font-size: 1.4rem;
-    color: #ffd700;
+    color: var(--primary-yellow);
     margin-bottom: 15px;
 }
 
@@ -343,18 +348,18 @@ label {
 }
 
 input, textarea {
-    background: #333333;
-    border: none;
+    background: #3a3a3a; /* Zmieniono na #3a3a3a z Watchtower */
+    border: 1px solid #555555; /* Dodano border z Watchtower */
     padding: 10px;
     color: #ffffff;
     border-radius: 4px;
     font-size: 1rem;
-    transition: background 0.3s;
+    transition: border-color 0.3s;
     width: 100%;
 }
 
 input:focus, textarea:focus {
-    background: #444444;
+    border-color: #5a6268; /* Zmieniono na kolor z Watchtower */
     outline: none;
 }
 
@@ -373,14 +378,14 @@ textarea {
 .btn {
     padding: 10px 20px;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px; /* Zmieniono na 8px z Watchtower */
     font-size: 1rem;
     cursor: pointer;
     transition: background 0.3s, transform 0.2s;
 }
 
 .btn-google {
-    background: #333333; /* Ciemne tło */
+    background: #3a3a3a;
     color: #ffffff;
     display: flex;
     align-items: center;
@@ -391,7 +396,7 @@ textarea {
 }
 
 .btn-submit {
-    background: #ffd700;
+    background: var(--primary-yellow);
     color: #1a1a1a;
 }
 
@@ -405,7 +410,7 @@ textarea {
 }
 
 .btn-google:hover {
-    background: #444444;
+    background: #4a4a4a; /* Zmieniono na ciemniejszy odcień */
 }
 
 .btn-submit:hover {
@@ -418,12 +423,12 @@ textarea {
 
 /* Spinner ładowania */
 .loading-spinner {
-    border: 3px solid #444444;
-    border-top: 3px solid #ffd700;
+    border: 3px solid #555555; /* Zmieniono na #555555 z Watchtower */
+    border-top: 3px solid var(--primary-yellow);
     border-radius: 50%;
     width: 25px;
     height: 25px;
-    animation: spin 1s linear infinite;
+    animation料金: spin 1s linear infinite;
     margin: 12px auto;
     display: none;
 }
@@ -440,10 +445,11 @@ textarea {
     width: 100%;
     padding: 8px;
     text-align: center;
-    font-size: 0.8rem;
-    background: #a00;
+    font-size: 0.9rem; /* Zmieniono na 0.9rem z Watchtower */
+    background: #ff4d4d; /* Zmieniono na #ff4d4d z Watchtower */
     color: #ffffff;
     display: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Dodano z Watchtower */
 }
 
 .network-status.offline {
@@ -468,21 +474,21 @@ textarea {
     }
 
     .content-wrapper {
-        padding: 12px;
-        max-width: 95%;
+        padding: 10px;
+        max-width: 100%;
     }
 
     .section-box {
-        max-width: 90%;
+        max-width: 100%;
     }
 
     .logo-frame, .post, .archive-item {
-        width: 90%;
+        width: 100%;
         max-width: 100%;
     }
 
     .large-modal {
-        max-width: 90%;
+        max-width: 100%;
         min-height: 500px;
     }
 
