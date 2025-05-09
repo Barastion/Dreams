@@ -105,9 +105,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
     <!-- Logika aplikacji -->
     <script>
-        // Konfiguracja Firebase z zmiennych środowiskowych
+        // Konfiguracja Firebase
         const firebaseConfig = {
-            apiKey: "__FIREBASE_API_KEY__",
+            apiKey: "AIzaSyBdVZRNj5-ni4rqhlYoN7jJKd4lwMWZG-Q",
             authDomain: "dziennik-snow.firebaseapp.com",
             databaseURL: "https://dziennik-snow-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "dziennik-snow",
@@ -121,7 +121,7 @@
             firebase.initializeApp(firebaseConfig);
         } catch (error) {
             console.error('Błąd inicjalizacji Firebase:', error.message);
-            alert('Błąd inicjalizacji Firebase. Skontaktuj się z administratorem.');
+            alert('Błąd inicjalizacji Firebase: ' + error.message);
         }
         const db = firebase.database();
         const auth = firebase.auth();
