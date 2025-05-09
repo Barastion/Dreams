@@ -15,7 +15,7 @@
 <body>
     <div class="container">
         <div class="image-frame">
-            <img src="dreamscape.jpg" alt="Barastion Dreamscape">
+            <img src="https://firebasestorage.googleapis.com/v0/b/dziennik-snow.appspot.com/o/Dreamscape_logo.jpg?alt=media" alt="Barastion Dreamscape">
         </div>
         <header>
             <h1>Barastion Dreamscape<br>- Dziennik Snów</h1>
@@ -28,6 +28,7 @@
             <section id="archive">
                 <h2>Archiwum</h2>
                 <ul id="archive-list"></ul>
+                <div id="archive-post"></div>
             </section>
         </main>
         <footer>
@@ -35,6 +36,7 @@
             <p><a href="#" id="admin-login">Napisz nowy post - sekcja twórcy</a></p>
         </footer>
     </div>
+
     <!-- Formularz logowania admina -->
     <div id="admin-login-form" style="display: none;">
         <div class="auth-container">
@@ -45,6 +47,7 @@
             </form>
         </div>
     </div>
+
     <!-- Formularz dodawania wpisu -->
     <div id="admin-post-form" style="display: none;">
         <div class="auth-container">
@@ -57,6 +60,7 @@
             </form>
         </div>
     </div>
+
     <!-- Formularz komentarza -->
     <div id="comment-form" style="display: none;">
         <div class="auth-container">
@@ -68,15 +72,16 @@
             </form>
         </div>
     </div>
+
     <script>
-        // Konfiguracja Firebase
+        // Konfiguracja Firebase (wstaw swoje dane z konsoli Firebase)
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
+            apiKey: "TWOJ_API_KEY",
             authDomain: "dziennik-snow.firebaseapp.com",
             projectId: "dziennik-snow",
             storageBucket: "dziennik-snow.appspot.com",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            messagingSenderId: "TWOJ_MESSAGING_SENDER_ID",
+            appId: "TWOJ_APP_ID"
         };
 
         // Inicjalizacja Firebase
@@ -84,30 +89,37 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Pobieranie 3 najnowszych wpisów
+        // Funkcja formatująca datę z YYYY-MM-DD na DD.MM.YYYY
+        function formatDate(dateStr) {
+            const [year, month, day] = dateStr.split('-');
+            return `${day}.${month}.${year}`;
+        }
+
+        // Ładowanie 3 najnowszych wpisów
         function loadLatestPosts() {
             db.collection('posts').orderBy('createdAt', 'desc').limit(3).get().then(snapshot => {
                 const postsContainer = document.getElementById('posts-container');
                 postsContainer.innerHTML = '';
                 snapshot.forEach(doc => {
                     const post = doc.data();
+                    const formattedDreamDate = formatDate(post.dreamDate);
                     postsContainer.innerHTML += `
                         <div class="post">
                             <p class="post-date">Opublikowano ${post.postDate} o ${post.postTime}</p>
                             <h3>${post.title}</h3>
-                            <p><strong>Data:</strong> ${post.dreamDate}</p>
+                            <p><strong>Data:</strong> ${formattedDreamDate}</p>
                             <p><strong>Treść:</strong> ${post.content}</p>
                             <div class="comments-section">
                                 <p>Liczba komentarzy: <span id="comment-count-${doc.id}">0</span> | <a href="#" class="write-comment" data-post-id="${doc.id}">Napisz komentarz</a></p>
                             </div>
                         </div>
                     `;
-                    // Aktualizacja licznika komentarzy
                     db.collection('comments').where('postId', '==', doc.id).get().then(commentSnapshot => {
                         document.getElementById(`comment-count-${doc.id}`).textContent = commentSnapshot.size;
                     });
                 });
-                // Nasłuchiwanie na "Napisz komentarz"
+
+                // Obsługa "Napisz komentarz"
                 document.querySelectorAll('.write-comment').forEach(link => {
                     link.addEventListener('click', (e) => {
                         e.preventDefault();
@@ -139,7 +151,7 @@
             });
         }
 
-        // Pobieranie archiwum
+        // Ładowanie archiwum
         function loadArchive() {
             db.collection('posts').orderBy('createdAt', 'desc').get().then(snapshot => {
                 const archiveList = document.getElementById('archive-list');
@@ -148,13 +160,22 @@
                     const post = doc.data();
                     archiveList.innerHTML += `<li><a href="#" class="archive-link" data-post-id="${doc.id}">${post.title}</a></li>`;
                 });
+
                 document.querySelectorAll('.archive-link').forEach(link => {
                     link.addEventListener('click', (e) => {
                         e.preventDefault();
                         const postId = e.target.getAttribute('data-post-id');
                         db.collection('posts').doc(postId).get().then(doc => {
                             const post = doc.data();
-                            alert(`Tytuł: ${post.title}\nData: ${post.dreamDate}\nTreść: ${post.content}`);
+                            const formattedDreamDate = formatDate(post.dreamDate);
+                            document.getElementById('archive-post').innerHTML = `
+                                <div class="post">
+                                    <p class="post-date">Opublikowano ${post.postDate} o ${post.postTime}</p>
+                                    <h3>${post.title}</h3>
+                                    <p><strong>Data:</strong> ${formattedDreamDate}</p>
+                                    <p><strong>Treść:</strong> ${post.content}</p>
+                                </div>
+                            `;
                         });
                     });
                 });
@@ -179,7 +200,7 @@
             }
         });
 
-        // Dodawanie wpisu
+        // Dodawanie nowego wpisu
         document.getElementById('post-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const title = document.getElementById('post-title').value;
@@ -206,7 +227,7 @@
             }
         });
 
-        // Inicjalizacja
+        // Inicjalizacja strony
         loadLatestPosts();
         loadArchive();
     </script>
