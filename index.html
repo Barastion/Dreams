@@ -102,22 +102,15 @@
         </div>
     </div>
 
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
-
+    <!-- Konfiguracja Firebase -->
+    <script src="config.js"></script>
+    <!-- Logika aplikacji -->
     <script>
-        // Konfiguracja Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyBdVZRNj5-ni4rqhlYoN7jJKd4lwMWZG-Q",
-            authDomain: "dziennik-snow.firebaseapp.com",
-            databaseURL: "https://dziennik-snow-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "dziennik-snow",
-            storageBucket: "dziennik-snow.appspot.com",
-            messagingSenderId: "1041128277683",
-            appId: "1:1041128277683:web:8bdfa137c75e0c3bced7dd"
-        };
-
+        // Inicjalizacja Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const auth = firebase.auth();
