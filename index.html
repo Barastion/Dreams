@@ -8,10 +8,9 @@
     <meta name="author" content="Barastion">
     <meta name="keywords" content="sny, dziennik snów, Barastion, blog, marzenia senne, twórczość">
     <meta name="robots" content="index, follow">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://*.firebaseio.com https://*.firebasedatabase.app; connect-src 'self' https://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://*.firebaseio.com https://*.firebasedatabase.app; connect-src 'self' https://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app https://accounts.google.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self';">
     <title>Barastion Dreamscape – Dziennik Snów</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="networkStatus" class="network-status"></div>
@@ -99,12 +98,12 @@
     </div>
 
     <!-- Firebase SDK -->
-    <script type="module">
-        // Importowanie Firebase
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
-        import { getDatabase, ref, push, onValue, orderByChild, limitToLast } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js';
-        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
 
+    <!-- Logika aplikacji -->
+    <script>
         // Konfiguracja Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBdVZRNj5-ni4rqhlYoN7jJKd4lwMWZG-Q",
@@ -117,15 +116,14 @@
         };
 
         // Inicjalizacja Firebase
-        let app, db, auth;
         try {
-            app = initializeApp(firebaseConfig);
-            db = getDatabase(app);
-            auth = getAuth(app);
+            firebase.initializeApp(firebaseConfig);
         } catch (error) {
-            console.error('Błąd inicjalizacji Firebase:', error.message);
+            console.error('Błąd inicjalizacji Firebase:', error);
             alert('Błąd inicjalizacji Firebase: ' + error.message);
         }
+        const db = firebase.database();
+        const auth = firebase.auth();
 
         // Elementy DOM
         const adminModal = document.getElementById('adminModal');
@@ -188,28 +186,28 @@
             dreamForm.reset();
         });
 
-        // Logowanie przez Google
+        // Logowanie przez Google z debugowaniem
         googleLogin.addEventListener('click', () => {
-            const provider = new GoogleAuthProvider();
-            signInWithPopup(auth, provider)
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
                 .then((result) => {
+                    console.log('Logowanie udane:', result.user.email);
                     if (result.user.email === 'lukasz13d@gmail.com') {
                         adminModal.style.display = 'none';
                         postModal.style.display = 'block';
                     } else {
                         alert('Dostęp tylko dla autora (lukasz13d@gmail.com).');
-                        signOut(auth);
+                        auth.signOut();
                     }
                 })
                 .catch((error) => {
-                    console.error('Błąd logowania:', error.message);
-                    alert('Błąd logowania: ' + error.message);
+                    console.error('Błąd logowania:', error.code, error.message);
+                    alert(`Błąd logowania: ${error.message} (Kod: ${error.code})`);
                 });
         });
 
         // Wyświetlanie 5 najnowszych postów
-        const postsRef = ref(db, 'posts');
-        onValue(orderByChild(postsRef, 'createdAt').limitToLast(5), (snapshot) => {
+        db.ref('posts').orderByChild('createdAt').limitToLast(5).on('value', (snapshot) => {
             postsList.innerHTML = '';
             postsLoading.classList.add('show');
             const posts = [];
@@ -238,7 +236,7 @@
         });
 
         // Wyświetlanie starszych postów jako banerki
-        onValue(postsRef, (snapshot) => {
+        db.ref('posts').orderByChild('createdAt').on('value', (snapshot) => {
             archiveList.innerHTML = '';
             archiveLoading.classList.add('show');
             const allPosts = [];
@@ -254,7 +252,7 @@
                     <span class="expand-arrow">▶</span>
                 `;
                 archiveItem.addEventListener('click', () => {
-                    onValue(ref(db, `posts/${post.id}`), (snapshot) => {
+                    db.ref(`posts/${post.id}`).once('value').then((snapshot) => {
                         const fullPost = snapshot.val();
                         postsList.innerHTML = `
                             <div class="post">
@@ -264,7 +262,7 @@
                                 <div class="post-content">${fullPost.content}</div>
                             </div>
                         `;
-                    }, (error) => {
+                    }).catch((error) => {
                         console.error('Błąd ładowania posta:', error.message);
                         alert('Błąd ładowania posta: ' + error.message);
                     });
@@ -291,13 +289,13 @@
             const postDate = now.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric' });
             const postTime = now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
 
-            push(ref(db, 'posts'), {
+            db.ref('posts').push({
                 title,
                 dreamDate,
                 content,
                 postDate,
                 postTime,
-                createdAt: Date.now()
+                createdAt: firebase.database.ServerValue.TIMESTAMP
             })
             .then(() => {
                 alert('Sen zapisany pomyślnie!');
