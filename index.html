@@ -65,7 +65,7 @@
 
     <div id="adminModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close">×</span>
             <h2>Sekcja twórcy</h2>
             <p>Zaloguj się, aby dodać lub edytować sen.</p>
             <button id="googleLogin" class="btn btn-google">Zaloguj się przez Google</button>
@@ -75,7 +75,7 @@
 
     <div id="postModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close">×</span>
             <h2>Nowy sen</h2>
             <form id="dreamForm" class="post-form">
                 <div class="form-group">
@@ -103,16 +103,25 @@
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
-    <!-- Konfiguracja Firebase -->
-    <script src="config.js"></script>
     <!-- Logika aplikacji -->
     <script>
+        // Konfiguracja Firebase z zmiennych środowiskowych
+        const firebaseConfig = {
+            apiKey: "__FIREBASE_API_KEY__",
+            authDomain: "dziennik-snow.firebaseapp.com",
+            databaseURL: "https://dziennik-snow-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "dziennik-snow",
+            storageBucket: "dziennik-snow.appspot.com",
+            messagingSenderId: "1041128277683",
+            appId: "1:1041128277683:web:8bdfa137c75e0c3bced7dd"
+        };
+
         // Inicjalizacja Firebase
         try {
             firebase.initializeApp(firebaseConfig);
         } catch (error) {
             console.error('Błąd inicjalizacji Firebase:', error.message);
-            alert('Błąd inicjalizacji Firebase. Sprawdź konfigurację.');
+            alert('Błąd inicjalizacji Firebase. Skontaktuj się z administratorem.');
         }
         const db = firebase.database();
         const auth = firebase.auth();
