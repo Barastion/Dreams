@@ -28,7 +28,7 @@
             </header>
 
             <main>
-                <section class="intro-container">
+                <section class="intro-container section-box">
                     <h2>Słowem wstępu</h2>
                     <p class="intro-text">Z początkiem 2025 roku coś we mnie drgnęło, jakby głęboko ukryta część mojej świadomości nagle postanowiła przemówić. Sny, które wcześniej traktowałem jako przypadkowe, zaczęły układać się w zaskakującą narrację. Każda kolejna noc przynosiła obrazy pełne symboli, których znaczenie pozostawało dla mnie nieuchwytne, ale jednocześnie hipnotyzujące. Czułem, że te sny miały swój cel – że niosły ze sobą coś więcej niż tylko odzwierciedlenie codziennych myśli. Jakby otworzyły przede mną drzwi do nowego świata, w którym mogę eksplorować nieznane horyzonty i odkrywać zakamarki własnej świadomości.</p>
                     <a href="#" id="expandIntro" class="intro-toggle">Rozwiń wstęp</a>
@@ -41,13 +41,13 @@
                     </div>
                 </section>
 
-                <section class="posts-container">
+                <section class="posts-container section-box">
                     <h2>Najnowsze sny</h2>
                     <div class="loading-spinner" id="postsLoading"></div>
                     <div id="postsList" class="posts-list"></div>
                 </section>
 
-                <section class="archive-container">
+                <section class="archive-container section-box">
                     <h2>Starsze sny</h2>
                     <div class="loading-spinner" id="archiveLoading"></div>
                     <div id="archiveList" class="archive-list"></div>
@@ -59,16 +59,13 @@
                 <p class="footer-link">
                     <a href="#" id="adminLink">Napisz nowy post – sekcja twórcy</a>
                 </p>
-                <p class="footer-link">
-                    <a href="terms.html" target="_blank">Regulamin</a>
-                </p>
             </footer>
         </div>
     </div>
 
     <div id="adminModal" class="modal">
         <div class="modal-content">
-            <span class="close">×</span>
+            <span class="close">&times;</span>
             <h2>Sekcja twórcy</h2>
             <p>Zaloguj się, aby dodać lub edytować sen.</p>
             <button id="googleLogin" class="btn btn-google">Zaloguj się przez Google</button>
@@ -78,7 +75,7 @@
 
     <div id="postModal" class="modal">
         <div class="modal-content">
-            <span class="close">×</span>
+            <span class="close">&times;</span>
             <h2>Nowy sen</h2>
             <form id="dreamForm" class="post-form">
                 <div class="form-group">
@@ -111,7 +108,12 @@
     <!-- Logika aplikacji -->
     <script>
         // Inicjalizacja Firebase
-        firebase.initializeApp(firebaseConfig);
+        try {
+            firebase.initializeApp(firebaseConfig);
+        } catch (error) {
+            console.error('Błąd inicjalizacji Firebase:', error.message);
+            alert('Błąd inicjalizacji Firebase. Sprawdź konfigurację.');
+        }
         const db = firebase.database();
         const auth = firebase.auth();
 
