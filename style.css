@@ -24,6 +24,14 @@ body {
     flex: 1;
 }
 
+/* Szary prostokąt jako tło sekcji roboczej */
+.content-wrapper {
+    background: #2d2d2d;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
 /* Nagłówek */
 .header {
     text-align: center;
@@ -74,21 +82,41 @@ h2 {
     font-weight: 400;
     color: #cccccc;
     margin-bottom: 20px;
-    text-align: center;
 }
 
-.section-description {
-    font-size: 1rem;
-    color: #888888;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.posts-container, .archive-container {
+/* Sekcja wprowadzająca */
+.intro-container {
     margin-bottom: 40px;
 }
 
+.intro-container h2 {
+    text-align: left;
+}
+
+.intro-text, .intro-full p {
+    font-size: 1rem;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.intro-toggle {
+    font-size: 0.9rem;
+    color: #ffd700;
+    text-decoration: underline;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.intro-toggle:hover {
+    color: #e6c200;
+}
+
 /* Posty */
+.posts-container {
+    margin-bottom: 40px;
+}
+
 .posts-list {
     display: flex;
     flex-direction: column;
@@ -123,23 +151,19 @@ h2 {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.post-data, .post-content {
+.post-data {
     font-size: 1rem;
+    font-weight: 700;
     color: #ffffff;
     margin-bottom: 10px;
     text-align: left;
 }
 
-.post-data::before {
-    content: "Data: ";
-    font-weight: 700;
-    color: #cccccc;
-}
-
-.post-content::before {
-    content: "Treść: ";
-    font-weight: 700;
-    color: #cccccc;
+.post-content {
+    font-size: 1rem;
+    color: #ffffff;
+    text-align: left;
+    white-space: pre-wrap; /* Zachowuje formatowanie akapitów i przerw */
 }
 
 .no-posts {
@@ -150,9 +174,13 @@ h2 {
 }
 
 /* Archiwum */
-.archive-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+.archive-container {
+    margin-bottom: 40px;
+}
+
+.archive-list {
+    display: flex;
+    flex-direction: column;
     gap: 10px;
     max-width: 800px;
     margin: 0 auto;
@@ -161,11 +189,17 @@ h2 {
 .archive-item {
     background: #444444;
     padding: 10px;
-    text-align: center;
     border-radius: 5px;
     cursor: pointer;
     font-size: 0.9rem;
     color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 70%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
     transition: background 0.3s, transform 0.2s;
     animation: fadeIn 0.7s ease-in;
 }
@@ -173,6 +207,11 @@ h2 {
 .archive-item:hover {
     background: #555555;
     transform: translateY(-2px);
+}
+
+.expand-arrow {
+    font-size: 0.8rem;
+    color: #ffd700;
 }
 
 /* Stopka */
@@ -198,11 +237,6 @@ h2 {
 .footer-link a:hover {
     color: #e6c200;
     text-decoration: underline;
-}
-
-.footer-note {
-    font-size: 0.8rem;
-    color: #666666;
 }
 
 /* Modal */
@@ -285,7 +319,13 @@ input:focus, textarea:focus {
 
 textarea {
     resize: vertical;
-    min-height: 100px;
+    min-height: 200px; /* Większe pole na treść */
+}
+
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
 }
 
 /* Przyciski */
@@ -312,6 +352,11 @@ textarea {
     color: #1a1a1a;
 }
 
+.btn-cancel {
+    background: #666666;
+    color: #ffffff;
+}
+
 .btn:hover {
     transform: translateY(-2px);
 }
@@ -322,6 +367,10 @@ textarea {
 
 .btn-submit:hover {
     background: #e6c200;
+}
+
+.btn-cancel:hover {
+    background: #777777;
 }
 
 /* Spinner ładowania */
@@ -375,7 +424,11 @@ textarea {
         padding: 10px;
     }
 
-    .logo-frame, .post {
+    .content-wrapper {
+        padding: 15px;
+    }
+
+    .logo-frame, .post, .archive-item {
         width: 90%;
     }
 
@@ -385,10 +438,6 @@ textarea {
 
     h2 {
         font-size: 1.5rem;
-    }
-
-    .archive-grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     }
 
     .modal-content {
