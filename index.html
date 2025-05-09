@@ -3,39 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Barastion Dreamscape – Dziennik Snów, osobista podróż przez świat snów.">
-    <meta name="title" content="Barastion Dreamscape – Dziennik Snów">
-    <meta name="author" content="Barastion">
-    <meta name="keywords" content="sny, dziennik snów, Barastion, blog, marzenia senne, twórczość">
-    <meta name="robots" content="index, follow">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://*.firebaseio.com https://*.firebasedatabase.app https://accounts.google.com https://apis.google.com; connect-src 'self' https://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app https://accounts.google.com https://identitytoolkit.googleapis.com data:; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self';">
+    <meta name="description" content="Barastion Dreamscape – Dziennik Snów. Osobista podróż przez świat snów.">
+    <meta name="keywords" content="dziennik snów, Barastion Dreamscape, interpretacja snów, świadome śnienie, zapisywanie snów">
+    <meta name="author" content="Łukasz Baran">
+    <meta property="og:title" content="Barastion Dreamscape – Dziennik Snów">
+    <meta property="og:description" content="Osobista podróż przez świat snów. Zapisz i odkryj znaczenie swoich snów.">
+    <meta property="og:image" content="Dreamscape_logo.jpg">
+    <meta property="og:url" content="https://lukas-baran.github.io/Dziennik-Snow/">
+    <meta property="og:type" content="website">
     <title>Barastion Dreamscape – Dziennik Snów</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* Ukryj modale na starcie */
-        .modal {
-            display: none;
-        }
-        .network-status {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: #ff4444;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            z-index: 1000;
-        }
-        .network-status.offline {
-            display: block;
-        }
-    </style>
+    <link rel="icon" type="image/jpg" href="Dreamscape_logo.jpg">
 </head>
 <body>
-    <div id="networkStatus" class="network-status"></div>
-
     <div class="container">
         <div class="content-wrapper">
             <header class="header">
@@ -48,89 +28,119 @@
             </header>
 
             <main>
-                <section class="intro-container section-box">
-                    <h2>Słowem wstępu</h2>
-                    <p class="intro-text">Z początkiem 2025 roku coś we mnie drgnęło, jakby głęboko ukryta część mojej świadomości nagle postanowiła przemówić. Sny, które wcześniej traktowałem jako przypadkowe, zaczęły układać się w zaskakującą narrację. Każda kolejna noc przynosiła obrazy pełne symboli, których znaczenie pozostawało dla mnie nieuchwytne, ale jednocześnie hipnotyzujące. Czułem, że te sny miały swój cel – że niosły ze sobą coś więcej niż tylko odzwierciedlenie codziennych myśli. Jakby otworzyły przede mną drzwi do nowego świata, w którym mogę eksplorować nieznane horyzonty i odkrywać zakamarki własnej świadomości.</p>
-                    <a href="#" id="expandIntro" class="intro-toggle">Rozwiń wstęp</a>
-                    <div id="introFull" class="intro-full" style="display: none;">
-                        <p>Wszystko zaczęło się od serii snów o psach. Przez niemal dziesięć nocy z rzędu śniły mi się psy – mnóstwo psów. Nie były wobec mnie agresywne. Czasem atakowały innych ludzi, czasem współpracowały z nimi, pomagając w różnych pracach, ale w każdym z tych snów pojawiał się jeden pies, który próbował wyprowadzić mnie z równowagi. Nie zbliżał się, ale nieustannie szczekał w moim kierunku, drażniąco, chwytał za ogon inne psy lub ludzi, generalnie uprzykrzając życie wszystkim wokół. Budziłem się z tych snów zirytowany jego obecnością, bo zakłócał każdy sen. W ostatnim śnie tej serii zobaczyłem tego psa słabego, niemal umierającego. Zrobiło mi się go żal. Pomogłem mu, choć nie wiem, jak to zrobiłem – leżał prawie martwy, a ja chciałem, by odzyskał siły. Udało się. Gdy tylko pies stanął na nogi, natychmiast wrócił do swojego dawnego zachowania – drażniącego szczekania i biegania wokół mnie, trzymając dystans, ale nie odpuszczając. Po tym śnie postanowiłem, że jeśli pojawi się znowu, nie będę mu pomagał. Byłem gotów pozbyć się go gołymi rękami. Od tamtej pory sny o psach ustały.</p>
-                        <p>Po krótkiej przerwie rozpoczęła się nowa seria snów – tym razem o nieznanych miastach. Śniło mi się, że mieszkam w miejscach, których nie znam, chodzę ulicami, których nigdy nie widziałem. Ten motyw powtarzał się bardzo często, choć nie co noc, przez miesiąc, może nawet dwa. Nie rozpoznawałem żadnego z tych miast, żadnej ulicy, żadnego mieszkania, choć śniło mi się ich kilka. Zazwyczaj widziałem te miejsca nocą, rzadziej w porach popołudniowych. Nigdy wcześniej nie doświadczałem takich powtarzających się schematów w snach. Zastanawiałem się, czy to coś oznacza. W kwietniu 2025 roku dowiedziałem się, że czeka mnie przeprowadzka do nowego mieszkania – w tym samym mieście, ale w innym lokum. Nie wiem, czy sny o miastach były zapowiedzią tej zmiany, ale być może w przyszłości zrozumiem ich znaczenie.</p>
-                        <p>Z czasem sny o miastach zaczęły ewoluować. Nie tylko śniły mi się nieznane miejsca, ale pojawił się nowy motyw – uczelnie. W tych obcych miastach zawsze przewijał się wątek edukacji: szkoły, uczelnie, ludzie, których nie znam. Każda placówka znajdowała się w innym miejscu, w innym mieście, którego nigdy nie widziałem. Nie pamiętam żadnych lekcji, ale pamiętam korytarze, podróże na zajęcia, wychodzenie z uczelni po zakończonych lekcjach. Gdy w drugiej połowie kwietnia 2025 roku zaczynam prowadzić ten dziennik, wątek uczelni wciąż jest obecny, choć motyw nieznanych miast powoli zanika. Teoretycznie każda uczelnia znajduje się w innym miejscu, bo nie rozpoznaję tych przestrzeni, ale coraz mniej skupiam się na samych miastach. Moja uwaga kieruje się na placówki, w których można zdobywać wiedzę – jakby to one stały się sercem moich snów.</p>
-                        <p>Zainspirowany powtarzającymi się snami i schematami, jakich nigdy wcześniej nie znałem, postanowiłem zacząć zapisywać swoje sny. Nie wiem, czy mają jakieś znaczenie, ale ich powtarzalność sprawiła, że uznałem, że warto je notować. Być może kiedyś moje zapiski ujrzą światło dzienne, więc opisuję tylko to, co uważam za stosowne. Unikam imion i tematów zbyt osobistych czy delikatnych, dlatego niektóre fragmenty snów przemilczę. Chcę, by wszystkie osoby pojawiające się w moim dzienniku pozostały anonimowe.</p>
-                        <a href="#" id="collapseIntro" class="intro-toggle">Zwiń wstęp</a>
-                    </div>
-                </section>
+                <!-- Sekcja wprowadzająca -->
+                <div class="section-container">
+                    <section class="intro-container section-box">
+                        <h2>Słowem wstępu</h2>
+                        <p class="intro-text">
+                            Witaj w Barastion Dreamscape – moim osobistym dzienniku snów, w którym zapisuję i zgłębiam świat marzeń sennych. 
+                            Każdy sen to unikalna opowieść, a ja staram się je zrozumieć i odkryć ich znaczenie.
+                            <span id="expandIntro" class="intro-toggle">Rozwiń wstęp</span>
+                        </p>
+                        <div id="introFull" class="intro-full">
+                            <p>
+                                Śnienie to fascynujący proces, który pozwala nam zajrzeć w głąb naszej podświadomości. 
+                                W tym dzienniku znajdziesz moje sny – od tych codziennych po świadome, pełne symboli i emocji. 
+                                Moim celem jest nie tylko zapisanie ich, ale także analiza i poszukiwanie wzorców, które mogą rzucić światło na moje wnętrze. 
+                                Jeśli interesuje Cię świat snów, zapraszam do lektury i wspólnego odkrywania ich tajemnic. 
+                                <span id="collapseIntro" class="intro-toggle">Zwiń wstęp</span>
+                            </p>
+                        </div>
+                    </section>
+                </div>
 
-                <section class="posts-container section-box">
-                    <h2>Najnowsze wpisy</h2>
-                    <div class="loading-spinner" id="postsLoading"></div>
-                    <div id="postsList" class="posts-list"></div>
-                </section>
+                <!-- Sekcja postów -->
+                <div class="section-container">
+                    <section class="posts-container section-box">
+                        <h2>Najnowsze wpisy</h2>
+                        <div id="postsLoading" class="loading-spinner"></div>
+                        <div id="postsList" class="posts-list"></div>
+                    </section>
+                </div>
 
-                <section class="archive-container section-box">
-                    <h2>Archiwum</h2>
-                    <div class="loading-spinner" id="archiveLoading"></div>
-                    <div id="archiveList" class="archive-list"></div>
-                </section>
+                <!-- Sekcja archiwum -->
+                <div class="section-container">
+                    <section class="archive-container section-box">
+                        <h2>Archiwum</h2>
+                        <div id="archiveLoading" class="loading-spinner"></div>
+                        <div id="archiveList" class="archive-list"></div>
+                    </section>
+                </div>
+
+                <!-- Link do sekcji tworzenia postów -->
+                <div class="section-container">
+                    <section class="section-box">
+                        <p class="footer-link"><a href="#" id="adminLink">Napisz nowy post – sekcja twórcy</a></p>
+                    </section>
+                </div>
             </main>
 
             <footer class="footer">
-                <p>© 2025 Barastion Dreamscape. Wszystkie prawa zastrzeżone.</p>
-                <p class="footer-link">
-                    <a href="#" id="adminLink">Napisz nowy post – sekcja twórcy</a>
-                </p>
+                <p>&copy; 2025 Barastion Dreamscape. Wszelkie prawa zastrzeżone.</p>
+                <p class="footer-link"><a href="https://lukas-baran.github.io/Barastion-Watchtower/" target="_blank">Odwiedź Barastion Watchtower</a></p>
             </footer>
         </div>
     </div>
 
+    <!-- Modal logowania -->
     <div id="adminModal" class="modal">
         <div class="modal-content">
-            <span class="close">×</span>
-            <h2>Sekcja twórcy</h2>
-            <p>Zaloguj się, aby dodać lub edytować sen.</p>
-            <button id="googleLogin" class="btn btn-google">Zaloguj się przez Google</button>
-            <p class="modal-note">Tylko autor (Barastion) może zarządzać postami.</p>
+            <span class="close">&times;</span>
+            <h2>Zaloguj się</h2>
+            <p>Zaloguj się, aby dodać nowy post. Dostęp tylko dla autora.</p>
+            <button id="googleLogin" class="btn btn-google">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8c2.12 0 4.07.83 5.51 2.19l-2.09 2.09C14.64 6.49 13.38 6 12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.81 0 5.19-1.94 5.83-4.7h-5.83v-2.83h8.66c.07.41.11.84.11 1.28 0 4.41-3.59 8-8 8z"/>
+                </svg>
+                Zaloguj się przez Google
+            </button>
+            <p class="modal-note">Tylko konto lukasz13d@gmail.com ma dostęp do edycji.</p>
         </div>
     </div>
 
+    <!-- Modal dodawania posta -->
     <div id="postModal" class="modal">
         <div class="modal-content large-modal">
-            <span class="close">×</span>
-            <h2>Nowy sen</h2>
+            <span class="close">&times;</span>
+            <h2>Dodaj nowy sen</h2>
             <form id="dreamForm" class="post-form">
                 <div class="form-group">
-                    <label for="postTitle">Tytuł:</label>
-                    <input type="text" id="postTitle" required placeholder="np. Rozdział XXII">
+                    <label for="postTitle">Tytuł snu</label>
+                    <input type="text" id="postTitle" name="postTitle" placeholder="Np. Lot nad oceanem" required>
                 </div>
                 <div class="form-group">
-                    <label for="dreamDate">Data snu:</label>
-                    <input type="text" id="dreamDate" required placeholder="np. 09.05.2025">
+                    <label for="dreamDate">Data snu</label>
+                    <input type="date" id="dreamDate" name="dreamDate" required>
                 </div>
                 <div class="form-group">
-                    <label for="postContent">Treść:</label>
-                    <textarea id="postContent" required placeholder="Opisz swój sen..."></textarea>
+                    <label for="postContent">Opis snu</label>
+                    <textarea id="postContent" name="postContent" placeholder="Opisz swój sen szczegółowo..." required></textarea>
                 </div>
                 <div class="form-buttons">
-                    <button type="submit" class="btn btn-submit">Udostępnij</button>
+                    <button type="submit" class="btn btn-submit">Zapisz sen</button>
                     <button type="button" id="closeForm" class="btn btn-cancel">Zamknij</button>
                 </div>
             </form>
-            <p class="modal-note">Sen zostanie zapisany w bazie danych.</p>
         </div>
     </div>
 
-    <!-- Firebase SDK (modułowe) -->
+    <!-- Status sieci -->
+    <div id="networkStatus" class="network-status"></div>
+
+    <!-- Skrypty -->
     <script type="module">
-        // Fallback dla niezaładowanych skryptów Firebase
+        // Obsługa błędów globalnych
         window.addEventListener('error', (event) => {
+            console.error('Błąd globalny:', event);
+            const networkStatus = document.getElementById('networkStatus');
             if (event.message.includes('firebase')) {
-                console.error('Błąd ładowania Firebase SDK:', event);
-                document.getElementById('networkStatus').textContent = 'Błąd ładowania Firebase SDK. Sprawdź połączenie lub skrypty.';
-                document.getElementById('networkStatus').style.display = 'block';
+                networkStatus.textContent = 'Błąd ładowania Firebase SDK. Sprawdź połączenie.';
+                networkStatus.style.display = 'block';
             }
         });
 
         try {
+            // Import Firebase
             import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
             import { getDatabase, ref, onValue, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
             import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
@@ -147,254 +157,254 @@
             };
 
             // Inicjalizacja Firebase
-            try {
-                const app = initializeApp(firebaseConfig);
-                console.log('Firebase zainicjalizowany poprawnie.');
-                const db = getDatabase(app);
-                const auth = getAuth(app);
+            const app = initializeApp(firebaseConfig);
+            console.log('Firebase zainicjalizowany.');
+            const db = getDatabase(app);
+            const auth = getAuth(app);
 
-                // Elementy DOM
-                const adminModal = document.getElementById('adminModal');
-                const postModal = document.getElementById('postModal');
-                const adminLink = document.getElementById('adminLink');
-                const googleLogin = document.getElementById('googleLogin');
-                const closes = document.querySelectorAll('.close');
-                const networkStatus = document.getElementById('networkStatus');
-                const postsList = document.getElementById('postsList');
-                const archiveList = document.getElementById('archiveList');
-                const dreamForm = document.getElementById('dreamForm');
-                const postsLoading = document.getElementById('postsLoading');
-                const archiveLoading = document.getElementById('archiveLoading');
-                const expandIntro = document.getElementById('expandIntro');
-                const collapseIntro = document.getElementById('collapseIntro');
-                const introFull = document.getElementById('introFull');
-                const closeForm = document.getElementById('closeForm');
+            // Elementy DOM
+            const adminModal = document.getElementById('adminModal');
+            const postModal = document.getElementById('postModal');
+            const adminLink = document.getElementById('adminLink');
+            const googleLogin = document.getElementById('googleLogin');
+            const closes = document.querySelectorAll('.close');
+            const networkStatus = document.getElementById('networkStatus');
+            const postsList = document.getElementById('postsList');
+            const archiveList = document.getElementById('archiveList');
+            const dreamForm = document.getElementById('dreamForm');
+            const postsLoading = document.getElementById('postsLoading');
+            const archiveLoading = document.getElementById('archiveLoading');
+            const closeForm = document.getElementById('closeForm');
 
-                // Debug: Sprawdź, czy elementy istnieją
-                console.log('adminLink:', adminLink);
-                console.log('expandIntro:', expandIntro);
-                console.log('collapseIntro:', collapseIntro);
+            // Sprawdzenie elementów
+            if (!adminModal || !postModal || !adminLink || !googleLogin || !closes || !networkStatus || !postsList || !archiveList || !dreamForm || !postsLoading || !archiveLoading || !closeForm) {
+                console.error('Brak wymaganych elementów DOM:', {
+                    adminModal, postModal, adminLink, googleLogin, closes, networkStatus,
+                    postsList, archiveList, dreamForm, postsLoading, archiveLoading, closeForm
+                });
+                networkStatus.textContent = 'Błąd: Brak elementów strony.';
+                networkStatus.style.display = 'block';
+                throw new Error('Brak wymaganych elementów DOM');
+            }
 
-                // Ukryj modale na starcie
-                adminModal.style.display = 'none';
+            // Inicjalny stan modalów
+            adminModal.style.display = 'none';
+            postModal.style.display = 'none';
+
+            // Obsługa stanu autoryzacji
+            onAuthStateChanged(auth, (user) => {
+                if (user && user.email === 'lukasz13d@gmail.com') {
+                    console.log('Zalogowano:', user.email);
+                    adminModal.style.display = 'none';
+                    postModal.style.display = 'block';
+                } else {
+                    console.log('Brak zalogowanego użytkownika lub nieprawidłowy email.');
+                    adminModal.style.display = 'none';
+                    postModal.style.display = 'none';
+                }
+            });
+
+            // Status sieci
+            function updateNetworkStatus() {
+                if (navigator.onLine) {
+                    networkStatus.classList.remove('offline');
+                    networkStatus.style.display = 'none';
+                } else {
+                    networkStatus.classList.add('offline');
+                    networkStatus.style.display = 'block';
+                    networkStatus.textContent = 'Brak połączenia z internetem.';
+                }
+            }
+            window.addEventListener('online', updateNetworkStatus);
+            window.addEventListener('offline', updateNetworkStatus);
+            updateNetworkStatus();
+
+            // Otwieranie modala logowania
+            adminLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                adminModal.style.display = 'block';
                 postModal.style.display = 'none';
+                console.log('Otwarto modal logowania.');
+            });
 
-                // Sprawdź stan zalogowania
-                onAuthStateChanged(auth, (user) => {
-                    if (user && user.email === 'lukasz13d@gmail.com') {
-                        console.log('Użytkownik zalogowany:', user.email);
-                        adminModal.style.display = 'none';
-                        postModal.style.display = 'block'; // Otwórz postModal dla zalogowanego autora
-                    } else {
-                        console.log('Brak zalogowanego użytkownika lub nieprawidłowy email.');
-                        adminModal.style.display = 'none';
-                        postModal.style.display = 'none';
-                    }
-                });
-
-                // Status sieci
-                function updateNetworkStatus() {
-                    if (navigator.onLine) {
-                        networkStatus.classList.remove('offline');
-                        networkStatus.style.display = 'none';
-                    } else {
-                        networkStatus.classList.add('offline');
-                        networkStatus.style.display = 'block';
-                        networkStatus.textContent = 'Brak połączenia z internetem. Sprawdź połączenie.';
-                    }
-                }
-                window.addEventListener('online', updateNetworkStatus);
-                window.addEventListener('offline', updateNetworkStatus);
-                window.addEventListener('load', updateNetworkStatus);
-
-                // Rozwijanie/zwijanie wstępu
-                if (expandIntro && collapseIntro) {
-                    expandIntro.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        introFull.style.display = 'block';
-                        expandIntro.style.display = 'none';
-                        console.log('Rozwinięto wstęp.');
-                    });
-                    collapseIntro.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        introFull.style.display = 'none';
-                        expandIntro.style.display = 'inline';
-                        console.log('Zwinięto wstęp.');
-                    });
-                } else {
-                    console.error('Nie znaleziono elementów expandIntro lub collapseIntro.');
-                }
-
-                // Otwieranie modala logowania
-                if (adminLink) {
-                    adminLink.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        adminModal.style.display = 'block';
-                        postModal.style.display = 'none';
-                        console.log('Otwarto modal logowania.');
-                    });
-                } else {
-                    console.error('Nie znaleziono elementu adminLink.');
-                }
-
-                // Zamykanie modali
-                closes.forEach(close => {
-                    close.addEventListener('click', () => {
-                        adminModal.style.display = 'none';
-                        postModal.style.display = 'none';
-                        dreamForm.reset();
-                        console.log('Zamknięto modal przez X.');
-                    });
-                });
-
-                // Zamykanie formularza
-                closeForm.addEventListener('click', () => {
+            // Zamykanie modalów
+            closes.forEach(close => {
+                close.addEventListener('click', () => {
+                    adminModal.style.display = 'none';
                     postModal.style.display = 'none';
                     dreamForm.reset();
-                    console.log('Zamknięto modal przez przycisk Zamknij.');
+                    console.log('Zamknięto modal.');
                 });
+            });
 
-                // Logowanie przez Google
-                googleLogin.addEventListener('click', async () => {
-                    const provider = new GoogleAuthProvider();
-                    provider.addScope('email');
-                    try {
-                        console.log('Próba logowania przez Google...');
-                        const result = await signInWithPopup(auth, provider);
-                        console.log('Logowanie udane:', result.user.email, 'UID:', result.user.uid);
-                        if (result.user.email === 'lukasz13d@gmail.com') {
-                            adminModal.style.display = 'none';
-                            postModal.style.display = 'block';
-                            console.log('Otwarto modal dodawania posta po zalogowaniu.');
-                        } else {
-                            alert('Dostęp tylko dla autora (lukasz13d@gmail.com).');
-                            await signOut(auth);
-                            console.log('Nieprawidłowy użytkownik, wylogowano.');
-                        }
-                    } catch (error) {
-                        console.error('Błąd logowania:', {
-                            code: error.code,
-                            message: error.message,
-                            details: error
-                        });
-                        alert(`Błąd logowania: ${error.message} (Kod: ${error.code}). Sprawdź konsolę przeglądarki dla szczegółów.`);
-                    }
-                });
+            closeForm.addEventListener('click', () => {
+                postModal.style.display = 'none';
+                dreamForm.reset();
+                console.log('Zamknięto formularz.');
+            });
 
-                // Wyświetlanie 5 najnowszych postów
-                onValue(ref(db, 'posts'), (snapshot) => {
-                    postsList.innerHTML = '';
-                    postsLoading.classList.add('show');
-                    const posts = [];
-                    snapshot.forEach((child) => {
-                        posts.push({ id: child.key, ...child.val() });
-                    });
-                    posts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 5);
-                    if (posts.length === 0) {
-                        postsList.innerHTML = '<p class="no-posts">Brak postów do wyświetlenia.</p>';
+            // Logowanie Google
+            googleLogin.addEventListener('click', async () => {
+                const provider = new GoogleAuthProvider();
+                provider.addScope('email');
+                try {
+                    console.log('Próba logowania Google...');
+                    const result = await signInWithPopup(auth, provider);
+                    console.log('Logowanie udane:', result.user.email);
+                    if (result.user.email === 'lukasz13d@gmail.com') {
+                        adminModal.style.display = 'none';
+                        postModal.style.display = 'block';
+                        console.log('Otwarto formularz posta.');
                     } else {
-                        posts.forEach((post) => {
-                            const postDiv = document.createElement('div');
-                            postDiv.className = 'post';
-                            postDiv.innerHTML = `
-                                <div class="post-meta">Opublikowano: ${post.postDate} o ${post.postTime}</div>
-                                <h3 class="post-title">${post.title}</h3>
-                                <div class="post-data">Data snu: ${post.dreamDate}</div>
-                                <div class="post-content">${post.content}</div>
-                            `;
-                            postsList.appendChild(postDiv);
-                        });
+                        alert('Dostęp tylko dla lukasz13d@gmail.com.');
+                        await signOut(auth);
+                        console.log('Wylogowano nieautoryzowanego użytkownika.');
                     }
-                    postsLoading.classList.remove('show');
-                }, (error) => {
-                    console.error('Błąd ładowania postów:', error.message);
-                    alert('Błąd ładowania postów: ' + error.message);
-                    postsLoading.classList.remove('show');
-                });
+                } catch (error) {
+                    console.error('Błąd logowania:', error);
+                    alert(`Błąd logowania: ${error.message} (Kod: ${error.code})`);
+                    networkStatus.textContent = 'Błąd logowania. Sprawdź konsolę.';
+                    networkStatus.style.display = 'block';
+                }
+            });
 
-                // Wyświetlanie starszych postów jako banerki
-                onValue(ref(db, 'posts'), (snapshot) => {
-                    archiveList.innerHTML = '';
-                    archiveLoading.classList.add('show');
-                    const allPosts = [];
-                    snapshot.forEach((child) => {
-                        allPosts.push({ id: child.key, ...child.val() });
-                    });
-                    const olderPosts = allPosts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(5);
-                    olderPosts.forEach((post) => {
-                        const archiveItem = document.createElement('div');
-                        archiveItem.className = 'archive-item';
-                        archiveItem.innerHTML = `
-                            <span>${post.title} - Opublikowano ${post.postDate}</span>
-                            <span class="expand-arrow">▶</span>
+            // Ładowanie postów
+            onValue(ref(db, 'posts'), (snapshot) => {
+                postsList.innerHTML = '';
+                postsLoading.classList.add('show');
+                const posts = [];
+                snapshot.forEach((child) => {
+                    posts.push({ id: child.key, ...child.val() });
+                });
+                posts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 5);
+                if (posts.length === 0) {
+                    postsList.innerHTML = '<p class="no-posts">Brak postów do wyświetlenia.</p>';
+                } else {
+                    posts.forEach((post) => {
+                        const postDiv = document.createElement('div');
+                        postDiv.className = 'post';
+                        postDiv.innerHTML = `
+                            <div class="post-meta">Opublikowano: ${post.postDate} o ${post.postTime}</div>
+                            <h3 class="post-title">${post.title}</h3>
+                            <div class="post-data">Data snu: ${post.dreamDate}</div>
+                            <div class="post-content">${post.content}</div>
                         `;
-                        archiveItem.addEventListener('click', () => {
-                            onValue(ref(db, `posts/${post.id}`), (snapshot) => {
-                                const fullPost = snapshot.val();
-                                postsList.innerHTML = `
-                                    <div class="post">
-                                        <div class="post-meta">Opublikowano: ${fullPost.postDate} o ${fullPost.postTime}</div>
-                                        <h3 class="post-title">${fullPost.title}</h3>
-                                        <div class="post-data">Data snu: ${fullPost.dreamDate}</div>
-                                        <div class="post-content">${fullPost.content}</div>
-                                    </div>
-                                `;
-                            }, (error) => {
-                                console.error('Błąd ładowania posta:', error.message);
-                                alert('Błąd ładowania posta: ' + error.message);
-                            });
-                        });
-                        archiveList.appendChild(archiveItem);
+                        postsList.appendChild(postDiv);
                     });
-                    archiveLoading.classList.remove('show');
-                }, (error) => {
-                    console.error('Błąd ładowania archiwum:', error.message);
-                    alert('Błąd ładowania archiwum: ' + error.message);
-                    archiveLoading.classList.remove('show');
-                });
+                }
+                postsLoading.classList.remove('show');
+            }, (error) => {
+                console.error('Błąd ładowania postów:', error);
+                alert('Błąd ładowania postów: ' + error.message);
+                postsLoading.classList.remove('show');
+            });
 
-                // Dodawanie nowego posta
-                dreamForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const title = document.getElementById('postTitle').value.trim();
-                    const dreamDate = document.getElementById('dreamDate').value.trim();
-                    const content = document.getElementById('postContent').value.trim();
-                    if (!title || !dreamDate || !content) {
-                        alert('Wypełnij wszystkie pola!');
-                        return;
-                    }
-                    const now = new Date();
-                    const postDate = now.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                    const postTime = now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
-                    try {
-                        await push(ref(db, 'posts'), {
-                            title,
-                            dreamDate,
-                            content,
-                            postDate,
-                            postTime,
-                            createdAt: serverTimestamp()
-                        });
-                        alert('Sen zapisany pomyślnie!');
-                        dreamForm.reset();
-                        postModal.style.display = 'none';
-                        console.log('Post zapisany, modal zamknięty.');
-                    } catch (error) {
-                        console.error('Błąd zapisu posta:', error.message);
-                        alert('Błąd zapisu posta: ' + error.message);
-                    }
+            // Ładowanie archiwum
+            onValue(ref(db, 'posts'), (snapshot) => {
+                archiveList.innerHTML = '';
+                archiveLoading.classList.add('show');
+                const allPosts = [];
+                snapshot.forEach((child) => {
+                    allPosts.push({ id: child.key, ...child.val() });
                 });
-            } catch (error) {
-                console.error('Błąd inicjalizacji Firebase:', error);
-                alert('Błąd inicjalizacji Firebase: ' + error.message);
-                document.getElementById('networkStatus').textContent = 'Błąd ładowania Firebase. Sprawdź połączenie lub skrypty.';
-                document.getElementById('networkStatus').style.display = 'block';
-            }
+                const olderPosts = allPosts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(5);
+                olderPosts.forEach((post) => {
+                    const archiveItem = document.createElement('div');
+                    archiveItem.className = 'archive-item';
+                    archiveItem.innerHTML = `
+                        <span>${post.title} - Opublikowano ${post.postDate}</span>
+                        <span class="expand-arrow">▶</span>
+                    `;
+                    archiveItem.addEventListener('click', () => {
+                        onValue(ref(db, `posts/${post.id}`), (snapshot) => {
+                            const fullPost = snapshot.val();
+                            postsList.innerHTML = `
+                                <div class="post">
+                                    <div class="post-meta">Opublikowano: ${fullPost.postDate} o ${fullPost.postTime}</div>
+                                    <h3 class="post-title">${fullPost.title}</h3>
+                                    <div class="post-data">Data snu: ${fullPost.dreamDate}</div>
+                                    <div class="post-content">${fullPost.content}</div>
+                                </div>
+                            `;
+                        }, (error) => {
+                            console.error('Błąd ładowania posta:', error);
+                            alert('Błąd ładowania posta: ' + error.message);
+                        });
+                    });
+                    archiveList.appendChild(archiveItem);
+                });
+                archiveLoading.classList.remove('show');
+            }, (error) => {
+                console.error('Błąd ładowania archiwum:', error);
+                alert('Błąd ładowania archiwum: ' + error.message);
+                archiveLoading.classList.remove('show');
+            });
+
+            // Dodawanie posta
+            dreamForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const title = document.getElementById('postTitle').value.trim();
+                const dreamDate = document.getElementById('dreamDate').value.trim();
+                const content = document.getElementById('postContent').value.trim();
+                if (!title || !dreamDate || !content) {
+                    alert('Wypełnij wszystkie pola!');
+                    return;
+                }
+                const now = new Date();
+                const postDate = now.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                const postTime = now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
+                try {
+                    await push(ref(db, 'posts'), {
+                        title,
+                        dreamDate,
+                        content,
+                        postDate,
+                        postTime,
+                        createdAt: serverTimestamp()
+                    });
+                    alert('Sen zapisany pomyślnie!');
+                    dreamForm.reset();
+                    postModal.style.display = 'none';
+                    console.log('Post zapisany.');
+                } catch (error) {
+                    console.error('Błąd zapisu posta:', error);
+                    alert('Błąd zapisu posta: ' + error.message);
+                    networkStatus.textContent = 'Błąd zapisu posta. Sprawdź konsolę.';
+                    networkStatus.style.display = 'block';
+                }
+            });
         } catch (error) {
-            console.error('Błąd ładowania modułów Firebase:', error);
-            alert('Błąd ładowania Firebase SDK: ' + error.message);
-            document.getElementById('networkStatus').textContent = 'Krytyczny błąd ładowania Firebase SDK. Sprawdź konsolę.';
-            document.getElementById('networkStatus').style.display = 'block';
+            console.error('Błąd inicjalizacji Firebase:', error);
+            const networkStatus = document.getElementById('networkStatus');
+            networkStatus.textContent = 'Krytyczny błąd Firebase. Sprawdź konsolę.';
+            networkStatus.style.display = 'block';
+        }
+    </script>
+
+    <!-- Skrypt dla rozwijania tekstu -->
+    <script>
+        const expandIntro = document.getElementById('expandIntro');
+        const collapseIntro = document.getElementById('collapseIntro');
+        const introFull = document.getElementById('introFull');
+
+        if (expandIntro && collapseIntro && introFull) {
+            expandIntro.addEventListener('click', (e) => {
+                e.preventDefault();
+                introFull.style.display = 'block';
+                expandIntro.style.display = 'none';
+                console.log('Rozwinięto wstęp.');
+            });
+            collapseIntro.addEventListener('click', (e) => {
+                e.preventDefault();
+                introFull.style.display = 'none';
+                expandIntro.style.display = 'inline';
+                console.log('Zwinięto wstęp.');
+            });
+        } else {
+            console.error('Brak elementów intro:', { expandIntro, collapseIntro, introFull });
+            const networkStatus = document.getElementById('networkStatus');
+            networkStatus.textContent = 'Błąd: Brak elementów wstępu.';
+            networkStatus.style.display = 'block';
         }
     </script>
 </body>
