@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dziennik Snów - Barastion Watchtower. Tajemnicze opowieści ze świata snów.">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' https://www.gstatic.com https://*.firebaseio.com">
+    <title>Dziennik Snów - Barastion Watchtower</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="gradient-text">Dziennik Snów</h1>
+            <p>Barastion Watchtower - Kronika Tajemnic</p>
+            <nav>
+                <a href="index.html">Strona główna</a>
+                <span id="auth-section">
+                    <button id="login-btn">Zaloguj się</button>
+                    <button id="register-btn">Zarejestruj się</button>
+                </span>
+                <a href="admin.html" id="admin-panel" style="display: none;">Panel admina</a>
+            </nav>
+        </header>
+        <main>
+            <!-- Sekcja logowania/rejestracji -->
+            <div id="auth-form" style="display: none;">
+                <div class="auth-container">
+                    <h2 id="auth-title">Zaloguj się</h2>
+                    <form id="auth-form-element">
+                        <input type="text" id="nickname" placeholder="Nick (tylko przy rejestracji)" style="display: none;">
+                        <input type="email" id="email" placeholder="E-mail" required>
+                        <input type="password" id="password" placeholder="Hasło" required>
+                        <button type="submit" id="auth-submit">Zaloguj się</button>
+                    </form>
+                    <p id="auth-switch">Nie masz konta? <a href="#" id="switch-to-register">Zarejestruj się</a></p>
+                </div>
+            </div>
+            <!-- Sekcja wpisów -->
+            <section class="post-section" id="chapter9">
+                <h2>Rozdział 9</h2>
+                <p><strong>Data snu:</strong> 15.10.2024</p>
+                <p><strong>Treść:</strong> Śniło mi się, że byłem na stacji kosmicznej, obserwując Ziemię z daleka. Czułem spokój, ale nagle stacja zaczęła się rozpadać, a ja spadałem w stronę planety.</p>
+                <p><strong>Data dodania:</strong> 16.10.2024</p>
+                <div class="comments">
+                    <button class="toggle-comments">Pokaż komentarze</button>
+                    <div class="comment-list" style="display: none;">
+                        <div class="comment">
+                            <p><strong>KosmoFan:</strong> Wow, brzmi jak scena z filmu sci-fi!</p>
+                        </div>
+                        <div class="comment">
+                            <p><strong>Dreamer:</strong> Ciekawe, co to mogło znaczyć.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="post-section" id="chapter8">
+                <h2>Rozdział 8</h2>
+                <p><strong>Data snu:</strong> 09.10.2024</p>
+                <p><strong>Treść:</strong> Stałem na brzegu oceanu, a fale zmieniały kolory – od czerwieni po zieleń.</p>
+                <p><strong>Data dodania:</strong> 10.10.2024</p>
+                <div class="comments">
+                    <button class="toggle-comments">Pokaż komentarze</button>
+                    <div class="comment-list" style="display: none;">
+                        <div class="comment">
+                            <p><strong>OceanLover:</strong> To brzmi jak metafora emocji!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="post-list">
+                <h2>Spis treści</h2>
+                <ul>
+                    <li><a href="#chapter9">Rozdział 9</a> - 16.10.2024</li>
+                    <li><a href="#chapter8">Rozdział 8</a> - 10.10.2024</li>
+                    <li><a href="post.html#chapter7">Rozdział 7</a> - 05.10.2024</li>
+                </ul>
+            </section>
+        </main>
+        <footer>
+            <p>© 2024 Barastion Watchtower. Wszystkie prawa zastrzeżone.</p>
+        </footer>
+    </div>
+    <script>
+        // Konfiguracja Firebase
+        const firebaseConfig = {
+            // Wstaw swoje dane z Firebase (Project Settings -> General -> Your apps -> Firebase SDK snippet)
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Inicjalizacja Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Przełączanie komentarzy
+        document.querySelectorAll('.toggle-comments').forEach(button => {
+            button.addEventListener('click', () => {
+                const commentList = button.nextElementSibling;
+                commentList.style.display = commentList.style.display === 'none' ? 'block' : 'none';
+                button.textContent = commentList.style.display === 'none' ? 'Pokaż komentarze' : 'Ukryj komentarze';
+            });
+        });
+
+        // Obsługa logowania/rejestracji
+        const authForm = document.getElementById('auth-form');
+        const authFormElement = document.getElementById('auth-form-element');
+        const authTitle = document.getElementById('auth-title');
+        const authSubmit = document.getElementById('auth-submit');
+        const nicknameInput = document.getElementById('nickname');
+        const switchLink = document.getElementById('auth-switch');
+        let loginBtn = document.getElementById('login-btn');
+        let registerBtn = document.getElementById('register-btn');
+        let isLoginMode = true;
+
+        loginBtn.addEventListener('click', () => {
+            authForm.style.display = 'block';
+            isLoginMode = true;
+            authTitle.textContent = 'Zaloguj się';
+            authSubmit.textContent = 'Zaloguj się';
+            nicknameInput.style.display = 'none';
+            switchLink.innerHTML = 'Nie masz konta? <a href="#" id="switch-to-register">Zarejestruj się</a>';
+            document.getElementById('switch-to-register').addEventListener('click', switchToRegister);
+        });
+
+        registerBtn.addEventListener('click', () => {
+            authForm.style.display = 'block';
+            isLoginMode = false;
+            authTitle.textContent = 'Zarejestruj się';
+            authSubmit.textContent = 'Zarejestruj się';
+            nicknameInput.style.display = 'block';
+            switchLink.innerHTML = 'Masz już konto? <a href="#" id="switch-to-login">Zaloguj się</a>';
+            document.getElementById('switch-to-login').addEventListener('click', switchToLogin);
+        });
+
+        function switchToRegister(e) {
+            e.preventDefault();
+            isLoginMode = false;
+            authTitle.textContent = 'Zarejestruj się';
+            authSubmit.textContent = 'Zarejestruj się';
+            nicknameInput.style.display = 'block';
+            switchLink.innerHTML = 'Masz już konto? <a href="#" id="switch-to-login">Zaloguj się</a>';
+            document.getElementById('switch-to-login').addEventListener('click', switchToLogin);
+        }
+
+        function switchToLogin(e) {
+            e.preventDefault();
+            isLoginMode = true;
+            authTitle.textContent = 'Zaloguj się';
+            authSubmit.textContent = 'Zaloguj się';
+            nicknameInput.style.display = 'none';
+            switchLink.innerHTML = 'Nie masz konta? <a href="#" id="switch-to-register">Zarejestruj się</a>';
+            document.getElementById('switch-to-register').addEventListener('click', switchToRegister);
+        }
+
+        authFormElement.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const nickname = nicknameInput.value.trim();
+
+            try {
+                if (isLoginMode) {
+                    // Logowanie
+                    const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                    if (!userCredential.user.emailVerified) {
+                        alert('Proszę zweryfikować adres e-mail przed zalogowaniem.');
+                        await auth.signOut();
+                        return;
+                    }
+                    alert('Zalogowano pomyślnie!');
+                    authForm.style.display = 'none';
+                } else {
+                    // Rejestracja
+                    if (!nickname) {
+                        alert('Proszę podać nick.');
+                        return;
+                    }
+                    // Sprawdzenie unikalności nicku
+                    const nickQuery = await db.collection('users').where('nickname', '==', nickname).get();
+                    if (!nickQuery.empty) {
+                        alert('Ten nick jest już zajęty.');
+                        return;
+                    }
+                    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                    await userCredential.user.sendEmailVerification();
+                    await db.collection('users').doc(userCredential.user.uid).set({
+                        nickname,
+                        role: 'user',
+                        email
+                    });
+                    alert('Zarejestrowano pomyślnie! Sprawdź e-mail, aby zweryfikować konto.');
+                    authForm.style.display = 'none';
+                }
+            } catch (error) {
+                alert('Błąd: ' + error.message);
+            }
+        });
+
+        // Sprawdzanie stanu zalogowania
+        auth.onAuthStateChanged(async (user) => {
+            const authSection = document.getElementById('auth-section');
+            const adminPanel = document.getElementById('admin-panel');
+            if (user && user.emailVerified) {
+                authSection.innerHTML = `<button id="logout-btn">Wyloguj się</button>`;
+                document.getElementById('logout-btn').addEventListener('click', () => auth.signOut());
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (userDoc.exists && userDoc.data().role === 'admin') {
+                    adminPanel.style.display = 'inline';
+                }
+            } else {
+                authSection.innerHTML = `
+                    <button id="login-btn">Zaloguj się</button>
+                    <button id="register-btn">Zarejestruj się</button>
+                `;
+                adminPanel.style.display = 'none';
+                loginBtn = document.getElementById('login-btn');
+                registerBtn = document.getElementById('register-btn');
+                loginBtn.addEventListener('click', () => {
+                    authForm.style.display = 'block';
+                    isLoginMode = true;
+                    authTitle.textContent = 'Zaloguj się';
+                    authSubmit.textContent = 'Zaloguj się';
+                    nicknameInput.style.display = 'none';
+                });
+                registerBtn.addEventListener('click', () => {
+                    authForm.style.display = 'block';
+                    isLoginMode = false;
+                    authTitle.textContent = 'Zarejestruj się';
+                    authSubmit.textContent = 'Zarejestruj się';
+                    nicknameInput.style.display = 'block';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
