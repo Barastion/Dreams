@@ -18,7 +18,7 @@ body {
 
 /* Główny kontener */
 .container {
-    max-width: 800px; /* Węższy kontener */
+    max-width: 1000px; /* Przywrócono szerszy kontener */
     margin: 0 auto;
     padding: 15px;
     flex: 1;
@@ -26,11 +26,11 @@ body {
 
 /* Szary prostokąt jako tło sekcji roboczej */
 .content-wrapper {
-    background: #252525; /* Ciemniejsze tło */
+    background: #2d2d2d; /* Jasnoszary prostokąt tła */
     border-radius: 6px;
     padding: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    max-width: 700px; /* Węższe tło */
+    max-width: 100%; /* Pełna szerokość w ramach .container */
     margin: 0 auto;
 }
 
@@ -43,7 +43,7 @@ body {
 
 .logo-frame {
     width: 60%;
-    max-width: 500px; /* Węższy obrazek */
+    max-width: 600px; /* Przywrócono szerszy obrazek */
     margin: 0 auto 12px;
     aspect-ratio: 16 / 9;
     overflow: hidden;
@@ -89,12 +89,12 @@ h2 {
 
 /* Mniejsze prostokąty dla sekcji */
 .section-box {
-    background: #252525;
+    background: #252525; /* Ciemniejsze tło sekcji */
     padding: 12px;
     border-radius: 6px;
     margin-bottom: 25px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    max-width: 600px; /* Węższe sekcje */
+    max-width: 850px; /* Nieco węższe sekcje */
     margin-left: auto;
     margin-right: auto;
 }
@@ -139,8 +139,8 @@ h2 {
     background: #3a3a3a;
     padding: 12px;
     border-radius: 6px;
-    width: 100%; /* Węższe posty dostosowane do section-box */
-    max-width: 550px; /* Maksymalna szerokość postów */
+    width: 100%;
+    max-width: 800px; /* Nieco węższe posty */
     margin-left: auto;
     margin-right: auto;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
@@ -194,7 +194,7 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    max-width: 550px; /* Węższe archiwum */
+    max-width: 800px; /* Nieco węższe archiwum */
     margin: 0 auto;
 }
 
@@ -209,7 +209,7 @@ h2 {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 550px;
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
     transition: background 0.3s, transform 0.2s;
@@ -415,7 +415,7 @@ textarea {
 /* Spinner ładowania */
 .loading-spinner {
     border: 3px solid #444444;
-    border-top: 3px solid #ffd700; /* Poprawka: border-top */
+    border-top: 3px solid #ffd700;
     border-radius: 50%;
     width: 25px;
     height: 25px;
@@ -465,7 +465,7 @@ textarea {
 
     .content-wrapper {
         padding: 12px;
-        max-width: 90%;
+        max-width: 95%;
     }
 
     .section-box {
