@@ -223,7 +223,7 @@ h2 {
 /* Stopka */
 .footer {
     text-align: center;
-    padding: 15px RSV;
+    padding: 15px 0;
     border-top: 1px solid #444444;
     margin-top: 30px;
 }
