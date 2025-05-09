@@ -18,7 +18,7 @@ body {
 
 /* Główny kontener */
 .container {
-    max-width: 1000px; /* Przywrócono szerszy kontener */
+    max-width: 1200px; /* Szerszy kontener dla większej przestrzeni */
     margin: 0 auto;
     padding: 15px;
     flex: 1;
@@ -30,7 +30,7 @@ body {
     border-radius: 6px;
     padding: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    max-width: 100%; /* Pełna szerokość w ramach .container */
+    max-width: 1100px; /* Szerszy prostokąt tła */
     margin: 0 auto;
 }
 
@@ -42,8 +42,8 @@ body {
 }
 
 .logo-frame {
-    width: 60%;
-    max-width: 600px; /* Przywrócono szerszy obrazek */
+    width: 80%; /* 80% szerokości .content-wrapper */
+    max-width: 880px; /* 80% z 1100px */
     margin: 0 auto 12px;
     aspect-ratio: 16 / 9;
     overflow: hidden;
@@ -64,25 +64,29 @@ body {
 }
 
 h1 {
-    font-size: 1.4rem; /* Mniejsza czcionka */
+    font-size: 1.4rem; /* Bez zmian */
     font-weight: 700;
     color: #ffd700;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     white-space: pre-line;
-    margin-bottom: 6px;
+    margin-bottom: 4px; /* Mniejszy odstęp */
 }
 
 .header-subtitle {
-    font-size: 1.2rem; /* Większa czcionka */
+    font-size: 1.2rem; /* Mniejsza czcionka dla "– Dziennik Snów" */
     color: #cccccc;
-    margin-top: 6px;
+    margin: 2px 0; /* Mniejszy odstęp */
+}
+
+.header-subtitle:last-of-type {
+    font-size: 1.1rem; /* Jeszcze mniejsza dla "Osobista podróż..." */
 }
 
 /* Sekcje */
 h2 {
     font-size: 1.3rem;
     font-weight: 400;
-    color: #cccccc;
+    color: #ffd700; /* Żółta czcionka, jak tytuł */
     margin-bottom: 10px;
     text-align: left;
 }
@@ -94,7 +98,7 @@ h2 {
     border-radius: 6px;
     margin-bottom: 25px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    max-width: 850px; /* Nieco węższe sekcje */
+    max-width: 880px; /* 80% szerokości .content-wrapper (1100px * 0.8) */
     margin-left: auto;
     margin-right: auto;
 }
@@ -490,6 +494,10 @@ textarea {
         font-size: 1rem;
     }
 
+    .header-subtitle:last-of-type {
+        font-size: 0.95rem;
+    }
+
     h2 {
         font-size: 1.2rem;
     }
@@ -507,6 +515,10 @@ textarea {
 
     .header-subtitle {
         font-size: 0.9rem;
+    }
+
+    .header-subtitle:last-of-type {
+        font-size: 0.85rem;
     }
 
     .post-title {
