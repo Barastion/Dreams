@@ -233,9 +233,11 @@
             // Logowanie przez Google
             googleLogin.addEventListener('click', async () => {
                 const provider = new GoogleAuthProvider();
+                provider.addScope('email'); // Zapewnij dostęp do emaila
                 try {
+                    console.log('Próba logowania przez Google...');
                     const result = await signInWithPopup(auth, provider);
-                    console.log('Logowanie udane:', result.user.email);
+                    console.log('Logowanie udane:', result.user.email, 'UID:', result.user.uid);
                     if (result.user.email === 'lukasz13d@gmail.com') {
                         adminModal.style.display = 'none';
                         postModal.style.display = 'block';
@@ -246,8 +248,12 @@
                         console.log('Nieprawidłowy użytkownik, wylogowano.');
                     }
                 } catch (error) {
-                    console.error('Błąd logowania:', error.code, error.message);
-                    alert(`Błąd logowania: ${error.message} (Kod: ${error.code})`);
+                    console.error('Błąd logowania:', {
+                        code: error.code,
+                        message: error.message,
+                        details: error
+                    });
+                    alert(`Błąd logowania: ${error.message} (Kod: ${error.code}). Sprawdź konsolę przeglądarki dla szczegółów.`);
                 }
             });
 
