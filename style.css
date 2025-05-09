@@ -18,7 +18,7 @@ body {
 
 /* Główny kontener */
 .container {
-    max-width: 1000px;
+    max-width: 800px; /* Węższy kontener */
     margin: 0 auto;
     padding: 15px;
     flex: 1;
@@ -26,10 +26,12 @@ body {
 
 /* Szary prostokąt jako tło sekcji roboczej */
 .content-wrapper {
-    background: #2d2d2d;
+    background: #252525; /* Ciemniejsze tło */
     border-radius: 6px;
     padding: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    max-width: 700px; /* Węższe tło */
+    margin: 0 auto;
 }
 
 /* Nagłówek */
@@ -41,7 +43,7 @@ body {
 
 .logo-frame {
     width: 60%;
-    max-width: 600px;
+    max-width: 500px; /* Węższy obrazek */
     margin: 0 auto 12px;
     aspect-ratio: 16 / 9;
     overflow: hidden;
@@ -62,7 +64,7 @@ body {
 }
 
 h1 {
-    font-size: 1.8rem;
+    font-size: 1.4rem; /* Mniejsza czcionka */
     font-weight: 700;
     color: #ffd700;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
@@ -71,7 +73,7 @@ h1 {
 }
 
 .header-subtitle {
-    font-size: 0.8rem;
+    font-size: 1.2rem; /* Większa czcionka */
     color: #cccccc;
     margin-top: 6px;
 }
@@ -92,6 +94,9 @@ h2 {
     border-radius: 6px;
     margin-bottom: 25px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    max-width: 600px; /* Węższe sekcje */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Sekcja wprowadzająca */
@@ -134,8 +139,8 @@ h2 {
     background: #3a3a3a;
     padding: 12px;
     border-radius: 6px;
-    width: 80%;
-    max-width: 700px;
+    width: 100%; /* Węższe posty dostosowane do section-box */
+    max-width: 550px; /* Maksymalna szerokość postów */
     margin-left: auto;
     margin-right: auto;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
@@ -189,7 +194,7 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    max-width: 700px;
+    max-width: 550px; /* Węższe archiwum */
     margin: 0 auto;
 }
 
@@ -203,8 +208,8 @@ h2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 80%;
-    max-width: 700px;
+    width: 100%;
+    max-width: 550px;
     margin-left: auto;
     margin-right: auto;
     transition: background 0.3s, transform 0.2s;
@@ -268,9 +273,11 @@ h2 {
     max-width: 400px;
     padding: 20px;
     border-radius: 8px;
-    position: relative;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .large-modal {
@@ -369,8 +376,8 @@ textarea {
 }
 
 .btn-google {
-    background: #ffffff;
-    color: #1a1a1a;
+    background: #333333; /* Ciemne tło */
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -394,7 +401,7 @@ textarea {
 }
 
 .btn-google:hover {
-    background: #f0f0f0;
+    background: #444444;
 }
 
 .btn-submit:hover {
@@ -408,7 +415,7 @@ textarea {
 /* Spinner ładowania */
 .loading-spinner {
     border: 3px solid #444444;
-    border-top: casually solid #ffd700;
+    border-top: 3px solid #ffd700; /* Poprawka: border-top */
     border-radius: 50%;
     width: 25px;
     height: 25px;
@@ -458,10 +465,16 @@ textarea {
 
     .content-wrapper {
         padding: 12px;
+        max-width: 90%;
+    }
+
+    .section-box {
+        max-width: 90%;
     }
 
     .logo-frame, .post, .archive-item {
         width: 90%;
+        max-width: 100%;
     }
 
     .large-modal {
@@ -470,7 +483,11 @@ textarea {
     }
 
     h1 {
-        font-size: 1.6rem;
+        font-size: 1.2rem;
+    }
+
+    .header-subtitle {
+        font-size: 1rem;
     }
 
     h2 {
@@ -485,7 +502,11 @@ textarea {
 
 @media (max-width: 480px) {
     h1 {
-        font-size: 1.4rem;
+        font-size: 1rem;
+    }
+
+    .header-subtitle {
+        font-size: 0.9rem;
     }
 
     .post-title {
