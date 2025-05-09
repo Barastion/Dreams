@@ -1,92 +1,88 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <!-- Meta tagi dla SEO i bezpieczeństwa -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Barastion Dreamscape – Dziennik Snów, osobista podróż przez świat snów autora Barastion.">
+    <meta name="description" content="Barastion Dreamscape – Dziennik Snów, osobista podróż przez świat snów.">
     <meta name="title" content="Barastion Dreamscape – Dziennik Snów">
     <meta name="author" content="Barastion">
     <meta name="keywords" content="sny, dziennik snów, Barastion, blog, marzenia senne, twórczość">
     <meta name="robots" content="index, follow">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://*.firebaseio.com https://*.firebasedatabase.app; connect-src 'self' https://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com;">
-    <!-- Tytuł strony -->
     <title>Barastion Dreamscape – Dziennik Snów</title>
-    <!-- Style i favicon -->
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="diabelek.png">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Status sieci -->
     <div id="networkStatus" class="network-status"></div>
 
-    <!-- Główny kontener -->
     <div class="container">
-        <!-- Nagłówek -->
-        <header class="header">
-            <!-- Ramka na logo -->
-            <div class="logo-frame">
-                <img src="Dreamscape_logo.jpg" alt="Barastion Dreamscape Logo" class="logo">
-            </div>
-            <!-- Tytuł w dwóch liniach -->
-            <h1>Barastion Dreamscape<br>– Dziennik Snów</h1>
-            <p class="header-subtitle">Osobista podróż przez świat snów autora Barastion</p>
-        </header>
+        <div class="content-wrapper">
+            <header class="header">
+                <div class="logo-frame">
+                    <img src="Dreamscape_logo.jpg" alt="Barastion Dreamscape Logo" class="logo">
+                </div>
+                <h1>Barastion Dreamscape<br>– Dziennik Snów</h1>
+                <p class="header-subtitle">Osobista podróż przez świat snów</p>
+            </header>
 
-        <!-- Główna treść -->
-        <main>
-            <!-- Sekcja najnowszych postów -->
-            <section class="posts-container">
-                <h2>Najnowsze sny</h2>
-                <p class="section-description">Przeczytaj trzy najnowsze wpisy z mojego dziennika snów</p>
-                <div class="loading-spinner" id="postsLoading"></div>
-                <div id="postsList" class="posts-list"></div>
-            </section>
+            <main>
+                <section class="intro-container">
+                    <h2>Słowem wstępu</h2>
+                    <p class="intro-text">Z początkiem 2025 roku coś we mnie drgnęło, jakby głęboko ukryta część mojej świadomości nagle postanowiła przemówić. Sny, które wcześniej traktowałem jako przypadkowe, zaczęły układać się w zaskakującą narrację. Każda kolejna noc przynosiła obrazy pełne symboli, których znaczenie pozostawało dla mnie nieuchwytne, ale jednocześnie hipnotyzujące. Czułem, że te sny miały swój cel – że niosły ze sobą coś więcej niż tylko odzwierciedlenie codziennych myśli. Jakby otworzyły przede mną drzwi do nowego świata, w którym mogę eksplorować nieznane horyzonty i odkrywać zakamarki własnej świadomości.</p>
+                    <a href="#" id="expandIntro" class="intro-toggle">Rozwiń wstęp</a>
+                    <div id="introFull" class="intro-full" style="display: none;">
+                        <p>Wszystko zaczęło się od serii snów o psach. Przez niemal dziesięć nocy z rzędu śniły mi się psy – mnóstwo psów. Nie były wobec mnie agresywne. Czasem atakowały innych ludzi, czasem współpracowały z nimi, pomagając w różnych pracach, ale w każdym z tych snów pojawiał się jeden pies, który próbował wyprowadzić mnie z równowagi. Nie zbliżał się, ale nieustannie szczekał w moim kierunku, drażniąco, chwytał za ogon inne psy lub ludzi, generalnie uprzykrzając życie wszystkim wokół. Budziłem się z tych snów zirytowany jego obecnością, bo zakłócał każdy sen. W ostatnim śnie tej serii zobaczyłem tego psa słabego, niemal umierającego. Zrobiło mi się go żal. Pomogłem mu, choć nie wiem, jak to zrobiłem – leżał prawie martwy, a ja chciałem, by odzyskał siły. Udało się. Gdy tylko pies stanął na nogi, natychmiast wrócił do swojego dawnego zachowania – drażniącego szczekania i biegania wokół mnie, trzymając dystans, ale nie odpuszczając. Po tym śnie postanowiłem, że jeśli pojawi się znowu, nie będę mu pomagał. Byłem gotów pozbyć się go gołymi rękami. Od tamtej pory sny o psach ustały.</p>
+                        <p>Po krótkiej przerwie rozpoczęła się nowa seria snów – tym razem o nieznanych miastach. Śniło mi się, że mieszkam w miejscach, których nie znam, chodzę ulicami, których nigdy nie widziałem. Ten motyw powtarzał się bardzo często, choć nie co noc, przez miesiąc, może nawet dwa. Nie rozpoznawałem żadnego z tych miast, żadnej ulicy, żadnego mieszkania, choć śniło mi się ich kilka. Zazwyczaj widziałem te miejsca nocą, rzadziej w porach popołudniowych. Nigdy wcześniej nie doświadczałem takich powtarzających się schematów w snach. Zastanawiałem się, czy to coś oznacza. W kwietniu 2025 roku dowiedziałem się, że czeka mnie przeprowadzka do nowego mieszkania – w tym samym mieście, ale w innym lokum. Nie wiem, czy sny o miastach były zapowiedzią tej zmiany, ale być może w przyszłości zrozumiem ich znaczenie.</p>
+                        <p>Z czasem sny o miastach zaczęły ewoluować. Nie tylko śniły mi się nieznane miejsca, ale pojawił się nowy motyw – uczelnie. W tych obcych miastach zawsze przewijał się wątek edukacji: szkoły, uczelnie, ludzie, których nie znam. Każda placówka znajdowała się w innym miejscu, w innym mieście, którego nigdy nie widziałem. Nie pamiętam żadnych lekcji, ale pamiętam korytarze, podróże na zajęcia, wychodzenie z uczelni po zakończonych lekcjach. Gdy w drugiej połowie kwietnia 2025 roku zaczynam prowadzić ten dziennik, wątek uczelni wciąż jest obecny, choć motyw nieznanych miast powoli zanika. Teoretycznie każda uczelnia znajduje się w innym miejscu, bo nie rozpoznaję tych przestrzeni, ale coraz mniej skupiam się na samych miastach. Moja uwaga kieruje się na placówki, w których można zdobywać wiedzę – jakby to one stały się sercem moich snów.</p>
+                        <p>Zainspirowany powtarzającymi się snami i schematami, jakich nigdy wcześniej nie znałem, postanowiłem zacząć zapisywać swoje sny. Nie wiem, czy mają jakieś znaczenie, ale ich powtarzalność sprawiła, że uznałem, że warto je notować. Być może kiedyś moje zapiski ujrzą światło dzienne, więc opisuję tylko to, co uważam za stosowne. Unikam imion i tematów zbyt osobistych czy delikatnych, dlatego niektóre fragmenty snów przemilczę. Chcę, by wszystkie osoby pojawiające się w moim dzienniku pozostały anonimowe.</p>
+                        <a href="#" id="collapseIntro" class="intro-toggle">Zwiń wstęp</a>
+                    </div>
+                </section>
 
-            <!-- Sekcja archiwum -->
-            <section class="archive-container">
-                <h2>Starsze sny</h2>
-                <p class="section-description">Przeglądaj wszystkie moje sny w archiwum</p>
-                <div class="loading-spinner" id="archiveLoading"></div>
-                <div id="archiveList" class="archive-grid"></div>
-            </section>
-        </main>
+                <section class="posts-container">
+                    <h2>Najnowsze sny</h2>
+                    <div class="loading-spinner" id="postsLoading"></div>
+                    <div id="postsList" class="posts-list"></div>
+                </section>
 
-        <!-- Stopka -->
-        <footer class="footer">
-            <p>© 2024 Barastion Dreamscape. Wszystkie prawa zastrzeżone.</p>
-            <p class="footer-link">
-                <a href="#" id="adminLink">Napisz nowy post – sekcja twórcy</a>
-            </p>
-            <p class="footer-link">
-                <a href="terms.html" target="_blank">Regulamin</a>
-            </p>
-            <p class="footer-note">Stworzone z pasją przez Barastion</p>
-        </footer>
+                <section class="archive-container">
+                    <h2>Starsze sny</h2>
+                    <div class="loading-spinner" id="archiveLoading"></div>
+                    <div id="archiveList" class="archive-list"></div>
+                </section>
+            </main>
+
+            <footer class="footer">
+                <p>© 2024 Barastion Dreamscape. Wszystkie prawa zastrzeżone.</p>
+                <p class="footer-link">
+                    <a href="#" id="adminLink">Napisz nowy post – sekcja twórcy</a>
+                </p>
+                <p class="footer-link">
+                    <a href="terms.html" target="_blank">Regulamin</a>
+                </p>
+            </footer>
+        </div>
     </div>
 
-    <!-- Modal logowania -->
     <div id="adminModal" class="modal">
         <div class="modal-content">
             <span class="close">×</span>
             <h2>Sekcja twórcy</h2>
-            <p>Zaloguj się, aby dodać nowy sen do dziennika.</p>
+            <p>Zaloguj się, aby dodać lub edytować sen.</p>
             <button id="googleLogin" class="btn btn-google">Zaloguj się przez Google</button>
-            <p class="modal-note">Tylko autor (Barastion) może dodawać nowe posty.</p>
+            <p class="modal-note">Tylko autor (Barastion) może zarządzać postami.</p>
         </div>
     </div>
 
-    <!-- Modal formularza nowego posta -->
     <div id="postModal" class="modal">
         <div class="modal-content">
             <span class="close">×</span>
             <h2>Nowy sen</h2>
-            <p>Wypełnij poniższy formularz, aby dodać nowy sen.</p>
             <form id="dreamForm" class="post-form">
                 <div class="form-group">
-                    <label for="postTitle">Tytuł posta:</label>
+                    <label for="postTitle">Tytuł:</label>
                     <input type="text" id="postTitle" required placeholder="np. Rozdział XXII">
                 </div>
                 <div class="form-group">
@@ -94,25 +90,26 @@
                     <input type="text" id="dreamDate" required placeholder="np. 09.05.2025">
                 </div>
                 <div class="form-group">
-                    <label for="postContent">Treść snu:</label>
+                    <label for="postContent">Treść:</label>
                     <textarea id="postContent" required placeholder="Opisz swój sen..."></textarea>
                 </div>
-                <button type="submit" class="btn btn-submit">Zapisz sen</button>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-submit">Udostępnij</button>
+                    <button type="button" id="closeForm" class="btn btn-cancel">Zamknij</button>
+                </div>
             </form>
-            <p class="modal-note">Twój sen zostanie zapisany w bazie danych.</p>
+            <p class="modal-note">Sen zostanie zapisany w bazie danych.</p>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
 
-    <!-- JavaScript zaimplementowany w index.html -->
     <script>
         // Konfiguracja Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyD5z_8jA3Yml6z2cECrAOkW2i5iT8UkbN0",
+            apiKey: "AIzaSyBdVZRNj5-ni4rqhlYoN7jJKd4lwMWZG-Q",
             authDomain: "dziennik-snow.firebaseapp.com",
             databaseURL: "https://dziennik-snow-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "dziennik-snow",
@@ -121,7 +118,6 @@
             appId: "1:1041128277683:web:8bdfa137c75e0c3bced7dd"
         };
 
-        // Inicjalizacja Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const auth = firebase.auth();
@@ -138,6 +134,10 @@
         const dreamForm = document.getElementById('dreamForm');
         const postsLoading = document.getElementById('postsLoading');
         const archiveLoading = document.getElementById('archiveLoading');
+        const expandIntro = document.getElementById('expandIntro');
+        const collapseIntro = document.getElementById('collapseIntro');
+        const introFull = document.getElementById('introFull');
+        const closeForm = document.getElementById('closeForm');
 
         // Status sieci
         window.addEventListener('online', () => {
@@ -148,6 +148,18 @@
             networkStatus.classList.add('offline');
             networkStatus.style.display = 'block';
             networkStatus.textContent = 'Brak połączenia z internetem. Sprawdź połączenie.';
+        });
+
+        // Rozwijanie/zwijanie wstępu
+        expandIntro.addEventListener('click', (e) => {
+            e.preventDefault();
+            introFull.style.display = 'block';
+            expandIntro.style.display = 'none';
+        });
+        collapseIntro.addEventListener('click', (e) => {
+            e.preventDefault();
+            introFull.style.display = 'none';
+            expandIntro.style.display = 'inline';
         });
 
         // Otwieranie modala logowania
@@ -161,7 +173,14 @@
             close.addEventListener('click', () => {
                 adminModal.style.display = 'none';
                 postModal.style.display = 'none';
+                dreamForm.reset();
             });
+        });
+
+        // Zamykanie formularza
+        closeForm.addEventListener('click', () => {
+            postModal.style.display = 'none';
+            dreamForm.reset();
         });
 
         // Logowanie przez Google
@@ -183,8 +202,8 @@
                 });
         });
 
-        // Wyświetlanie 3 najnowszych postów
-        db.ref('posts').orderByChild('createdAt').limitToLast(3).on('value', (snapshot) => {
+        // Wyświetlanie 5 najnowszych postów
+        db.ref('posts').orderByChild('createdAt').limitToLast(5).on('value', (snapshot) => {
             postsList.innerHTML = '';
             postsLoading.classList.add('show');
             const posts = [];
@@ -198,9 +217,9 @@
                     const postDiv = document.createElement('div');
                     postDiv.className = 'post';
                     postDiv.innerHTML = `
-                        <div class="post-meta">Opublikowano ${post.postDate} o ${post.postTime}</div>
+                        <div class="post-meta">Opublikowano: ${post.postDate} o ${post.postTime}</div>
                         <h3 class="post-title">${post.title}</h3>
-                        <div class="post-data">${post.dreamDate}</div>
+                        <div class="post-data">Data snu: ${post.dreamDate}</div>
                         <div class="post-content">${post.content}</div>
                     `;
                     postsList.appendChild(postDiv);
@@ -212,24 +231,37 @@
             alert('Błąd ładowania postów: ' + error.message);
         });
 
-        // Wyświetlanie listy starszych postów
+        // Wyświetlanie starszych postów jako banerki
         db.ref('posts').orderByChild('createdAt').on('value', (snapshot) => {
             archiveList.innerHTML = '';
             archiveLoading.classList.add('show');
+            const allPosts = [];
             snapshot.forEach((child) => {
-                const post = child.val();
+                allPosts.push({ id: child.key, ...child.val() });
+            });
+            const olderPosts = allPosts.slice(0, -5).reverse();
+            olderPosts.forEach((post) => {
                 const archiveItem = document.createElement('div');
                 archiveItem.className = 'archive-item';
-                archiveItem.textContent = post.title;
+                archiveItem.innerHTML = `
+                    <span>${post.title} - Opublikowano ${post.postDate}</span>
+                    <span class="expand-arrow">▶</span>
+                `;
                 archiveItem.addEventListener('click', () => {
-                    postsList.innerHTML = `
-                        <div class="post">
-                            <div class="post-meta">Opublikowano ${post.postDate} o ${post.postTime}</div>
-                            <h3 class="post-title">${post.title}</h3>
-                            <div class="post-data">${post.dreamDate}</div>
-                            <div class="post-content">${post.content}</div>
-                        </div>
-                    `;
+                    db.ref(`posts/${post.id}`).once('value').then((snapshot) => {
+                        const fullPost = snapshot.val();
+                        postsList.innerHTML = `
+                            <div class="post">
+                                <div class="post-meta">Opublikowano: ${fullPost.postDate} o ${fullPost.postTime}</div>
+                                <h3 class="post-title">${fullPost.title}</h3>
+                                <div class="post-data">Data snu: ${fullPost.dreamDate}</div>
+                                <div class="post-content">${fullPost.content}</div>
+                            </div>
+                        `;
+                    }).catch((error) => {
+                        console.error('Błąd ładowania posta:', error.message);
+                        alert('Błąd ładowania posta: ' + error.message);
+                    });
                 });
                 archiveList.appendChild(archiveItem);
             });
@@ -242,9 +274,13 @@
         // Dodawanie nowego posta
         dreamForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const title = document.getElementById('postTitle').value;
-            const dreamDate = document.getElementById('dreamDate').value;
+            const title = document.getElementById('postTitle').value.trim();
+            const dreamDate = document.getElementById('dreamDate').value.trim();
             const content = document.getElementById('postContent').value;
+            if (!title || !dreamDate || !content) {
+                alert('Wypełnij wszystkie pola!');
+                return;
+            }
             const now = new Date();
             const postDate = now.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric' });
             const postTime = now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
