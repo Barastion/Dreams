@@ -8,8 +8,8 @@
 /* Zmienne */
 :root {
     --primary-yellow: #ffeb3b; /* Żółty z Watchtower */
-    --light-gray: #3a3a3a; /* Jasny prostokąt wokół sekcji */
-    --dark-gray: #2d2d2d; /* Ciemny prostokąt dla sekcji */
+    --light-gray: #3a3a3a; /* Jasny prostokąt */
+    --dark-gray: #2d2d2d; /* Ciemny prostokąt */
 }
 
 /* Podstawowe style strony */
@@ -38,7 +38,7 @@ body {
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     max-width: 960px;
-    margin: 20px auto; /* Dodano margin-top i margin-bottom */
+    margin: 30px auto; /* Zwiększono margin dla lepszego odstępu */
 }
 
 /* Jasny prostokąt wokół sekcji */
@@ -276,7 +276,6 @@ h2 {
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     z-index: 1000;
-    display: flex;
     justify-content: center;
     align-items: center;
     animation: fadeIn 0.3s ease-in;
@@ -492,7 +491,7 @@ textarea {
     .content-wrapper {
         padding: 10px;
         max-width: 100%;
-        margin: 10px auto;
+        margin: 15px auto;
     }
     .section-container {
         padding: 10px;
