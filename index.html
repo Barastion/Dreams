@@ -42,7 +42,8 @@
                 <div class="logo-frame">
                     <img src="Dreamscape_logo.jpg" alt="Barastion Dreamscape Logo" class="logo">
                 </div>
-                <h1>Barastion Dreamscape<br>– Dziennik Snów</h1>
+                <h1>Barastion Dreamscape</h1>
+                <p class="header-subtitle">– Dziennik Snów</p>
                 <p class="header-subtitle">Osobista podróż przez świat snów</p>
             </header>
 
@@ -61,13 +62,13 @@
                 </section>
 
                 <section class="posts-container section-box">
-                    <h2>Najnowsze sny</h2>
+                    <h2>Najnowsze wpisy</h2>
                     <div class="loading-spinner" id="postsLoading"></div>
                     <div id="postsList" class="posts-list"></div>
                 </section>
 
                 <section class="archive-container section-box">
-                    <h2>Starsze sny</h2>
+                    <h2>Archiwum</h2>
                     <div class="loading-spinner" id="archiveLoading"></div>
                     <div id="archiveList" class="archive-list"></div>
                 </section>
@@ -169,6 +170,11 @@
                 const introFull = document.getElementById('introFull');
                 const closeForm = document.getElementById('closeForm');
 
+                // Debug: Sprawdź, czy elementy istnieją
+                console.log('adminLink:', adminLink);
+                console.log('expandIntro:', expandIntro);
+                console.log('collapseIntro:', collapseIntro);
+
                 // Ukryj modale na starcie
                 adminModal.style.display = 'none';
                 postModal.style.display = 'none';
@@ -202,26 +208,34 @@
                 window.addEventListener('load', updateNetworkStatus);
 
                 // Rozwijanie/zwijanie wstępu
-                expandIntro.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    introFull.style.display = 'block';
-                    expandIntro.style.display = 'none';
-                    console.log('Rozwinięto wstęp.');
-                });
-                collapseIntro.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    introFull.style.display = 'none';
-                    expandIntro.style.display = 'inline';
-                    console.log('Zwinięto wstęp.');
-                });
+                if (expandIntro && collapseIntro) {
+                    expandIntro.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        introFull.style.display = 'block';
+                        expandIntro.style.display = 'none';
+                        console.log('Rozwinięto wstęp.');
+                    });
+                    collapseIntro.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        introFull.style.display = 'none';
+                        expandIntro.style.display = 'inline';
+                        console.log('Zwinięto wstęp.');
+                    });
+                } else {
+                    console.error('Nie znaleziono elementów expandIntro lub collapseIntro.');
+                }
 
                 // Otwieranie modala logowania
-                adminLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    adminModal.style.display = 'block';
-                    postModal.style.display = 'none';
-                    console.log('Otwarto modal logowania.');
-                });
+                if (adminLink) {
+                    adminLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        adminModal.style.display = 'block';
+                        postModal.style.display = 'none';
+                        console.log('Otwarto modal logowania.');
+                    });
+                } else {
+                    console.error('Nie znaleziono elementu adminLink.');
+                }
 
                 // Zamykanie modali
                 closes.forEach(close => {
