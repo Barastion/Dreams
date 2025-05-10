@@ -116,6 +116,8 @@ h2 {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    max-width: 95%; /* Węższe względem jasnoszarych */
+    margin: 15px auto; /* Wyśrodkowanie, równe marginesy góra/dół */
 }
 
 /* Sekcja wprowadzająca */
@@ -289,7 +291,6 @@ h2 {
 
 /* Modal */
 .modal {
-    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -299,8 +300,9 @@ h2 {
     z-index: 1000;
     display: flex;
     justify-content: center;
-    align-items: center; /* Wyśrodkowanie w pionie */
+    align-items: center;
     animation: fadeIn 0.3s ease-in;
+    overflow: auto; /* Umożliwia przewijanie, jeśli modal jest za duży */
 }
 
 .modal-content {
@@ -316,6 +318,7 @@ h2 {
     align-items: center;
     max-height: 80vh; /* Ograniczenie wysokości */
     overflow-y: auto; /* Przewijanie, jeśli za duże */
+    margin: 20px auto; /* Dodatkowy margines dla lepszego wyśrodkowania */
 }
 
 .large-modal {
@@ -526,6 +529,8 @@ textarea {
     }
     .section-box {
         padding: 15px;
+        max-width: 98%; /* Węższe na mniejszych ekranach */
+        margin: 10px auto;
     }
     .logo-frame {
         max-width: 100%;
@@ -579,6 +584,10 @@ textarea {
     }
     .large-modal {
         min-height: 400px;
+    }
+    .section-box {
+        max-width: 100%; /* Węższe na bardzo małych ekranach */
+        margin: 8px auto;
     }
     textarea {
         min-height: 200px;
