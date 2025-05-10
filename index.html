@@ -12,7 +12,7 @@
     <meta property="og:url" content="https://barastion.github.io/Dreamscape/">
     <meta property="og:type" content="website">
     <title>Barastion Dreamscape – Dziennik Snów</title>
-    <link rel="stylesheet" href="style.css?v=6"> <!-- Zwiększono wersję dla cache -->
+    <link rel="stylesheet" href="style.css?v=7">
     <link rel="icon" type="image/png" href="logo.png">
 </head>
 <body>
@@ -31,7 +31,6 @@
 
             <main>
                 <div class="section-background">
-                    <!-- Sekcja wprowadzająca -->
                     <section class="intro-container section-box">
                         <h2>Słowem wstępu...</h2>
                         <div class="intro-content">
@@ -57,14 +56,12 @@
                         </div>
                     </section>
 
-                    <!-- Sekcja postów -->
                     <section class="posts-container section-box">
                         <h2>Najnowsze wpisy:</h2>
                         <div id="postsLoading" class="loading-spinner"></div>
                         <div id="postsList" class="posts-list"></div>
                     </section>
 
-                    <!-- Sekcja archiwum -->
                     <section class="archive-container section-box">
                         <h2>Archiwum:</h2>
                         <div id="archiveLoading" class="loading-spinner"></div>
@@ -74,7 +71,6 @@
             </main>
         </div>
 
-        <!-- Stopka poza szarym prostokątem -->
         <footer class="footer">
             <p>© 2025 Barastion Dreamscape. Wszelkie prawa zastrzeżone.</p>
             <p class="footer-link"><span class="footer-text">Odwiedź</span> <a href="https://barastion.github.io/Barastion-Watchtower/" target="_blank">Barastion Watchtower</a></p>
@@ -82,7 +78,6 @@
         </footer>
     </div>
 
-    <!-- Modal logowania -->
     <div id="adminModal" class="modal">
         <div class="modal-content">
             <h2>Zaloguj się</h2>
@@ -98,7 +93,6 @@
         </div>
     </div>
 
-    <!-- Modal dodawania/edycji posta -->
     <div id="postModal" class="modal">
         <div class="modal-content large-modal">
             <h2 id="postModalTitle">Dodaj nowy sen</h2>
@@ -128,10 +122,8 @@
         </div>
     </div>
 
-    <!-- Status sieci -->
     <div id="networkStatus" class="network-status"></div>
 
-    <!-- Skrypt dla rozwijania tekstu -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const expandIntro = document.getElementById('expandIntro');
@@ -162,7 +154,6 @@
         });
     </script>
 
-    <!-- Skrypt Firebase -->
-    <script type="module" src="firebase.js?v=6"></script> <!-- Zwiększono wersję dla cache -->
+    <script type="module" src="firebase.js?v=7"></script>
 </body>
 </html>
