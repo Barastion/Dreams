@@ -231,7 +231,7 @@ try {
             isAuthenticated = false;
             adminLink.textContent = 'Napisz nowy post';
             logoutLink.style.display = 'none';
-            admin坑Modal.style.display = 'none';
+            adminModal.style.display = 'none';
             postModal.style.display = 'none';
         }
     });
@@ -252,9 +252,22 @@ try {
 
     // Funkcja kolejkowania z priorytetem dla najnowszych
     const fetchPostsInOrder = async (posts) => {
+        const parsePostDate = (postDate) => {
+            if (!postDate) return 0;
+            // Parsuj format DD.MM.YYYY
+            const [day, month, year] = postDate.split('.').map(Number);
+            return new Date(year, month - 1, day).getTime();
+        };
+
         const sortedPosts = posts
-            .filter(post => post.createdAt)
-            .sort((a, b) => b.createdAt - a.createdAt); // Od najnowszego
+            .map(post => ({
+                ...post,
+                sortTime: post.createdAt || parsePostDate(post.postDate) || 0
+            }))
+            .filter(post => post.sortTime > 0)
+            .sort((a, b) => b.sortTime - a.sortTime); // Od najnowszego
+
+        console.log('Posortowane posty:', sortedPosts.map(p => ({ title: p.title, sortTime: p.sortTime })));
 
         const fetchedPosts = [];
         for (const post of sortedPosts) {
@@ -272,9 +285,15 @@ try {
     // Funkcja konfiguracji przycisków edycji
     const setupEditButton = async () => {
         const editButtons = document.querySelectorAll('.btn-edit');
+        if (editButtons.length === 0) {
+            console.warn('Brak przycisków edycji do skonfigurowania.');
+        }
         editButtons.forEach(button => {
             const postId = button.dataset.id;
-            button.addEventListener('click', async () => {
+            // Usuń istniejące zdarzenia, aby uniknąć duplikatów
+            button.replaceWith(button.cloneNode(true));
+            const newButton = document.querySelector(`.btn-edit[data-id="${postId}"]`);
+            newButton.addEventListener('click', async () => {
                 try {
                     const postData = await fetchPost(postId);
                     console.log('Kliknięto Edytuj dla posta:', postId, postData.title);
@@ -294,11 +313,15 @@ try {
         archiveLoading.classList.add('show');
 
         const olderPosts = allPosts
-            .filter(post => post.createdAt)
-            .sort((a, b) => b.createdAt - a.createdAt)
+            .filter(post => post.createdAt || post.postDate)
+            .sort((a, b) => {
+                const timeA = a.createdAt || new Date(a.postDate.split('.').reverse().join('-')).getTime();
+                const timeB = b.createdAt || new Date(b.postDate.split('.').reverse().join('-')).getTime();
+                return timeB - timeA; // Od najnowszego
+            })
             .slice(3); // Od 4. posta wzwyż
 
-        console.log('Posty w archiwum:', olderPosts.length, olderPosts.map(p => ({ title: p.title, createdAt: p.createdAt })));
+        console.log('Posty w archiwum:', olderPosts.length, olderPosts.map(p => ({ title: p.title, createdAt: p.createdAt, postDate: p.postDate })));
 
         if (olderPosts.length === 0) {
             archiveList.innerHTML = '<p class="no-posts">Brak postów w archiwum.</p>';
@@ -352,6 +375,10 @@ try {
         }
 
         archiveLoading.classList.remove('show');
+        // Konfiguracja przycisków edycji dla listy archiwum
+        if (isAuthenticated) {
+            setupEditButton();
+        }
     };
 
     // Funkcja ładowania domyślnego widoku strony
@@ -370,7 +397,7 @@ try {
                 posts.push({ id: child.key, ...child.val() });
             });
 
-            console.log('Wszystkie posty z Firebase:', posts.length, posts.map(p => ({ title: p.title, createdAt: p.createdAt })));
+            console.log('Wszystkie posty z Firebase:', posts.length, posts.map(p => ({ title: p.title, createdAt: p.createdAt, postDate: p.postDate })));
 
             // Kolejkowanie pobierania
             const fetchedPosts = await fetchPostsInOrder(posts);
@@ -378,7 +405,7 @@ try {
             // Najnowsze 3 posty
             const latestPosts = fetchedPosts.slice(0, 3);
 
-            console.log('Najnowsze 3 posty:', latestPosts.length, latestPosts.map(p => ({ title: p.title, createdAt: p.createdAt })));
+            console.log('Najnowsze 3 posty:', latestPosts.length, latestPosts.map(p => ({ title: p.title, createdAt: p.createdAt, postDate: p.postDate })));
 
             if (latestPosts.length === 0) {
                 postsList.innerHTML = '<p class="no-posts">Brak postów do wyświetlenia.</p>';
