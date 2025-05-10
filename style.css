@@ -164,6 +164,14 @@ h2 {
     letter-spacing: -0.01em;
 }
 
+.post-content {
+    white-space: pre-wrap; /* Zachowuje puste linie i białe znaki */
+}
+
+.post-content p {
+    margin-bottom: 10px; /* Odstęp między akapitami */
+}
+
 .intro-full {
     display: none;
 }
@@ -184,6 +192,12 @@ h2 {
 /* Posty */
 .posts-container {
     margin-bottom: 20px;
+}
+
+.posts-record {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .posts-list {
@@ -216,12 +230,21 @@ h2 {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.post-data {
+.post-data,
+.post-notes {
     font-size: 0.95rem;
-    font-weight: 600;
     color: #ffffff;
     margin-bottom: 8px;
     text-align: left;
+}
+
+.post-data strong,
+.post-notes strong {
+    font-weight: 600; /* Pogrubienie dla etykiet */
+}
+
+.post-notes span {
+    font-weight: 400; /* Normalna waga dla treści notatek */
 }
 
 .no-posts {
@@ -270,7 +293,7 @@ h2 {
 .footer {
     text-align: center;
     padding: 12px 20px;
-    margin-top: 5px; /* Jeszcze mniejszy margines (10px → 5px) */
+    margin-top: 5px;
 }
 
 /* Stopka - linki i tekst */
@@ -323,12 +346,12 @@ h2 {
     left: 0;
     width: 100%;
     height: 100%;
-    min-height: 100vh; /* Zapewnia pełną wysokość viewportu */
+    min-height: 100vh;
     background: rgba(0, 0, 0, 0.8);
     z-index: 1000;
     display: flex;
     justify-content: center;
-    align-items: center; /* Wyśrodkowanie pionowe i poziome */
+    align-items: center;
     box-sizing: border-box;
     animation: fadeIn 0.3s ease-in;
 }
@@ -339,7 +362,7 @@ h2 {
     max-width: 400px;
     max-height: 80vh;
     padding: 20px;
-    margin: auto; /* Centrowanie w flexbox */
+    margin: auto;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     text-align: center;
@@ -350,12 +373,12 @@ h2 {
 }
 
 .large-modal {
-    max-width: 900px; /* Zwiększona szerokość (800px → 900px) */
-    max-height: 95vh; /* Zwiększona wysokość (90vh → 95vh) */
-    min-height: 60vh; /* Minimalna wysokość dla większego modala */
-    height: auto; /* Automatyczna wysokość */
+    max-width: 900px;
+    max-height: 95vh;
+    min-height: 60vh;
+    height: auto;
     padding: 25px;
-    overflow-y: auto; /* Scrollbar tylko w ekstremalnych przypadkach */
+    overflow-y: auto;
 }
 
 .modal h2 {
@@ -415,10 +438,16 @@ textarea:focus {
     outline: none;
 }
 
-textarea {
+textarea#postContent {
     resize: vertical;
-    min-height: 400px; /* Zwiększona wysokość pola (200px → 400px) */
-    max-height: none; /* Brak ograniczenia wysokości dla textarea */
+    min-height: 400px;
+    max-height: none;
+}
+
+textarea#postNotes {
+    resize: vertical;
+    min-height: 100px; /* Mniejsza wysokość dla uwag */
+    max-height: none;
 }
 
 .form-buttons {
@@ -459,10 +488,19 @@ textarea {
 }
 
 .btn-edit {
-    background: #555555;
-    color: #ffffff;
-    padding: 8px 16px;
+    background: none; /* Brak tła */
+    color: var(--primary-yellow);
+    font-size: 0.85rem;
+    text-decoration: none; /* Bez podkreślenia domyślnie */
+    cursor: pointer;
+    transition: text-decoration 0.3s, color 0.3s, transform 0.2s;
     margin-top: 10px;
+}
+
+.btn-edit:hover {
+    text-decoration: underline; /* Podkreślenie przy hover */
+    color: #e6c200;
+    transform: translateY(-2px);
 }
 
 .btn:hover {
@@ -479,10 +517,6 @@ textarea {
 
 .btn-cancel:hover {
     background: #777777;
-}
-
-.btn-edit:hover {
-    background: #666666;
 }
 
 /* Spinner ładowania */
@@ -557,8 +591,8 @@ textarea {
     }
     .large-modal {
         max-width: 95%;
-        max-height: 90vh; /* Mniejsza wysokość na tabletach */
-        min-height: 50vh; /* Minimalna wysokość dostosowana */
+        max-height: 90vh;
+        min-height: 50vh;
     }
     h1 {
         font-size: 1.3rem;
@@ -576,11 +610,14 @@ textarea {
         width: 95%;
         padding: 15px;
     }
-    textarea {
-        min-height: 300px; /* Mniejsza wysokość textarea na tabletach */
+    textarea#postContent {
+        min-height: 300px;
+    }
+    textarea#postNotes {
+        min-height: 80px;
     }
     .footer {
-        margin-top: 4px; /* Zmniejszony margines (8px → 4px) */
+        margin-top: 4px;
     }
 }
 
@@ -606,8 +643,7 @@ textarea {
         font-size: 0.9rem;
     }
     .btn-edit {
-        padding: 6px 12px;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
     .section-background {
         max-width: 98%;
@@ -616,14 +652,17 @@ textarea {
         max-width: 100%;
         margin: 8px auto;
     }
-    textarea {
-        min-height: 250px; /* Jeszcze mniejsza wysokość na małych ekranach */
+    textarea#postContent {
+        min-height: 250px;
+    }
+    textarea#postNotes {
+        min-height: 60px;
     }
     .footer-link {
         flex-direction: column;
         gap: 4px;
     }
     .footer {
-        margin-top: 3px; /* Zmniejszony margines (6px → 3px) */
+        margin-top: 3px;
     }
 }
