@@ -13,30 +13,6 @@
     --background-dark: #1e1e1e; /* Tło strony */
 }
 
-/* Scrollbar z Watchtower */
-::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
-}
-::-webkit-scrollbar-track {
-    background: #2d2d2d;
-    border-radius: 6px;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
-}
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #5a6268, #4a5258);
-    border-radius: 6px;
-    border: 2px solid #2d2d2d;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    transition: background 0.3s ease;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #6a7278, #5a6268);
-}
-::-webkit-scrollbar-corner {
-    background: #2d2d2d;
-}
-
 /* Podstawowe style strony */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -46,27 +22,23 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding: 20px; /* Z Watchtower */
 }
 
-/* Główny kontener (z Watchtower) */
+/* Główny kontener */
 .container {
-    max-width: 960px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 20px;
     flex: 1;
-    background-color: #2d2d2d;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Szary prostokąt jako tło sekcji roboczej (z Watchtower) */
+/* Szary prostokąt jako tło sekcji roboczej */
 .content-wrapper {
-    background: #3a3a3a;
+    background: var(--dark-gray);
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    max-width: 800px;
+    max-width: 960px;
     margin: 40px auto; /* Większy odstęp, jak w Watchtower */
 }
 
@@ -76,17 +48,7 @@ body {
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Z Watchtower */
-}
-
-/* Ciemne prostokąty dla sekcji */
-.section-box {
-    background: var(--dark-gray);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Z Watchtower */
-    max-width: 95%; /* Węższe względem jasnoszarych */
-    margin: 15px auto; /* Wyśrodkowanie, równe marginesy góra/dół */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* Nagłówek */
@@ -146,6 +108,14 @@ h2 {
     color: var(--primary-yellow);
     margin-bottom: 12px;
     text-align: left;
+}
+
+/* Ciemne prostokąty dla sekcji */
+.section-box {
+    background: var(--dark-gray);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Sekcja wprowadzająca */
@@ -327,8 +297,9 @@ h2 {
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     z-index: 1000;
+    display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; /* Wyśrodkowanie w pionie */
     animation: fadeIn 0.3s ease-in;
 }
 
@@ -540,26 +511,21 @@ textarea {
     100% { transform: rotate(360deg); }
 }
 
-/* Responsywność (ujednolicona z Watchtower) */
+/* Responsywność */
 @media (max-width: 768px) {
-    body {
-        padding: 10px;
-    }
     .container {
         padding: 10px;
     }
     .content-wrapper {
+        padding: 15px;
         max-width: 100%;
-        padding: 10px;
         margin: 20px auto;
     }
     .section-container {
         padding: 10px;
     }
     .section-box {
-        padding: 10px;
-        max-width: 98%; /* Lepsze dopasowanie na mniejszych ekranach */
-        margin: 10px auto;
+        padding: 15px;
     }
     .logo-frame {
         max-width: 100%;
@@ -583,19 +549,6 @@ textarea {
     .modal-content {
         width: 95%;
         padding: 15px;
-    }
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-        border-radius: 4px;
-        box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
-    }
-    ::-webkit-scrollbar-thumb {
-        border-radius: 4px;
-        border: 1px solid #2d2d2d;
-        box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
     }
 }
 
