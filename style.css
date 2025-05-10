@@ -192,7 +192,7 @@ h2 {
 /* Obsługa pustych akapitów */
 .post-content p:empty,
 .post-content-full p:empty {
-    height: 1.5em;
+    height: 1.5em; /* Odstęp dla pustych linii */
     margin-bottom: 10px;
 }
 
@@ -203,7 +203,7 @@ h2 {
 
 .post-content,
 .post-content-full {
-    white-space: pre-wrap;
+    white-space: pre-wrap; /* Zachowuje puste linie i białe znaki */
 }
 
 .post-content-full {
@@ -314,11 +314,11 @@ h2 {
 }
 
 .archive-item .archive-title {
-    font-weight: 700;
+    font-weight: 700; /* Pogrubienie tylko dla tytułu */
 }
 
 .archive-item .archive-date {
-    font-weight: 400;
+    font-weight: 400; /* Normalna czcionka dla daty */
 }
 
 .expand-arrow {
@@ -362,18 +362,18 @@ h2 {
 }
 
 #adminLink {
-    color: #888888;
+    color: #888888; /* Szary, jak w .footer p */
     text-decoration: none;
     transition: color 0.3s, text-decoration 0.3s;
 }
 
 #adminLink:hover {
-    color: #e6c200;
+    color: #e6c200; /* Taki sam efekt hover jak dla innych linków */
     text-decoration: underline;
 }
 
 .logout-link {
-    font-size: 0.75rem;
+    font-size: 0.75rem; /* Taki sam rozmiar jak w .footer p */
     color: #cccccc;
     cursor: pointer;
     text-decoration: none;
@@ -395,7 +395,7 @@ h2 {
     min-height: 100vh;
     background: rgba(0, 0, 0, 0.8);
     z-index: 1000;
-    display: none;
+    display: none; /* Domyślnie ukryty, aby zapobiec miganiu */
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
