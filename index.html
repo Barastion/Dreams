@@ -85,7 +85,7 @@
     <!-- Modal logowania -->
     <div id="adminModal" class="modal">
         <div class="modal-content">
-            <span class="close">×</span>
+            <span class="close">&times;</span>
             <h2>Zaloguj się</h2>
             <p>Zaloguj się, aby dodać nowy post. Dostęp tylko dla autora.</p>
             <button id="googleLogin" class="btn btn-google">
@@ -101,7 +101,7 @@
     <!-- Modal dodawania posta -->
     <div id="postModal" class="modal">
         <div class="modal-content large-modal">
-            <span class="close">×</span>
+            <span class="close">&times;</span>
             <h2>Dodaj nowy sen</h2>
             <form id="dreamForm" class="post-form">
                 <div class="form-group">
@@ -127,26 +127,54 @@
     <!-- Status sieci -->
     <div id="networkStatus" class="network-status"></div>
 
-    <!-- Skrypty -->
+    <!-- Skrypt dla rozwijania tekstu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const expandIntro = document.getElementById('expandIntro');
+            const collapseIntro = document.getElementById('collapseIntro');
+            const introFull = document.getElementById('introFull');
+            const networkStatus = document.getElementById('networkStatus');
+
+            if (expandIntro && collapseIntro && introFull && networkStatus) {
+                expandIntro.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    introFull.style.display = 'block';
+                    expandIntro.style.display = 'none';
+                    console.log('Rozwinięto wstęp.');
+                });
+                collapseIntro.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    introFull.style.display = 'none';
+                    expandIntro.style.display = 'inline';
+                    console.log('Zwinięto wstęp.');
+                });
+            } else {
+                console.error('Brak elementów intro:', { expandIntro, collapseIntro, introFull, networkStatus });
+                if (networkStatus) {
+                    networkStatus.textContent = 'Błąd: Brak elementów wstępu.';
+                    networkStatus.style.display = 'block';
+                }
+            }
+        });
+    </script>
+
+    <!-- Skrypt Firebase -->
     <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+        import { getDatabase, ref, onValue, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBdVZRNj5-ni4rqhlYoN7jJKd4lwMWZG-Q",
+            authDomain: "dziennik-snow.firebaseapp.com",
+            databaseURL: "https://dziennik-snow-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "dziennik-snow",
+            storageBucket: "dziennik-snow.appspot.com",
+            messagingSenderId: "1041128277683",
+            appId: "1:1041128277683:web:8bdfa137c75e0c3bced7dd"
+        };
+
         try {
-            // Import Firebase
-            import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
-            import { getDatabase, ref, onValue, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
-            import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
-
-            // Konfiguracja Firebase
-            const firebaseConfig = {
-                apiKey: "AIzaSyBdVZRNj5-ni4rqhlYoN7jJKd4lwMWZG-Q",
-                authDomain: "dziennik-snow.firebaseapp.com",
-                databaseURL: "https://dziennik-snow-default-rtdb.europe-west1.firebasedatabase.app",
-                projectId: "dziennik-snow",
-                storageBucket: "dziennik-snow.appspot.com",
-                messagingSenderId: "1041128277683",
-                appId: "1:1041128277683:web:8bdfa137c75e0c3bced7dd"
-            };
-
-            // Inicjalizacja Firebase
             const app = initializeApp(firebaseConfig);
             console.log('Firebase zainicjalizowany.');
             const db = getDatabase(app);
@@ -182,16 +210,16 @@
             postModal.style.display = 'none';
 
             // Status sieci
-            function updateNetworkStatus() {
+            const updateNetworkStatus = () => {
                 if (navigator.onLine) {
                     networkStatus.classList.remove('offline');
                     networkStatus.style.display = 'none';
                 } else {
                     networkStatus.classList.add('offline');
-                    networkStatus.style.display = 'block';
                     networkStatus.textContent = 'Brak połączenia z internetem.';
+                    networkStatus.style.display = 'block';
                 }
-            }
+            };
             window.addEventListener('online', updateNetworkStatus);
             window.addEventListener('offline', updateNetworkStatus);
             updateNetworkStatus();
@@ -240,6 +268,9 @@
                 } catch (error) {
                     console.error('Błąd logowania:', error);
                     alert(`Błąd logowania: ${error.message} (Kod: ${error.code})`);
+                    if (error.code === 'auth/popup-blocked') {
+                        alert('Popup zablokowany. Włącz wyskakujące okna dla tej strony.');
+                    }
                     networkStatus.textContent = 'Błąd logowania. Sprawdź konsolę.';
                     networkStatus.style.display = 'block';
                 }
@@ -249,9 +280,10 @@
             onAuthStateChanged(auth, (user) => {
                 if (user && user.email === 'lukasz13d@gmail.com') {
                     console.log('Zalogowano:', user.email);
-                    // Nie otwieramy modala automatycznie
+                    adminLink.textContent = 'Dodaj nowy post (zalogowano)';
                 } else {
                     console.log('Brak zalogowanego użytkownika lub nieprawidłowy email.');
+                    adminLink.textContent = 'Napisz nowy post – sekcja twórcy';
                     adminModal.style.display = 'none';
                     postModal.style.display = 'none';
                 }
@@ -273,10 +305,10 @@
                         const postDiv = document.createElement('div');
                         postDiv.className = 'post';
                         postDiv.innerHTML = `
-                            <div class="post-meta">Opublikowano: ${post.postDate} o ${post.postTime}</div>
-                            <h3 class="post-title">${post.title}</h3>
-                            <div class="post-data">Data snu: ${post.dreamDate}</div>
-                            <div class="post-content">${post.content}</div>
+                            <div class="post-meta">Opublikowano: ${post.postDate || 'Brak daty'} o ${post.postTime || 'Brak godziny'}</div>
+                            <h3 class="post-title">${post.title || 'Bez tytułu'}</h3>
+                            <div class="post-data">Data snu: ${post.dreamDate || 'Brak daty'}</div>
+                            <div class="post-content">${post.content || 'Brak treści'}</div>
                         `;
                         postsList.appendChild(postDiv);
                     });
@@ -284,7 +316,8 @@
                 postsLoading.classList.remove('show');
             }, (error) => {
                 console.error('Błąd ładowania postów:', error);
-                alert('Błąd ładowania postów: ' + error.message);
+                networkStatus.textContent = 'Błąd ładowania postów. Sprawdź konsolę.';
+                networkStatus.style.display = 'block';
                 postsLoading.classList.remove('show');
             });
 
@@ -297,35 +330,41 @@
                     allPosts.push({ id: child.key, ...child.val() });
                 });
                 const olderPosts = allPosts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(5);
-                olderPosts.forEach((post) => {
-                    const archiveItem = document.createElement('div');
-                    archiveItem.className = 'archive-item';
-                    archiveItem.innerHTML = `
-                        <span>${post.title} - Opublikowano ${post.postDate}</span>
-                        <span class="expand-arrow">▶</span>
-                    `;
-                    archiveItem.addEventListener('click', () => {
-                        onValue(ref(db, `posts/${post.id}`), (snapshot) => {
-                            const fullPost = snapshot.val();
-                            postsList.innerHTML = `
-                                <div class="post">
-                                    <div class="post-meta">Opublikowano: ${fullPost.postDate} o ${fullPost.postTime}</div>
-                                    <h3 class="post-title">${fullPost.title}</h3>
-                                    <div class="post-data">Data snu: ${fullPost.dreamDate}</div>
-                                    <div class="post-content">${fullPost.content}</div>
-                                </div>
-                            `;
-                        }, (error) => {
-                            console.error('Błąd ładowania posta:', error);
-                            alert('Błąd ładowania posta: ' + error.message);
+                if (olderPosts.length === 0) {
+                    archiveList.innerHTML = '<p class="no-posts">Brak postów w archiwum.</p>';
+                } else {
+                    olderPosts.forEach((post) => {
+                        const archiveItem = document.createElement('div');
+                        archiveItem.className = 'archive-item';
+                        archiveItem.innerHTML = `
+                            <span>${post.title || 'Bez tytułu'} - Opublikowano ${post.postDate || 'Brak daty'}</span>
+                            <span class="expand-arrow">▶</span>
+                        `;
+                        archiveItem.addEventListener('click', () => {
+                            onValue(ref(db, `posts/${post.id}`), (snapshot) => {
+                                const fullPost = snapshot.val();
+                                postsList.innerHTML = `
+                                    <div class="post">
+                                        <div class="post-meta">Opublikowano: ${fullPost.postDate || 'Brak daty'} o ${fullPost.postTime || 'Brak godziny'}</div>
+                                        <h3 class="post-title">${fullPost.title || 'Bez tytułu'}</h3>
+                                        <div class="post-data">Data snu: ${fullPost.dreamDate || 'Brak daty'}</div>
+                                        <div class="post-content">${fullPost.content || 'Brak treści'}</div>
+                                    </div>
+                                `;
+                            }, (error) => {
+                                console.error('Błąd ładowania posta:', error);
+                                networkStatus.textContent = 'Błąd ładowania posta. Sprawdź konsolę.';
+                                networkStatus.style.display = 'block';
+                            });
                         });
+                        archiveList.appendChild(archiveItem);
                     });
-                    archiveList.appendChild(archiveItem);
-                });
+                }
                 archiveLoading.classList.remove('show');
             }, (error) => {
                 console.error('Błąd ładowania archiwum:', error);
-                alert('Błąd ładowania archiwum: ' + error.message);
+                networkStatus.textContent = 'Błąd ładowania archiwum. Sprawdź konsolę.';
+                networkStatus.style.display = 'block';
                 archiveLoading.classList.remove('show');
             });
 
@@ -357,7 +396,7 @@
                     console.log('Post zapisany.');
                 } catch (error) {
                     console.error('Błąd zapisu posta:', error);
-                    alert('Błąd zapisu posta: ' + error.message);
+                    alert(`Błąd zapisu posta: ${error.message}`);
                     networkStatus.textContent = 'Błąd zapisu posta. Sprawdź konsolę.';
                     networkStatus.style.display = 'block';
                 }
@@ -367,35 +406,6 @@
             const networkStatus = document.getElementById('networkStatus');
             if (networkStatus) {
                 networkStatus.textContent = 'Krytyczny błąd Firebase. Sprawdź konsolę.';
-                networkStatus.style.display = 'block';
-            }
-        }
-    </script>
-
-    <!-- Skrypt dla rozwijania tekstu -->
-    <script>
-        const expandIntro = document.getElementById('expandIntro');
-        const collapseIntro = document.getElementById('collapseIntro');
-        const introFull = document.getElementById('introFull');
-        const networkStatus = document.getElementById('networkStatus');
-
-        if (expandIntro && collapseIntro && introFull && networkStatus) {
-            expandIntro.addEventListener('click', (e) => {
-                e.preventDefault();
-                introFull.style.display = 'block';
-                expandIntro.style.display = 'none';
-                console.log('Rozwinięto wstęp.');
-            });
-            collapseIntro.addEventListener('click', (e) => {
-                e.preventDefault();
-                introFull.style.display = 'none';
-                expandIntro.style.display = 'inline';
-                console.log('Zwinięto wstęp.');
-            });
-        } else {
-            console.error('Brak elementów intro:', { expandIntro, collapseIntro, introFull });
-            if (networkStatus) {
-                networkStatus.textContent = 'Błąd: Brak elementów wstępu.';
                 networkStatus.style.display = 'block';
             }
         }
