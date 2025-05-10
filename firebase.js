@@ -189,80 +189,12 @@ try {
 
     // Flaga zapobiegająca wielokrotnemu renderowaniu
     let isRenderingPosts = false;
+    let isRenderingArchive = false;
 
-    // Ładowanie postów
-    onValue(ref(db, 'posts'), (snapshot) => {
-        if (isRenderingPosts) {
-            console.log('Pomijanie renderowania postów - już w trakcie.');
-            return;
-        }
-        isRenderingPosts = true;
-
-        postsList.innerHTML = '';
-        postsLoading.classList.add('show');
-
-        const posts = [];
-        snapshot.forEach((child) => {
-            posts.push({ id: child.key, ...child.val() });
-        });
-
-        console.log('Wszystkie posty z Firebase:', posts.length, posts.map(p => ({ title: p.title, createdAt: p.createdAt })));
-
-        // Sortowanie i ograniczenie do 3 najnowszych
-        const latestPosts = posts
-            .filter(post => post.createdAt) // Tylko posty z createdAt
-            .sort((a, b) => b.createdAt - a.createdAt)
-            .slice(0, 3);
-
-        console.log('Najnowsze 3 posty:', latestPosts.length, latestPosts.map(p => ({ title: p.title, createdAt: p.createdAt })));
-
-        if (latestPosts.length === 0) {
-            postsList.innerHTML = '<p class="no-posts">Brak postów do wyświetlenia.</p>';
-        } else {
-            latestPosts.forEach((post) => {
-                const postDiv = document.createElement('div');
-                postDiv.className = 'post';
-                postDiv.innerHTML = `
-                    <div class="post-meta">Opublikowano: ${post.postDate || 'Brak daty'} o ${post.postTime || 'Brak godziny'}</div>
-                    <h3 class="post-title">${post.title || 'Bez tytułu'}</h3>
-                    <div class="post-data"><strong>Data snu:</strong> ${post.dreamDate || 'Brak daty'}</div>
-                    ${post.notes ? `<div class="post-notes"><strong>Uwagi:</strong> <span>${post.notes}</span></div>` : ''}
-                    <div class="post-content">${formatContent(post.content)}</div>
-                    ${isAuthenticated ? `<button class="btn btn-edit" data-id="${post.id}">Edytuj</button>` : ''}
-                `;
-                postsList.appendChild(postDiv);
-            });
-            // Dodanie obsługi edycji
-            document.querySelectorAll('.btn-edit').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const postId = e.target.dataset.id;
-                    onValue(ref(db, `posts/${postId}`), (snapshot) => {
-                        const postData = snapshot.val();
-                        openPostModal(postId, postData);
-                    }, { onlyOnce: true });
-                });
-            });
-        }
-
-        postsLoading.classList.remove('show');
-        isRenderingPosts = false;
-    }, (error) => {
-        console.error('Błąd ładowania postów:', error);
-        networkStatus.textContent = 'Błąd ładowania postów. Sprawdź konsolę.';
-        networkStatus.style.display = 'block';
-        postsLoading.classList.remove('show');
-        isRenderingPosts = false;
-    });
-
-    // Ładowanie archiwum
-    onValue(ref(db, 'posts'), (snapshot) => {
+    // Funkcja ładowania domyślnego widoku archiwum
+    const loadArchiveDefault = (allPosts) => {
         archiveList.innerHTML = '';
         archiveLoading.classList.add('show');
-
-        const allPosts = [];
-        snapshot.forEach((child) => {
-            allPosts.push({ id: child.key, ...child.val() });
-        });
 
         const olderPosts = allPosts
             .filter(post => post.createdAt)
@@ -272,7 +204,7 @@ try {
         console.log('Posty w archiwum:', olderPosts.length, olderPosts.map(p => ({ title: p.title, createdAt: p.createdAt })));
 
         if (olderPosts.length === 0) {
-            archiveList.innerHTML = '<p class="no “‘no-posts">Brak postów w archiwum.</p>';
+            archiveList.innerHTML = '<p class="no-posts">Brak postów w archiwum.</p>';
         } else {
             olderPosts.forEach((post) => {
                 const archiveItem = document.createElement('div');
@@ -284,7 +216,7 @@ try {
                 archiveItem.addEventListener('click', () => {
                     onValue(ref(db, `posts/${post.id}`), (snapshot) => {
                         const fullPost = snapshot.val();
-                        postsList.innerHTML = `
+                        archiveList.innerHTML = `
                             <div class="post">
                                 <div class="post-meta">Opublikowano: ${fullPost.postDate || 'Brak daty'} o ${fullPost.postTime || 'Brak godziny'}</div>
                                 <h3 class="post-title">${fullPost.title || 'Bez tytułu'}</h3>
@@ -292,12 +224,24 @@ try {
                                 ${fullPost.notes ? `<div class="post-notes"><strong>Uwagi:</strong> <span>${fullPost.notes}</span></div>` : ''}
                                 <div class="post-content">${formatContent(fullPost.content)}</div>
                                 ${isAuthenticated ? `<button class="btn btn-edit" data-id="${post.id}">Edytuj</button>` : ''}
+                                <p><span class="return-link">Powrót do strony głównej</span></p>
                             </div>
                         `;
                         // Ponowne przypisanie obsługi edycji
                         if (isAuthenticated) {
-                            document.querySelector('.btn-edit').addEventListener('click', () => {
-                                openPostModal(post.id, fullPost);
+                            const editButton = document.querySelector('.btn-edit');
+                            if (editButton) {
+                                editButton.addEventListener('click', () => {
+                                    openPostModal(post.id, fullPost);
+                                });
+                            }
+                        }
+                        // Obsługa powrotu do strony głównej
+                        const returnLink = document.querySelector('.return-link');
+                        if (returnLink) {
+                            returnLink.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                loadDefaultView();
                             });
                         }
                     }, { onlyOnce: true });
@@ -307,12 +251,80 @@ try {
         }
 
         archiveLoading.classList.remove('show');
-    }, (error) => {
-        console.error('Błąd ładowania archiwum:', error);
-        networkStatus.textContent = 'Błąd ładowania archiwum. Sprawdź konsolę.';
-        networkStatus.style.display = 'block';
-        archiveLoading.classList.remove('show');
-    });
+    };
+
+    // Funkcja ładowania domyślnego widoku strony
+    const loadDefaultView = () => {
+        // Ładowanie najnowszych postów
+        onValue(ref(db, 'posts'), (snapshot) => {
+            if (isRenderingPosts) {
+                console.log('Pomijanie renderowania postów - już w trakcie.');
+                return;
+            }
+            isRenderingPosts = true;
+
+            postsList.innerHTML = '';
+            postsLoading.classList.add('show');
+
+            const posts = [];
+            snapshot.forEach((child) => {
+                posts.push({ id: child.key, ...child.val() });
+            });
+
+            console.log('Wszystkie posty z Firebase:', posts.length, posts.map(p => ({ title: p.title, createdAt: p.createdAt })));
+
+            // Sortowanie i ograniczenie do 3 najnowszych
+            const latestPosts = posts
+                .filter(post => post.createdAt)
+                .sort((a, b) => b.createdAt - a.createdAt)
+                .slice(0, 3);
+
+            console.log('Najnowsze 3 posty:', latestPosts.length, latestPosts.map(p => ({ title: p.title, createdAt: p.createdAt })));
+
+            if (latestPosts.length === 0) {
+                postsList.innerHTML = '<p class="no-posts">Brak postów do wyświetlenia.</p>';
+            } else {
+                latestPosts.forEach((post) => {
+                    const postDiv = document.createElement('div');
+                    postDiv.className = 'post';
+                    postDiv.innerHTML = `
+                        <div class="post-meta">Opublikowano: ${post.postDate || 'Brak daty'} o ${post.postTime || 'Brak godziny'}</div>
+                        <h3 class="post-title">${post.title || 'Bez tytułu'}</h3>
+                        <div class="post-data"><strong>Data snu:</strong> ${post.dreamDate || 'Brak daty'}</div>
+                        ${post.notes ? `<div class="post-notes"><strong>Uwagi:</strong> <span>${post.notes}</span></div>` : ''}
+                        <div class="post-content">${formatContent(post.content)}</div>
+                        ${isAuthenticated ? `<button class="btn btn-edit" data-id="${post.id}">Edytuj</button>` : ''}
+                    `;
+                    postsList.appendChild(postDiv);
+                });
+                // Dodanie obsługi edycji
+                document.querySelectorAll('.btn-edit').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const postId = e.target.dataset.id;
+                        onValue(ref(db, `posts/${postId}`), (snapshot) => {
+                            const postData = snapshot.val();
+                            openPostModal(postId, postData);
+                        }, { onlyOnce: true });
+                    });
+                });
+            }
+
+            postsLoading.classList.remove('show');
+            isRenderingPosts = false;
+
+            // Ładowanie archiwum
+            loadArchiveDefault(posts);
+        }, (error) => {
+            console.error('Błąd ładowania postów:', error);
+            networkStatus.textContent = 'Błąd ładowania postów. Sprawdź konsolę.';
+            networkStatus.style.display = 'block';
+            postsLoading.classList.remove('show');
+            isRenderingPosts = false;
+        });
+    };
+
+    // Inicjalne ładowanie strony
+    loadDefaultView();
 
     // Dodawanie lub edycja posta
     dreamForm.addEventListener('submit', async (e) => {
@@ -351,6 +363,7 @@ try {
             postModalTitle.textContent = 'Dodaj nowy sen';
             postModal.style.display = 'none';
             console.log(postId ? 'Post zaktualizowany.' : 'Post zapisany.');
+            loadDefaultView(); // Odśwież widok po zapisie
         } catch (error) {
             console.error('Błąd zapisu posta:', error);
             alert(`Błąd zapisu posta: ${error.message}`);
