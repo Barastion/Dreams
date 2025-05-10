@@ -46,10 +46,11 @@ try {
         throw new Error('Brak elementów DOM');
     }
 
-    // Inicjalny stan modalów
+    // Inicjalny stan modalów i linków
     adminModal.style.display = 'none';
     postModal.style.display = 'none';
     logoutLink.style.display = 'none';
+    adminLink.textContent = 'Panel Administratora';
 
     // Status sieci
     const updateNetworkStatus = () => {
@@ -149,7 +150,7 @@ try {
             await signOut(auth);
             console.log('Wylogowano pomyślnie.');
             isAuthenticated = false;
-            adminLink.textContent = 'Napisz nowy post';
+            adminLink.textContent = 'Panel Administratora';
             logoutLink.style.display = 'none';
             adminModal.style.display = 'none';
             postModal.style.display = 'none';
@@ -221,14 +222,14 @@ try {
         } else {
             console.log('Brak zalogowanego użytkownika lub nieprawidłowy email.');
             isAuthenticated = false;
-            adminLink.textContent = 'Napisz nowy post';
+            adminLink.textContent = 'Panel Administratora';
             logoutLink.style.display = 'none';
             adminModal.style.display = 'none';
             postModal.style.display = 'none';
         }
     });
 
-    // Mechanizm kolejkowania pobierania danych
+    // Mechanizm pobierania danych
     const fetchPost = (postId) => {
         return new Promise((resolve, reject) => {
             onValue(ref(db, `posts/${postId}`), (snapshot) => {
@@ -245,9 +246,19 @@ try {
     // Funkcja kolejkowania z priorytetem dla najnowszych
     const fetchPostsInOrder = async (posts) => {
         const parsePostDate = (postDate) => {
-            if (!postDate) return 0;
-            const [day, month, year] = postDate.split('.').map(Number);
-            return new Date(year, month - 1, day).getTime();
+            if (!postDate || typeof postDate !== 'string') return 0;
+            const match = postDate.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+            if (!match) {
+                console.warn(`Nieprawidłowy format postDate: ${postDate}`);
+                return 0;
+            }
+            const [_, day, month, year] = match;
+            const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+            if (isNaN(date.getTime())) {
+                console.warn(`Nieprawidłowa data postDate: ${postDate}`);
+                return 0;
+            }
+            return date.getTime();
         };
 
         const sortedPosts = posts
@@ -258,7 +269,7 @@ try {
             .filter(post => post.sortTime > 0)
             .sort((a, b) => b.sortTime - a.sortTime); // Od najnowszego
 
-        console.log('Posortowane posty:', sortedPosts.map(p => ({ title: p.title, postDate: p.postDate, sortTime: p.sortTime })));
+        console.log('Posortowane posty:', sortedPosts.map(p => ({ title: p.title, postDate: p.postDate, createdAt: p.createdAt, sortTime: p.sortTime })));
 
         const fetchedPosts = [];
         for (const post of sortedPosts) {
@@ -303,9 +314,19 @@ try {
         archiveLoading.classList.add('show');
 
         const parsePostDate = (postDate) => {
-            if (!postDate) return 0;
-            const [day, month, year] = postDate.split('.').map(Number);
-            return new Date(year, month - 1, day).getTime();
+            if (!postDate || typeof postDate !== 'string') return 0;
+            const match = postDate.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+            if (!match) {
+                console.warn(`Nieprawidłowy format postDate: ${postDate}`);
+                return 0;
+            }
+            const [_, day, month, year] = match;
+            const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+            if (isNaN(date.getTime())) {
+                console.warn(`Nieprawidłowa data postDate: ${postDate}`);
+                return 0;
+            }
+            return date.getTime();
         };
 
         const olderPosts = allPosts
@@ -480,7 +501,7 @@ try {
 
         let postData;
         if (postId) {
-            // Edycja: Zachowaj oryginalne createdAt
+            // Edycja: Zachowaj oryginalne postDate i createdAt
             try {
                 const existingPost = await fetchPost(postId);
                 postData = {
@@ -488,10 +509,11 @@ try {
                     dreamDate,
                     notes: notes || null,
                     content,
-                    postDate: existingPost.postDate, // Zachowaj oryginalne postDate
+                    postDate: existingPost.postDate || postDate,
                     postTime,
-                    createdAt: existingPost.createdAt // Zachowaj oryginalne createdAt
+                    createdAt: existingPost.createdAt || serverTimestamp()
                 };
+                console.log('Edycja posta:', { title, postDate: postData.postDate, createdAt: postData.createdAt });
             } catch (error) {
                 console.error('Błąd pobierania istniejącego posta:', error);
                 alert('Błąd pobierania danych posta do edycji.');
@@ -508,6 +530,7 @@ try {
                 postTime,
                 createdAt: serverTimestamp()
             };
+            console.log('Nowy post:', { title, postDate, createdAt: 'serverTimestamp' });
         }
 
         try {
@@ -522,7 +545,7 @@ try {
             postIdInput.value = '';
             postModalTitle.textContent = 'Dodaj nowy sen';
             postModal.style.display = 'none';
-            console.log(postId ? `Post zaktualizowany: ${title}, createdAt: ${postData.createdAt}` : 'Post zapisany.');
+            console.log(postId ? `Post zaktualizowany: ${title}, postDate: ${postData.postDate}` : 'Post zapisany.');
             await loadDefaultView();
         } catch (error) {
             console.error('Błąd zapisu posta:', error);
