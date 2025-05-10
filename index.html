@@ -8,14 +8,14 @@
     <meta name="author" content="Barastion">
     <title>Dziennik Snów</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="snow-icon.png">
+    <link rel="icon" type="image/png" href="logo.png">
 </head>
 <body>
     <div class="container">
         <div class="content-wrapper">
             <header class="header">
                 <div class="logo-frame">
-                    <img src="snow.jpg" alt="Dziennik Snów" class="logo">
+                    <img src="Dreamscape_logo.jpg" alt="Dziennik Snów" class="logo">
                 </div>
                 <h1>Dziennik Snów</h1>
                 <p class="header-subtitle">Twoje sny, twoje historie</p>
@@ -67,7 +67,7 @@
             <!-- Modal logowania -->
             <div class="modal" id="adminModal">
                 <div class="modal-content">
-                    <span class="close">&times;</span>
+                    <span class="close">×</span>
                     <h2>Zaloguj się</h2>
                     <p>Twój umysł zasługuje na chwilę refleksji...</p>
                     <button class="btn btn-google" id="googleLogin">
@@ -81,7 +81,7 @@
             <!-- Modal dodawania/edycji posta -->
             <div class="modal large-modal" id="postModal">
                 <div class="modal-content">
-                    <span class="close">&times;</span>
+                    <span class="close">×</span>
                     <h2 id="postModalTitle">Dodaj nowy sen</h2>
                     <form id="dreamForm" class="post-form">
                         <input type="hidden" id="postId">
@@ -173,8 +173,8 @@
             }
 
             // Zamykanie modalów przy ładowaniu strony
-            document.addEventListener('DOMContentLoaded', () => {
-                console.log('DOMContentLoaded: Zamykanie modalów');
+            window.addEventListener('load', () => {
+                console.log('Window load: Zamykanie modalów');
                 adminModal.style.display = 'none';
                 postModal.style.display = 'none';
                 logoutLink.style.display = 'none';
@@ -197,7 +197,11 @@
 
             // Funkcja otwierania formularza posta
             const openPostModal = (postId = null, postData = null) => {
-                console.log('openPostModal wywołane:', { postId, postData, caller: new Error().stack }); // Debug
+                if (!isAuthenticated) {
+                    console.log('openPostModal zablokowane: Użytkownik nie jest zalogowany.');
+                    return;
+                }
+                console.log('openPostModal wywołane:', { postId, postData, caller: new Error().stack });
                 postModalTitle.textContent = postId ? 'Edytuj sen' : 'Dodaj nowy sen';
                 postIdInput.value = postId || '';
                 document.getElementById('postTitle').value = postData?.title || '';
@@ -212,7 +216,7 @@
             let isAuthenticated = false;
             adminLink.addEventListener('click', (e) => {
                 e.preventDefault();
-                console.log('Kliknięto adminLink:', { isAuthenticated }); // Debug
+                console.log('Kliknięto adminLink:', { isAuthenticated });
                 if (isAuthenticated) {
                     openPostModal();
                 } else {
@@ -220,7 +224,7 @@
                     postModal.style.display = 'none';
                     console.log('Otwarto modal logowania.');
                 }
-            });
+            }, { once: true });
 
             // Wylogowanie
             logoutLink.addEventListener('click', async (e) => {
@@ -240,28 +244,25 @@
                     networkStatus.textContent = 'Błąd wylogowania. Sprawdź konsolę.';
                     networkStatus.style.display = 'block';
                 }
-            });
+            }, { once: true });
 
             // Zamykanie modalów
-            closes.forEach(close => {
-                close.addEventListener('click', () => {
-                    adminModal.style.display = 'none';
-                    postModal.style.display = 'none';
-                    dreamForm.reset();
-                    postIdInput.value = '';
-                    postModalTitle.textContent = 'Dodaj nowy sen';
-                    console.log('Zamknięto modal.');
-                });
-            });
-
-            closeForm.addEventListener('click', () => {
+            const closeModal = () => {
                 adminModal.style.display = 'none';
                 postModal.style.display = 'none';
                 dreamForm.reset();
                 postIdInput.value = '';
                 postModalTitle.textContent = 'Dodaj nowy sen';
-                console.log('Zamknięto formularz.');
+                console.log('Zamknięto modal.');
+            };
+
+            closes.forEach(close => {
+                close.removeEventListener('click', closeModal); // Usuwamy stare zdarzenia
+                close.addEventListener('click', closeModal, { once: true });
             });
+
+            closeForm.removeEventListener('click', closeModal); // Usuwamy stare zdarzenia
+            closeForm.addEventListener('click', closeModal, { once: true });
 
             // Logowanie Google
             googleLogin.addEventListener('click', async () => {
@@ -274,7 +275,7 @@
                     if (result.user.email === 'lukasz13d@gmail.com') {
                         isAuthenticated = true;
                         adminModal.style.display = 'none';
-                        postModal.style.display = 'none'; // Zapewniamy zamknięcie po zalogowaniu
+                        postModal.style.display = 'none';
                         console.log('Zalogowano autora, postModal zamknięty.');
                     } else {
                         alert('Dostęp tylko dla autora.');
@@ -290,25 +291,25 @@
                     networkStatus.textContent = 'Błąd logowania. Sprawdź konsolę.';
                     networkStatus.style.display = 'block';
                 }
-            });
+            }, { once: true });
 
             // Obsługa stanu autoryzacji
             onAuthStateChanged(auth, (user) => {
-                console.log('onAuthStateChanged wywołane:', { user: user?.email }); // Debug
+                console.log('onAuthStateChanged wywołane:', { user: user?.email });
                 if (user && user.email === 'lukasz13d@gmail.com') {
                     console.log('Zalogowano:', user.email);
                     isAuthenticated = true;
                     adminLink.textContent = 'Dodaj nowy post';
                     logoutLink.style.display = 'inline';
                     adminModal.style.display = 'none';
-                    postModal.style.display = 'none'; // Zapewniamy zamknięcie
+                    postModal.style.display = 'none';
                 } else {
                     console.log('Brak zalogowanego użytkownika lub nieprawidłowy email.');
                     isAuthenticated = false;
                     adminLink.textContent = 'Napisz nowy post';
                     logoutLink.style.display = 'none';
                     adminModal.style.display = 'none';
-                    postModal.style.display = 'none'; // Zapewniamy zamknięcie
+                    postModal.style.display = 'none';
                 }
             });
 
@@ -321,7 +322,7 @@
                     introFull.style.display = 'block';
                     introToggle.textContent = 'Zwiń';
                 }
-            });
+            }, { once: true });
 
             // Ładowanie postów
             const loadPosts = () => {
@@ -358,7 +359,7 @@
                                 const postId = button.getAttribute('data-id');
                                 const post = posts.find(p => p.id === postId);
                                 openPostModal(postId, post);
-                            });
+                            }, { once: true });
                         });
                     }
                     postsLoading.classList.remove('show');
@@ -430,7 +431,7 @@
                                     postList.style.display = 'none';
                                     arrow.textContent = '▼';
                                 }
-                            });
+                            }, { once: true });
                             const editButtons = postList.querySelectorAll('.btn-edit');
                             editButtons.forEach(button => {
                                 button.addEventListener('click', (e) => {
@@ -438,7 +439,7 @@
                                     const postId = button.getAttribute('data-id');
                                     const post = months[monthYear].find(p => p.id === postId);
                                     openPostModal(postId, post);
-                                });
+                                }, { once: true });
                             });
                         });
                     }
@@ -492,7 +493,7 @@
                     networkStatus.textContent = 'Błąd zapisu posta. Sprawdź konsolę.';
                     networkStatus.style.display = 'block';
                 }
-            });
+            }, { once: true });
 
             // Inicjalizacja
             loadPosts();
