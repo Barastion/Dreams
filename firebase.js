@@ -69,7 +69,6 @@ try {
     // Funkcja formatowania treści z zachowaniem pustych linii
     const formatContent = (content) => {
         if (!content) return 'Brak treści';
-        // Zachowaj puste linie jako puste akapity
         return content
             .split('\n\n')
             .map(paragraph => `<p>${paragraph.replace(/\n/g, '<br>').replace(/^$/, '')}</p>`)
@@ -83,7 +82,6 @@ try {
             return { short: content, needsToggle: false };
         }
 
-        // Wyszukaj ostatnią pustą linię do 900 znaków
         const searchText = content.slice(0, 900);
         const lastEmptyLineIndex = searchText.lastIndexOf('\n\n');
         if (lastEmptyLineIndex >= 700) {
@@ -91,24 +89,19 @@ try {
             return { short: content.slice(0, cutIndex), needsToggle: true };
         }
 
-        // Wyszukaj w przedziale 700–900 znaków
         const substring = content.slice(700, 900);
-        
-        // Priorytet 2: Ostatnia kropka (koniec zdania)
         const lastPeriodIndex = substring.lastIndexOf('.');
         if (lastPeriodIndex !== -1) {
             const cutIndex = 700 + lastPeriodIndex + 1;
             return { short: content.slice(0, cutIndex), needsToggle: true };
         }
 
-        // Priorytet 3: Ostatni przecinek
         const lastCommaIndex = substring.lastIndexOf(',');
         if (lastCommaIndex !== -1) {
             const cutIndex = 700 + lastCommaIndex + 1;
             return { short: content.slice(0, cutIndex), needsToggle: true };
         }
 
-        // Priorytet 4: Ostatnie pełne słowo
         let endIndex = 900;
         if (content.length < 900) {
             endIndex = content.length;
@@ -120,7 +113,6 @@ try {
             return { short: content.slice(0, endIndex).trim(), needsToggle: true };
         }
 
-        // Ostatnia opcja: Obcięcie po 700 znakach
         return { short: content.slice(0, 700), needsToggle: true };
     };
 
@@ -254,7 +246,6 @@ try {
     const fetchPostsInOrder = async (posts) => {
         const parsePostDate = (postDate) => {
             if (!postDate) return 0;
-            // Parsuj format DD.MM.YYYY
             const [day, month, year] = postDate.split('.').map(Number);
             return new Date(year, month - 1, day).getTime();
         };
@@ -262,12 +253,12 @@ try {
         const sortedPosts = posts
             .map(post => ({
                 ...post,
-                sortTime: post.createdAt || parsePostDate(post.postDate) || 0
+                sortTime: parsePostDate(post.postDate) || post.createdAt || 0
             }))
             .filter(post => post.sortTime > 0)
             .sort((a, b) => b.sortTime - a.sortTime); // Od najnowszego
 
-        console.log('Posortowane posty:', sortedPosts.map(p => ({ title: p.title, sortTime: p.sortTime })));
+        console.log('Posortowane posty:', sortedPosts.map(p => ({ title: p.title, postDate: p.postDate, sortTime: p.sortTime })));
 
         const fetchedPosts = [];
         for (const post of sortedPosts) {
@@ -290,7 +281,6 @@ try {
         }
         editButtons.forEach(button => {
             const postId = button.dataset.id;
-            // Usuń istniejące zdarzenia, aby uniknąć duplikatów
             button.replaceWith(button.cloneNode(true));
             const newButton = document.querySelector(`.btn-edit[data-id="${postId}"]`);
             newButton.addEventListener('click', async () => {
@@ -312,16 +302,22 @@ try {
         archiveList.innerHTML = '';
         archiveLoading.classList.add('show');
 
+        const parsePostDate = (postDate) => {
+            if (!postDate) return 0;
+            const [day, month, year] = postDate.split('.').map(Number);
+            return new Date(year, month - 1, day).getTime();
+        };
+
         const olderPosts = allPosts
-            .filter(post => post.createdAt || post.postDate)
+            .filter(post => post.postDate || post.createdAt)
             .sort((a, b) => {
-                const timeA = a.createdAt || new Date(a.postDate.split('.').reverse().join('-')).getTime();
-                const timeB = b.createdAt || new Date(b.postDate.split('.').reverse().join('-')).getTime();
+                const timeA = parsePostDate(a.postDate) || a.createdAt || 0;
+                const timeB = parsePostDate(b.postDate) || b.createdAt || 0;
                 return timeB - timeA; // Od najnowszego
             })
             .slice(3); // Od 4. posta wzwyż
 
-        console.log('Posty w archiwum:', olderPosts.length, olderPosts.map(p => ({ title: p.title, createdAt: p.createdAt, postDate: p.postDate })));
+        console.log('Posty w archiwum:', olderPosts.length, olderPosts.map(p => ({ title: p.title, postDate: p.postDate, createdAt: p.createdAt })));
 
         if (olderPosts.length === 0) {
             archiveList.innerHTML = '<p class="no-posts">Brak postów w archiwum.</p>';
@@ -351,7 +347,6 @@ try {
                                 <p><span class="return-link">Powrót do archiwum</span></p>
                             </div>
                         `;
-                        // Obsługa powrotu do archiwum
                         const returnLink = document.querySelector('.return-link');
                         if (returnLink) {
                             returnLink.addEventListener('click', (e) => {
@@ -360,7 +355,6 @@ try {
                                 loadArchiveDefault(allPosts);
                             });
                         }
-                        // Konfiguracja przycisków edycji
                         if (isAuthenticated) {
                             await setupEditButton();
                         }
@@ -375,7 +369,6 @@ try {
         }
 
         archiveLoading.classList.remove('show');
-        // Konfiguracja przycisków edycji dla listy archiwum
         if (isAuthenticated) {
             setupEditButton();
         }
@@ -387,7 +380,6 @@ try {
         postsLoading.classList.add('show');
 
         try {
-            // Pobierz wszystkie posty
             const snapshot = await new Promise((resolve, reject) => {
                 onValue(ref(db, 'posts'), (snap) => resolve(snap), { onlyOnce: true }, reject);
             });
@@ -397,15 +389,12 @@ try {
                 posts.push({ id: child.key, ...child.val() });
             });
 
-            console.log('Wszystkie posty z Firebase:', posts.length, posts.map(p => ({ title: p.title, createdAt: p.createdAt, postDate: p.postDate })));
+            console.log('Wszystkie posty z Firebase:', posts.length, posts.map(p => ({ title: p.title, postDate: p.postDate, createdAt: p.createdAt })));
 
-            // Kolejkowanie pobierania
             const fetchedPosts = await fetchPostsInOrder(posts);
-
-            // Najnowsze 3 posty
             const latestPosts = fetchedPosts.slice(0, 3);
 
-            console.log('Najnowsze 3 posty:', latestPosts.length, latestPosts.map(p => ({ title: p.title, createdAt: p.createdAt, postDate: p.postDate })));
+            console.log('Najnowsze 3 posty:', latestPosts.length, latestPosts.map(p => ({ title: p.title, postDate: p.postDate, createdAt: p.createdAt })));
 
             if (latestPosts.length === 0) {
                 postsList.innerHTML = '<p class="no-posts">Brak postów do wyświetlenia.</p>';
@@ -429,7 +418,6 @@ try {
                     `;
                     postsList.appendChild(postDiv);
 
-                    // Obsługa rozwijania/zwijania
                     if (needsToggle) {
                         const expandLink = postDiv.querySelector('.content-toggle[data-toggle="expand"]');
                         const collapseLink = postDiv.querySelector('.content-toggle[data-toggle="collapse"]');
@@ -456,15 +444,12 @@ try {
                     }
                 });
 
-                // Obsługa edycji
                 if (isAuthenticated) {
                     await setupEditButton();
                 }
             }
 
             postsLoading.classList.remove('show');
-
-            // Ładowanie archiwum
             loadArchiveDefault(fetchedPosts);
         } catch (error) {
             console.error('Błąd ładowania postów:', error);
@@ -492,15 +477,39 @@ try {
         const now = new Date();
         const postDate = now.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric' });
         const postTime = now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
-        const postData = {
-            title,
-            dreamDate,
-            notes: notes || null,
-            content,
-            postDate,
-            postTime,
-            createdAt: serverTimestamp()
-        };
+
+        let postData;
+        if (postId) {
+            // Edycja: Zachowaj oryginalne createdAt
+            try {
+                const existingPost = await fetchPost(postId);
+                postData = {
+                    title,
+                    dreamDate,
+                    notes: notes || null,
+                    content,
+                    postDate: existingPost.postDate, // Zachowaj oryginalne postDate
+                    postTime,
+                    createdAt: existingPost.createdAt // Zachowaj oryginalne createdAt
+                };
+            } catch (error) {
+                console.error('Błąd pobierania istniejącego posta:', error);
+                alert('Błąd pobierania danych posta do edycji.');
+                return;
+            }
+        } else {
+            // Nowy post
+            postData = {
+                title,
+                dreamDate,
+                notes: notes || null,
+                content,
+                postDate,
+                postTime,
+                createdAt: serverTimestamp()
+            };
+        }
+
         try {
             if (postId) {
                 await set(ref(db, `posts/${postId}`), postData);
@@ -513,8 +522,8 @@ try {
             postIdInput.value = '';
             postModalTitle.textContent = 'Dodaj nowy sen';
             postModal.style.display = 'none';
-            console.log(postId ? 'Post zaktualizowany.' : 'Post zapisany.');
-            await loadDefaultView(); // Odśwież widok
+            console.log(postId ? `Post zaktualizowany: ${title}, createdAt: ${postData.createdAt}` : 'Post zapisany.');
+            await loadDefaultView();
         } catch (error) {
             console.error('Błąd zapisu posta:', error);
             alert(`Błąd zapisu posta: ${error.message}`);
