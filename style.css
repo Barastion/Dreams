@@ -1,6 +1,6 @@
 /* Reset stylów */
 * {
-    margin: 12px;
+    margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
@@ -298,7 +298,6 @@ h2 {
 .expand-arrow {
     font-size: 0.75rem; /* Mniejszy rozmiar dla strzałki */
     color: var(--primary-yellow);
-    line-height: 1;
 }
 
 /* Stopka */
