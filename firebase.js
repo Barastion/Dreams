@@ -66,53 +66,61 @@ try {
     window.addEventListener('offline', updateNetworkStatus);
     updateNetworkStatus();
 
-    // Funkcja formatowania treści z zachowaniem akapitów i pustych linii
+    // Funkcja formatowania treści z zachowaniem pustych linii
     const formatContent = (content) => {
         if (!content) return 'Brak treści';
+        // Zachowaj puste linie jako puste akapity
         return content
             .split('\n\n')
-            .map(paragraph => `<p>${paragraph.replace(/\n/g, '<br>')}</p>`)
+            .map(paragraph => `<p>${paragraph.replace(/\n/g, '<br>').replace(/^$/, '')}</p>`)
             .join('');
     };
 
-    // Funkcja obcinania treści w przedziale 800–900 znaków
+    // Funkcja obcinania treści w przedziale 700–900 znaków
     const truncateContent = (content) => {
         if (!content) return { short: 'Brak treści', needsToggle: false };
-        if (content.length <= 800) {
+        if (content.length <= 700) {
             return { short: content, needsToggle: false };
         }
 
-        // Wyszukaj w przedziale 800–900 znaków
-        const substring = content.slice(800, 900);
+        // Wyszukaj w przedziale 700–900 znaków
+        const substring = content.slice(700, 900);
         
-        // Priorytet 1: Ostatnia kropka (koniec zdania)
+        // Priorytet 1: Ostatnia pusta linia (\n\n)
+        const lastEmptyLineIndex = substring.lastIndexOf('\n\n');
+        if (lastEmptyLineIndex !== -1) {
+            const cutIndex = 700 + lastEmptyLineIndex + 2;
+            return { short: content.slice(0, cutIndex), needsToggle: true };
+        }
+
+        // Priorytet 2: Ostatnia kropka (koniec zdania)
         const lastPeriodIndex = substring.lastIndexOf('.');
         if (lastPeriodIndex !== -1) {
-            const cutIndex = 800 + lastPeriodIndex + 1;
+            const cutIndex = 700 + lastPeriodIndex + 1;
             return { short: content.slice(0, cutIndex), needsToggle: true };
         }
 
-        // Priorytet 2: Ostatni przecinek
+        // Priorytet 3: Ostatni przecinek
         const lastCommaIndex = substring.lastIndexOf(',');
         if (lastCommaIndex !== -1) {
-            const cutIndex = 800 + lastCommaIndex + 1;
+            const cutIndex = 700 + lastCommaIndex + 1;
             return { short: content.slice(0, cutIndex), needsToggle: true };
         }
 
-        // Priorytet 3: Ostatnie pełne słowo (spacja lub nowa linia)
+        // Priorytet 4: Ostatnie pełne słowo
         let endIndex = 900;
         if (content.length < 900) {
             endIndex = content.length;
         }
-        while (endIndex > 800 && content[endIndex] !== ' ' && content[endIndex] !== '\n') {
+        while (endIndex > 700 && content[endIndex] !== ' ' && content[endIndex] !== '\n') {
             endIndex--;
         }
-        if (endIndex > 800) {
+        if (endIndex > 700) {
             return { short: content.slice(0, endIndex).trim(), needsToggle: true };
         }
 
-        // Ostatnia opcja: Obcięcie po 800 znakach
-        return { short: content.slice(0, 800), needsToggle: true };
+        // Ostatnia opcja: Obcięcie po 700 znakach
+        return { short: content.slice(0, 700), needsToggle: true };
     };
 
     // Funkcja otwierania formularza posta
@@ -227,9 +235,38 @@ try {
         }
     });
 
-    // Flaga zapobiegająca wielokrotnemu renderowaniu
-    let isRenderingPosts = false;
-    let isRenderingArchive = false;
+    // Mechanizm kolejkowania pobierania danych
+    const fetchPost = (postId) => {
+        return new Promise((resolve, reject) => {
+            onValue(ref(db, `posts/${postId}`), (snapshot) => {
+                const postData = snapshot.val();
+                if (postData) {
+                    resolve({ id: postId, ...postData });
+                } else {
+                    reject(new Error(`Brak danych dla posta ${postId}`));
+                }
+            }, { onlyOnce: true });
+        });
+    };
+
+    // Funkcja kolejkowania z priorytetem dla najnowszych
+    const fetchPostsInOrder = async (posts) => {
+        const sortedPosts = posts
+            .filter(post => post.createdAt)
+            .sort((a, b) => b.createdAt - a.createdAt); // Od najnowszego
+
+        const fetchedPosts = [];
+        for (const post of sortedPosts) {
+            try {
+                const fullPost = await fetchPost(post.id);
+                fetchedPosts.push(fullPost);
+                console.log(`Pobrano post: ${fullPost.title}`);
+            } catch (error) {
+                console.error(`Błąd pobierania posta ${post.id}:`, error);
+            }
+        }
+        return fetchedPosts;
+    };
 
     // Funkcja ładowania domyślnego widoku archiwum
     const loadArchiveDefault = (allPosts) => {
@@ -250,12 +287,15 @@ try {
                 const archiveItem = document.createElement('div');
                 archiveItem.className = 'archive-item';
                 archiveItem.innerHTML = `
-                    <span>${post.title || 'Bez tytułu'} - Opublikowano ${post.postDate || 'Brak daty'}</span>
+                    <span>
+                        <span class="archive-title">${post.title || 'Bez tytułu'}</span>
+                        <span class="archive-date"> - Opublikowano ${post.postDate || 'Brak daty'}</span>
+                    </span>
                     <span class="expand-arrow">▼</span>
                 `;
-                archiveItem.addEventListener('click', () => {
-                    onValue(ref(db, `posts/${post.id}`), (snapshot) => {
-                        const fullPost = snapshot.val();
+                archiveItem.addEventListener('click', async () => {
+                    try {
+                        const fullPost = await fetchPost(post.id);
                         archiveList.innerHTML = `
                             <div class="post">
                                 <div class="post-meta">Opublikowano: ${fullPost.postDate || 'Brak daty'} o ${fullPost.postTime || 'Brak godziny'}</div>
@@ -267,7 +307,7 @@ try {
                                 <p><span class="return-link">Powrót do strony głównej</span></p>
                             </div>
                         `;
-                        // Ponowne przypisanie obsługi edycji
+                        // Obsługa edycji
                         if (isAuthenticated) {
                             const editButton = document.querySelector('.btn-edit');
                             if (editButton) {
@@ -276,15 +316,19 @@ try {
                                 });
                             }
                         }
-                        // Obsługa powrotu do strony głównej
+                        // Obsługa powrotu
                         const returnLink = document.querySelector('.return-link');
                         if (returnLink) {
                             returnLink.addEventListener('click', (e) => {
                                 e.preventDefault();
-                                window.location.reload(); // Przeładowanie strony
+                                window.location.reload();
                             });
                         }
-                    }, { onlyOnce: true });
+                    } catch (error) {
+                        console.error('Błąd ładowania posta z archiwum:', error);
+                        networkStatus.textContent = 'Błąd ładowania posta z archiwum.';
+                        networkStatus.style.display = 'block';
+                    }
                 });
                 archiveList.appendChild(archiveItem);
             });
@@ -294,17 +338,15 @@ try {
     };
 
     // Funkcja ładowania domyślnego widoku strony
-    const loadDefaultView = () => {
-        // Ładowanie najnowszych postów
-        onValue(ref(db, 'posts'), (snapshot) => {
-            if (isRenderingPosts) {
-                console.log('Pomijanie renderowania postów - już w trakcie.');
-                return;
-            }
-            isRenderingPosts = true;
+    const loadDefaultView = async () => {
+        postsList.innerHTML = '';
+        postsLoading.classList.add('show');
 
-            postsList.innerHTML = '';
-            postsLoading.classList.add('show');
+        try {
+            // Pobierz wszystkie posty
+            const snapshot = await new Promise((resolve, reject) => {
+                onValue(ref(db, 'posts'), (snap) => resolve(snap), { onlyOnce: true }, reject);
+            });
 
             const posts = [];
             snapshot.forEach((child) => {
@@ -313,11 +355,11 @@ try {
 
             console.log('Wszystkie posty z Firebase:', posts.length, posts.map(p => ({ title: p.title, createdAt: p.createdAt })));
 
-            // Sortowanie i ograniczenie do 3 najnowszych
-            const latestPosts = posts
-                .filter(post => post.createdAt)
-                .sort((a, b) => b.createdAt - a.createdAt)
-                .slice(0, 3);
+            // Kolejkowanie pobierania
+            const fetchedPosts = await fetchPostsInOrder(posts);
+
+            // Najnowsze 3 posty
+            const latestPosts = fetchedPosts.slice(0, 3);
 
             console.log('Najnowsze 3 posty:', latestPosts.length, latestPosts.map(p => ({ title: p.title, createdAt: p.createdAt })));
 
@@ -343,7 +385,7 @@ try {
                     `;
                     postsList.appendChild(postDiv);
 
-                    // Obsługa rozwijania/zwijania treści
+                    // Obsługa rozwijania/zwijania
                     if (needsToggle) {
                         const expandLink = postDiv.querySelector('.content-toggle[data-toggle="expand"]');
                         const collapseLink = postDiv.querySelector('.content-toggle[data-toggle="collapse"]');
@@ -370,30 +412,32 @@ try {
                     }
                 });
 
-                // Dodanie obsługi edycji
+                // Obsługa edycji
                 document.querySelectorAll('.btn-edit').forEach(button => {
-                    button.addEventListener('click', (e) => {
+                    button.addEventListener('click', async (e) => {
                         const postId = e.target.dataset.id;
-                        onValue(ref(db, `posts/${postId}`), (snapshot) => {
-                            const postData = snapshot.val();
+                        try {
+                            const postData = await fetchPost(postId);
                             openPostModal(postId, postData);
-                        }, { onlyOnce: true });
+                        } catch (error) {
+                            console.error('Błąd ładowania danych do edycji:', error);
+                            networkStatus.textContent = 'Błąd ładowania danych do edycji.';
+                            networkStatus.style.display = 'block';
+                        }
                     });
                 });
             }
 
             postsLoading.classList.remove('show');
-            isRenderingPosts = false;
 
             // Ładowanie archiwum
-            loadArchiveDefault(posts);
-        }, (error) => {
+            loadArchiveDefault(fetchedPosts);
+        } catch (error) {
             console.error('Błąd ładowania postów:', error);
             networkStatus.textContent = 'Błąd ładowania postów. Sprawdź konsolę.';
             networkStatus.style.display = 'block';
             postsLoading.classList.remove('show');
-            isRenderingPosts = false;
-        });
+        }
     };
 
     // Inicjalne ładowanie strony
@@ -436,7 +480,7 @@ try {
             postModalTitle.textContent = 'Dodaj nowy sen';
             postModal.style.display = 'none';
             console.log(postId ? 'Post zaktualizowany.' : 'Post zapisany.');
-            loadDefaultView(); // Odśwież widok po zapisie
+            await loadDefaultView(); // Odśwież widok
         } catch (error) {
             console.error('Błąd zapisu posta:', error);
             alert(`Błąd zapisu posta: ${error.message}`);
