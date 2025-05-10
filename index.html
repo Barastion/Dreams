@@ -7,7 +7,7 @@
     <meta name="keywords" content="dziennik snów, Barastion Dreamscape, interpretacja snów, świadome śnienie, zapisywanie snów">
     <meta name="author" content="Barastion">
     <meta property="og:title" content="Barastion Dreamscape – Dziennik Snów">
-    <meta property="og:description" content="Tam, gdzie kończy się rzeczywistość, a zaczyna sen – spojrzenie w zakamarki podświadomości.">
+    <meta property="og:description" content="Osobista podróż przez świat snów. Zapisz i odkryj znaczenie swoich snów.">
     <meta property="og:image" content="Dreamscape_logo.jpg">
     <meta property="og:url" content="https://barastion.github.io/Dreamscape/">
     <meta property="og:type" content="website">
@@ -151,6 +151,10 @@
                     networkStatus.style.display = 'block';
                 }
             }
+        });
+
+        window.addEventListener('load', () => {
+            window.postMessage({ action: 'logVisit', source: 'dreamscape' }, 'https://barastion.github.io');
         });
     </script>
 
