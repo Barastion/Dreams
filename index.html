@@ -84,7 +84,6 @@
     <!-- Modal logowania -->
     <div id="adminModal" class="modal">
         <div class="modal-content">
-            <span class="close">×</span>
             <h2>Zaloguj się</h2>
             <p>Zaloguj się, aby dodać lub edytować post. Dostęp tylko dla autora.</p>
             <button id="googleLogin" class="btn btn-google">
@@ -94,13 +93,13 @@
                 Zaloguj się przez Google
             </button>
             <p class="modal-note">Tylko autor ma dostęp do edycji.</p>
+            <button type="button" class="btn btn-cancel modal-close">Zamknij</button>
         </div>
     </div>
 
     <!-- Modal dodawania/edycji posta -->
     <div id="postModal" class="modal">
         <div class="modal-content large-modal">
-            <span class="close">×</span>
             <h2 id="postModalTitle">Dodaj nowy sen</h2>
             <form id="dreamForm" class="post-form">
                 <div class="form-group">
@@ -117,7 +116,7 @@
                 </div>
                 <div class="form-buttons">
                     <button type="submit" class="btn btn-submit">Zapisz sen</button>
-                    <button type="button" id="closeForm" class="btn btn-cancel">Zamknij</button>
+                    <button type="button" id="closeForm" class="btn btn-cancel modal-close">Zamknij</button>
                 </div>
                 <input type="hidden" id="postId" name="postId">
             </form>
@@ -186,7 +185,7 @@
             const adminLink = document.getElementById('adminLink');
             const logoutLink = document.getElementById('logoutLink');
             const googleLogin = document.getElementById('googleLogin');
-            const closes = document.querySelectorAll('.close');
+            const closes = document.querySelectorAll('.modal-close'); // Zmiana z .close na .modal-close
             const networkStatus = document.getElementById('networkStatus');
             const postsList = document.getElementById('postsList');
             const archiveList = document.getElementById('archiveList');
