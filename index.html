@@ -11,9 +11,9 @@
     <meta property="og:image" content="Dreamscape_logo.jpg">
     <meta property="og:url" content="https://barastion.github.io/Dreamscape/">
     <meta property="og:type" content="website">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://*.firebaseio.com https://*.firebasedatabase.app https://*.web.app; connect-src 'self' https://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app https://*.web.app; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://*.firebaseio.com https://*.firebasedatabase.app https://*.web.app; connect-src 'self' https://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app https://*.web.app; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
     <title>Barastion Dreamscape – Dziennik Snów</title>
-    <link rel="stylesheet" href="style.css" onerror="console.error('Błąd ładowania style.css');">
+    <link rel="stylesheet" href="style.css?v=8" onerror="console.error('Błąd ładowania style.css');">
     <link rel="icon" type="image/png" href="logo.png">
 </head>
 <body>
@@ -169,14 +169,8 @@
                 }
             }
         });
-
-        // Inicjalizacja strony
-        window.onload = function() {
-            console.log('Strona Dreamscape załadowana');
-            updateNetworkStatus();
-        };
     </script>
 
-    <script type="module" src="firebase.js"></script>
+    <script type="module" src="firebase.js?v=8"></script>
 </body>
 </html>
