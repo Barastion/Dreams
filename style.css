@@ -10,12 +10,13 @@
     --primary-yellow: #ffeb3b; /* Żółty z Watchtower */
     --light-gray: #3a3a3a; /* Jasny prostokąt */
     --dark-gray: #2d2d2d; /* Ciemny prostokąt */
+    --background-dark: #1e1e1e; /* Tło strony */
 }
 
 /* Podstawowe style strony */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #1e1e1e;
+    background: var(--background-dark);
     color: #ffffff;
     line-height: 1.6;
     min-height: 100vh;
@@ -36,9 +37,9 @@ body {
     background: var(--dark-gray);
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     max-width: 960px;
-    margin: 30px auto; /* Zwiększono margin dla lepszego odstępu */
+    margin: 40px auto; /* Większy odstęp, jak w Watchtower */
 }
 
 /* Jasny prostokąt wokół sekcji */
@@ -47,7 +48,7 @@ body {
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* Nagłówek */
@@ -80,11 +81,10 @@ body {
 }
 
 h1 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--primary-yellow);
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-    white-space: pre-line;
     margin-bottom: 2px;
 }
 
@@ -92,7 +92,7 @@ h1 {
     font-size: 1.2rem;
     font-weight: 700;
     color: var(--primary-yellow);
-    margin: 1px 0;
+    margin: 2px 0;
 }
 
 .header-subtitle:last-of-type {
@@ -106,7 +106,7 @@ h2 {
     font-size: 1.2rem;
     font-weight: 700;
     color: var(--primary-yellow);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     text-align: left;
 }
 
@@ -115,7 +115,6 @@ h2 {
     background: var(--dark-gray);
     padding: 20px;
     border-radius: 8px;
-    margin-bottom: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -126,7 +125,7 @@ h2 {
 
 .intro-text,
 .intro-full p {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: #ffffff;
     margin-bottom: 10px;
     text-align: left;
@@ -138,11 +137,12 @@ h2 {
 }
 
 .intro-toggle {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--primary-yellow);
     text-decoration: underline;
     cursor: pointer;
     display: inline-block;
+    transition: color 0.3s;
 }
 
 .intro-toggle:hover {
@@ -161,7 +161,7 @@ h2 {
 }
 
 .post {
-    background: #3a3a3a;
+    background: var(--light-gray);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -169,9 +169,9 @@ h2 {
 }
 
 .post-meta {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #888888;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     text-align: left;
 }
 
@@ -185,22 +185,22 @@ h2 {
 }
 
 .post-data {
-    font-size: 0.9rem;
-    font-weight: 700;
+    font-size: 0.95rem;
+    font-weight: 600;
     color: #ffffff;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     text-align: left;
 }
 
 .post-content {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: #ffffff;
     text-align: left;
     white-space: pre-wrap;
 }
 
 .no-posts {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: #888888;
     text-align: center;
     margin: 12px 0;
@@ -214,15 +214,15 @@ h2 {
 .archive-list {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 }
 
 .archive-item {
     background: #444444;
-    padding: 8px;
+    padding: 10px;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #ffffff;
     display: flex;
     justify-content: space-between;
@@ -237,7 +237,7 @@ h2 {
 }
 
 .expand-arrow {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: var(--primary-yellow);
 }
 
@@ -250,7 +250,7 @@ h2 {
 }
 
 .footer p {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #888888;
     margin-bottom: 6px;
 }
@@ -276,6 +276,7 @@ h2 {
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     z-index: 1000;
+    display: flex;
     justify-content: center;
     align-items: center;
     animation: fadeIn 0.3s ease-in;
@@ -287,7 +288,7 @@ h2 {
     max-width: 400px;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -297,18 +298,17 @@ h2 {
 .large-modal {
     max-width: 800px;
     min-height: 600px;
-    padding: 20px;
+    padding: 25px;
 }
 
 .close {
     position: absolute;
-    top: 10px;
+    top: 12px;
     right: 15px;
     font-size: 1.5rem;
     cursor: pointer;
     color: #ffffff;
     transition: color 0.3s;
-    z-index: 1001;
 }
 
 .close:hover {
@@ -322,13 +322,13 @@ h2 {
 }
 
 .modal p {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: #cccccc;
     margin-bottom: 15px;
 }
 
 .modal-note {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #888888;
     margin-top: 12px;
 }
@@ -338,6 +338,7 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    width: 100%;
 }
 
 .form-group {
@@ -366,7 +367,7 @@ textarea {
 
 input:focus,
 textarea:focus {
-    border-color: #5a6268;
+    border-color: var(--primary-yellow);
     outline: none;
 }
 
@@ -458,29 +459,22 @@ textarea {
     color: #ffffff;
     display: none;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 2000;
 }
 
-.network-status.offline {
+.network-status.show {
     display: block;
 }
 
 /* Animacje */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Responsywność */
@@ -489,34 +483,31 @@ textarea {
         padding: 10px;
     }
     .content-wrapper {
-        padding: 10px;
+        padding: 15px;
         max-width: 100%;
-        margin: 15px auto;
+        margin: 20px auto;
     }
     .section-container {
         padding: 10px;
     }
     .section-box {
-        max-width: 100%;
+        padding: 15px;
     }
-    .logo-frame,
-    .post,
-    .archive-item {
-        width: 100%;
+    .logo-frame {
         max-width: 100%;
     }
     .large-modal {
-        max-width: 100%;
+        max-width: 95%;
         min-height: 500px;
     }
     h1 {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
     }
     .header-subtitle {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
     .header-subtitle:last-of-type {
-        font-size: 0.95rem;
+        font-size: 1rem;
     }
     h2 {
         font-size: 1.1rem;
@@ -529,27 +520,26 @@ textarea {
 
 @media (max-width: 480px) {
     h1 {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
     .header-subtitle {
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
     .header-subtitle:last-of-type {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
     }
     .post-title {
         font-size: 1.1rem;
     }
     .post-meta,
     .footer p {
-        font-size: 0.7rem;
+        font-size: 0.8rem;
     }
     .btn {
         padding: 8px 16px;
         font-size: 0.9rem;
     }
     .large-modal {
-        max-width: 95%;
         min-height: 400px;
     }
     textarea {
