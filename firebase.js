@@ -43,6 +43,10 @@ try {
         });
         networkStatus.textContent = 'Błąd: Brak elementów strony.';
         networkStatus.style.display = 'block';
+        setTimeout(() => {
+            networkStatus.style.opacity = '0';
+            setTimeout(() => networkStatus.style.display = 'none', 500);
+        }, 5000);
         throw new Error('Brak elementów DOM');
     }
 
@@ -51,6 +55,15 @@ try {
     postModal.style.display = 'none';
     logoutLink.style.display = 'none';
     adminLink.textContent = 'Panel Administratora';
+
+    // Funkcja ukrywania networkStatus
+    const hideNetworkStatus = () => {
+        networkStatus.style.opacity = '0';
+        setTimeout(() => {
+            networkStatus.style.display = 'none';
+            networkStatus.style.opacity = '1';
+        }, 500);
+    };
 
     // Status sieci
     const updateNetworkStatus = () => {
@@ -61,6 +74,7 @@ try {
             networkStatus.classList.add('offline');
             networkStatus.textContent = 'Brak połączenia z internetem.';
             networkStatus.style.display = 'block';
+            setTimeout(hideNetworkStatus, 5000);
         }
     };
     window.addEventListener('online', updateNetworkStatus);
@@ -117,6 +131,25 @@ try {
         return { short: content.slice(0, 700), needsToggle: true };
     };
 
+    // Funkcja zapisu do cache
+    const setCachedData = (cacheKey, data) => {
+        console.log(`Zapisano do cache: ${cacheKey}`);
+        localStorage.setItem(cacheKey, JSON.stringify(data));
+        localStorage.setItem(`${cacheKey}_time`, Date.now().toString());
+    };
+
+    // Funkcja odczytu z cache
+    const getCachedData = (cacheKey, cacheDuration = 3600000) => {
+        const cachedData = localStorage.getItem(cacheKey);
+        const cachedTime = localStorage.getItem(`${cacheKey}_time`);
+        const now = Date.now();
+        if (cachedData && cachedTime && (now - parseInt(cachedTime) < cacheDuration)) {
+            console.log(`Odczytano z cache: ${cacheKey}`);
+            return JSON.parse(cachedData);
+        }
+        return null;
+    };
+
     // Funkcja otwierania formularza posta
     const openPostModal = (postId = null, postData = null) => {
         postModalTitle.textContent = postId ? 'Edytuj sen' : 'Dodaj nowy sen';
@@ -157,9 +190,9 @@ try {
             alert('Wylogowano pomyślnie.');
         } catch (error) {
             console.error('Błąd wylogowania:', error);
-            alert(`Błąd wylogowania: ${error.message}`);
-            networkStatus.textContent = 'Błąd wylogowania. Sprawdź konsolę.';
+            networkStatus.textContent = `Błąd wylogowania: ${error.message}`;
             networkStatus.style.display = 'block';
+            setTimeout(hideNetworkStatus, 5000);
         }
     });
 
@@ -195,20 +228,22 @@ try {
             if (result.user.email === 'lukasz13d@gmail.com') {
                 isAuthenticated = true;
                 adminModal.style.display = 'none';
-                openPostModal();
             } else {
                 alert('Tylko autor ma dostęp do edycji.');
                 await signOut(auth);
                 console.log('Wylogowano nieautoryzowanego użytkownika.');
+                networkStatus.textContent = 'Niepoprawne logowanie: Tylko autor ma dostęp.';
+                networkStatus.style.display = 'block';
+                setTimeout(hideNetworkStatus, 5000);
             }
         } catch (error) {
             console.error('Błąd logowania:', error);
-            alert(`Błąd logowania: ${error.message} (Kod: ${error.code})`);
+            networkStatus.textContent = `Błąd logowania: ${error.message} (Kod: ${error.code})`;
+            networkStatus.style.display = 'block';
+            setTimeout(hideNetworkStatus, 5000);
             if (error.code === 'auth/popup-blocked') {
                 alert('Popup zablokowany. Włącz wyskakujące okna dla tej strony.');
             }
-            networkStatus.textContent = 'Błąd logowania. Sprawdź konsolę.';
-            networkStatus.style.display = 'block';
         }
     });
 
@@ -267,7 +302,7 @@ try {
                 sortTime: parsePostDate(post.postDate) || post.createdAt || 0
             }))
             .filter(post => post.sortTime > 0)
-            .sort((a, b) => b.sortTime - a.sortTime); // Od najnowszego
+            .sort((a, b) => b.sortTime - a.sortTime);
 
         console.log('Posortowane posty:', sortedPosts.map(p => ({ title: p.title, postDate: p.postDate, createdAt: p.sortTime })));
 
@@ -303,6 +338,7 @@ try {
                     console.error('Błąd ładowania danych do edycji:', error);
                     networkStatus.textContent = 'Błąd ładowania danych do edycji.';
                     networkStatus.style.display = 'block';
+                    setTimeout(hideNetworkStatus, 5000);
                 }
             });
         });
@@ -334,9 +370,9 @@ try {
             .sort((a, b) => {
                 const timeA = parsePostDate(a.postDate) || a.createdAt || 0;
                 const timeB = parsePostDate(b.postDate) || b.createdAt || 0;
-                return timeB - timeA; // Od najnowszego
+                return timeB - timeA;
             })
-            .slice(3); // Od 4. posta wzwyż
+            .slice(3);
 
         console.log('Posty w archiwum:', olderPosts.length, olderPosts.map(p => ({ title: p.title, postDate: p.postDate, createdAt: p.createdAt })));
 
@@ -383,6 +419,7 @@ try {
                         console.error('Błąd ładowania posta z archiwum:', error);
                         networkStatus.textContent = 'Błąd ładowania posta z archiwum.';
                         networkStatus.style.display = 'block';
+                        setTimeout(hideNetworkStatus, 5000);
                     }
                 });
                 archiveList.appendChild(archiveItem);
@@ -401,6 +438,12 @@ try {
         postsLoading.classList.add('show');
 
         try {
+            const cachedPosts = getCachedData('posts');
+            if (cachedPosts && navigator.onLine) {
+                console.log('Wyświetlam posty z cache');
+                displayPosts(cachedPosts);
+            }
+
             const snapshot = await new Promise((resolve, reject) => {
                 onValue(ref(db, 'posts'), (snap) => resolve(snap), { onlyOnce: true }, reject);
             });
@@ -413,78 +456,127 @@ try {
             console.log('Wszystkie posty z Firebase:', posts.length, posts.map(p => ({ title: p.title, postDate: p.postDate, createdAt: p.createdAt })));
 
             const fetchedPosts = await fetchPostsInOrder(posts);
-            const latestPosts = fetchedPosts.slice(0, 3);
-
-            console.log('Najnowsze 3 posty:', latestPosts.length, latestPosts.map(p => ({ title: p.title, postDate: p.postDate, createdAt: p.createdAt })));
-
-            if (latestPosts.length === 0) {
-                postsList.innerHTML = '<p class="no-posts">Brak postów do wyświetlenia.</p>';
-            } else {
-                latestPosts.forEach((post) => {
-                    const postDiv = document.createElement('div');
-                    postDiv.className = 'post';
-                    const { short, needsToggle } = truncateContent(post.content);
-                    let shortContent = formatContent(short);
-                    const fullContent = formatContent(post.content);
-
-                    // Jeśli treść została obcięta na pustej linii, wstawiamy link "Rozwiń treść" przed nią
-                    if (needsToggle && short.endsWith('\n\n')) {
-                        shortContent = shortContent.slice(0, -7) + '<p><span class="content-toggle" data-toggle="expand">Rozwiń treść</span></p>';
-                    }
-
-                    postDiv.innerHTML = `
-                        <div class="post-meta">Opublikowano: ${post.postDate || 'Brak daty'} o ${post.postTime || 'Brak godziny'}</div>
-                        <h3 class="post-title">${post.title || 'Bez tytułu'}</h3>
-                        <div class="post-data"><strong>Data snu:</strong> ${post.dreamDate || 'Brak daty'}</div>
-                        ${post.notes ? `<div class="post-notes"><strong>Uwagi:</strong> <span>${post.notes}</span></div>` : ''}
-                        <div class="post-content">${shortContent}</div>
-                        ${needsToggle ? `<div class="post-content-full">${fullContent}</div>` : ''}
-                        ${needsToggle && !short.endsWith('\n\n') ? `<p><span class="content-toggle" data-toggle="expand">Rozwiń treść</span></p>` : ''}
-                        ${needsToggle ? `<p class="content-collapse" style="display: none;"><span class="content-toggle" data-toggle="collapse">Zwiń treść</span></p>` : ''}
-                        ${isAuthenticated ? `<button class="btn btn-edit" data-id="${post.id}">Edytuj</button>` : ''}
-                    `;
-                    postsList.appendChild(postDiv);
-
-                    if (needsToggle) {
-                        const expandLink = postDiv.querySelector('.content-toggle[data-toggle="expand"]');
-                        const collapseLink = postDiv.querySelector('.content-toggle[data-toggle="collapse"]');
-                        const contentShort = postDiv.querySelector('.post-content');
-                        const contentFull = postDiv.querySelector('.post-content-full');
-                        const collapseP = postDiv.querySelector('.content-collapse');
-
-                        if (expandLink && collapseLink && contentShort && contentFull && collapseP) {
-                            expandLink.addEventListener('click', () => {
-                                contentShort.style.display = 'none';
-                                contentFull.style.display = 'block';
-                                expandLink.parentElement.style.display = 'none';
-                                collapseP.style.display = 'block';
-                                console.log(`Rozwinięto treść posta: ${post.title}`);
-                            });
-                            collapseLink.addEventListener('click', () => {
-                                contentShort.style.display = 'block';
-                                contentFull.style.display = 'none';
-                                if (!short.endsWith('\n\n')) {
-                                    expandLink.parentElement.style.display = 'block';
-                                }
-                                collapseP.style.display = 'none';
-                                console.log(`Zwinięto treść posta: ${post.title}`);
-                            });
-                        }
-                    }
-                });
-
-                if (isAuthenticated) {
-                    await setupEditButton();
-                }
-            }
-
-            postsLoading.classList.remove('show');
-            loadArchiveDefault(fetchedPosts);
+            setCachedData('posts', fetchedPosts);
+            displayPosts(fetchedPosts);
         } catch (error) {
             console.error('Błąd ładowania postów:', error);
             networkStatus.textContent = 'Błąd ładowania postów. Sprawdź konsolę.';
             networkStatus.style.display = 'block';
+            setTimeout(hideNetworkStatus, 5000);
             postsLoading.classList.remove('show');
+        }
+    };
+
+    // Funkcja wyświetlania postów
+    const displayPosts = (fetchedPosts) => {
+        postsList.innerHTML = '';
+        const latestPosts = fetchedPosts.slice(0, 3);
+
+        console.log('Najnowsze 3 posty:', latestPosts.length, latestPosts.map(p => ({ title: p.title, postDate: p.postDate, createdAt: p.createdAt })));
+
+        if (latestPosts.length === 0) {
+            postsList.innerHTML = '<p class="no-posts">Brak postów do wyświetlenia.</p>';
+        } else {
+            latestPosts.forEach((post) => {
+                const postDiv = document.createElement('div');
+                postDiv.className = 'post';
+                const { short, needsToggle } = truncateContent(post.content);
+                let shortContent = formatContent(short);
+                const fullContent = formatContent(post.content);
+
+                if (needsToggle && short.endsWith('\n\n')) {
+                    shortContent = shortContent.slice(0, -7) + '<p><span class="content-toggle" data-toggle="expand">Rozwiń treść</span></p>';
+                }
+
+                postDiv.innerHTML = `
+                    <div class="post-meta">Opublikowano: ${post.postDate || 'Brak daty'} o ${post.postTime || 'Brak godziny'}</div>
+                    <h3 class="post-title">${post.title || 'Bez tytułu'}</h3>
+                    <div class="post-data"><strong>Data snu:</strong> ${post.dreamDate || 'Brak daty'}</div>
+                    ${post.notes ? `<div class="post-notes"><strong>Uwagi:</strong> <span>${post.notes}</span></div>` : ''}
+                    <div class="post-content">${shortContent}</div>
+                    ${needsToggle ? `<div class="post-content-full">${fullContent}</div>` : ''}
+                    ${needsToggle && !short.endsWith('\n\n') ? `<p><span class="content-toggle" data-toggle="expand">Rozwiń treść</span></p>` : ''}
+                    ${needsToggle ? `<p class="content-collapse" style="display: none;"><span class="content-toggle" data-toggle="collapse">Zwiń treść</span></p>` : ''}
+                    ${isAuthenticated ? `<button class="btn btn-edit" data-id="${post.id}">Edytuj</button>` : ''}
+                `;
+                postsList.appendChild(postDiv);
+
+                if (needsToggle) {
+                    const expandLink = postDiv.querySelector('.content-toggle[data-toggle="expand"]');
+                    const collapseLink = postDiv.querySelector('.content-toggle[data-toggle="collapse"]');
+                    const contentShort = postDiv.querySelector('.post-content');
+                    const contentFull = postDiv.querySelector('.post-content-full');
+                    const collapseP = postDiv.querySelector('.content-collapse');
+
+                    if (expandLink && collapseLink && contentShort && contentFull && collapseP) {
+                        expandLink.addEventListener('click', () => {
+                            contentShort.style.display = 'none';
+                            contentFull.style.display = 'block';
+                            expandLink.parentElement.style.display = 'none';
+                            collapseP.style.display = 'block';
+                            console.log(`Rozwinięto treść posta: ${post.title}`);
+                        });
+                        collapseLink.addEventListener('click', () => {
+                            contentShort.style.display = 'block';
+                            contentFull.style.display = 'none';
+                            if (!short.endsWith('\n\n')) {
+                                expandLink.parentElement.style.display = 'block';
+                            }
+                            collapseP.style.display = 'none';
+                            console.log(`Zwinięto treść posta: ${post.title}`);
+                        });
+                    }
+                }
+            });
+
+            if (isAuthenticated) {
+                setupEditButton();
+            }
+        }
+
+        postsLoading.classList.remove('show');
+        loadArchiveDefault(fetchedPosts);
+    };
+
+    // Autoodświeżanie postów
+    let postsIntervalId = null;
+    let lastUpdateTime = null;
+    const MIN_REFRESH_INTERVAL = 2 * 60 * 1000;
+
+    const startPostsUpdateInterval = () => {
+        console.log('Uruchamiam interwał aktualizacji postów');
+        loadDefaultView();
+        postsIntervalId = setInterval(() => {
+            console.log('Aktualizuję posty...');
+            loadDefaultView();
+        }, 900000);
+    };
+
+    const manageUpdateIntervals = () => {
+        const now = Date.now();
+        if (document.visibilityState === 'visible') {
+            console.log('Karta aktywna, włączam aktualizacje');
+            if (postsIntervalId) {
+                clearInterval(postsIntervalId);
+                postsIntervalId = null;
+            }
+            if (!lastUpdateTime || (now - lastUpdateTime >= MIN_REFRESH_INTERVAL)) {
+                console.log('Minął minimalny czas, odświeżam dane');
+                startPostsUpdateInterval();
+                lastUpdateTime = now;
+            } else {
+                console.log('Zbyt szybkie przełączenie, ustawiam tylko interwał');
+                postsIntervalId = setInterval(() => {
+                    console.log('Aktualizuję posty...');
+                    loadDefaultView();
+                }, 900000);
+            }
+        } else {
+            console.log('Karta nieaktywna, wstrzymuję aktualizacje');
+            if (postsIntervalId) {
+                clearInterval(postsIntervalId);
+                postsIntervalId = null;
+            }
         }
     };
 
@@ -509,7 +601,6 @@ try {
 
         let postData;
         if (postId) {
-            // Edycja: Zachowaj oryginalne postDate
             try {
                 const existingPost = await fetchPost(postId);
                 postData = {
@@ -517,18 +608,19 @@ try {
                     dreamDate,
                     notes: notes || null,
                     content,
-                    postDate: existingPost.postDate, // Zachowujemy oryginalne postDate
+                    postDate: existingPost.postDate,
                     postTime,
                     createdAt: existingPost.createdAt || serverTimestamp()
                 };
                 console.log('Edycja posta:', { title, postDate: postData.postDate, createdAt: postData.createdAt });
             } catch (error) {
                 console.error('Błąd pobierania istniejącego posta:', error);
-                alert('Błąd pobierania danych posta do edycji.');
+                networkStatus.textContent = 'Błąd pobierania danych posta do edycji.';
+                networkStatus.style.display = 'block';
+                setTimeout(hideNetworkStatus, 5000);
                 return;
             }
         } else {
-            // Nowy post
             postData = {
                 title,
                 dreamDate,
@@ -557,9 +649,21 @@ try {
             await loadDefaultView();
         } catch (error) {
             console.error('Błąd zapisu posta:', error);
-            alert(`Błąd zapisu posta: ${error.message}`);
-            networkStatus.textContent = 'Błąd zapisu posta. Sprawdź konsolę.';
+            networkStatus.textContent = `Błąd zapisu posta: ${error.message}`;
             networkStatus.style.display = 'block';
+            setTimeout(hideNetworkStatus, 5000);
+        }
+    });
+
+    // Inicjalizacja autoodświeżania
+    document.addEventListener('visibilitychange', manageUpdateIntervals);
+    manageUpdateIntervals();
+
+    // Czyszczenie interwału przy opuszczeniu strony
+    window.addEventListener('beforeunload', () => {
+        if (postsIntervalId) {
+            clearInterval(postsIntervalId);
+            console.log('Wstrzymano interwał postów przed opuszczeniem strony');
         }
     });
 } catch (error) {
@@ -568,5 +672,9 @@ try {
     if (networkStatus) {
         networkStatus.textContent = 'Krytyczny błąd Firebase. Sprawdź konsolę.';
         networkStatus.style.display = 'block';
+        setTimeout(() => {
+            networkStatus.style.opacity = '0';
+            setTimeout(() => networkStatus.style.display = 'none', 500);
+        }, 5000);
     }
 }
