@@ -361,6 +361,17 @@ h2 {
     text-decoration: underline;
 }
 
+#adminLink {
+    color: #888888; /* Szary, jak w .footer p */
+    text-decoration: none;
+    transition: color 0.3s, text-decoration 0.3s;
+}
+
+#adminLink:hover {
+    color: #e6c200; /* Taki sam efekt hover jak dla innych linków */
+    text-decoration: underline;
+}
+
 .logout-link {
     font-size: 0.85rem;
     color: #cccccc;
