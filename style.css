@@ -253,7 +253,18 @@ h2 {
 .footer p {
     font-size: 0.85rem;
     color: #888888;
-    margin-bottom: 8px;
+    margin-bottom: 4px; /* Mniejszy odstęp między wierszami */
+}
+
+.footer-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-text {
+    color: #ffffff; /* Biały dla "Odwiedź" */
 }
 
 .footer-link a {
@@ -265,6 +276,19 @@ h2 {
 .footer-link a:hover {
     color: #e6c200;
     text-decoration: underline;
+}
+
+.logout-link {
+    font-size: 0.85rem;
+    color: #cccccc;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.3s;
+    display: none; /* Ukryte domyślnie */
+}
+
+.logout-link:hover {
+    color: var(--primary-yellow);
 }
 
 /* Modal */
@@ -422,7 +446,7 @@ textarea {
 }
 
 .btn:hover {
-    transform: translateY(-2 neck px);
+    transform: translateY(-2px);
 }
 
 .btn-google:hover {
@@ -560,5 +584,9 @@ textarea {
     }
     textarea {
         min-height: 200px;
+    }
+    .footer-link {
+        flex-direction: column;
+        gap: 4px;
     }
 }
