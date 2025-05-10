@@ -75,6 +75,16 @@ try {
             .join('');
     };
 
+    // Funkcja obcinania treści do 800 znaków
+    const truncateContent = (content) => {
+        if (!content) return { short: 'Brak treści', needsToggle: false };
+        if (content.length <= 800) {
+            return { short: content, needsToggle: false };
+        }
+        const short = content.slice(0, 800);
+        return { short, needsToggle: true };
+    };
+
     // Funkcja otwierania formularza posta
     const openPostModal = (postId = null, postData = null) => {
         postModalTitle.textContent = postId ? 'Edytuj sen' : 'Dodaj nowy sen';
@@ -241,7 +251,7 @@ try {
                         if (returnLink) {
                             returnLink.addEventListener('click', (e) => {
                                 e.preventDefault();
-                                loadDefaultView();
+                                window.location.reload(); // Przeładowanie strony
                             });
                         }
                     }, { onlyOnce: true });
@@ -287,16 +297,49 @@ try {
                 latestPosts.forEach((post) => {
                     const postDiv = document.createElement('div');
                     postDiv.className = 'post';
+                    const { short, needsToggle } = truncateContent(post.content);
+                    const shortContent = formatContent(short);
+                    const fullContent = formatContent(post.content);
                     postDiv.innerHTML = `
                         <div class="post-meta">Opublikowano: ${post.postDate || 'Brak daty'} o ${post.postTime || 'Brak godziny'}</div>
                         <h3 class="post-title">${post.title || 'Bez tytułu'}</h3>
                         <div class="post-data"><strong>Data snu:</strong> ${post.dreamDate || 'Brak daty'}</div>
                         ${post.notes ? `<div class="post-notes"><strong>Uwagi:</strong> <span>${post.notes}</span></div>` : ''}
-                        <div class="post-content">${formatContent(post.content)}</div>
+                        <div class="post-content">${shortContent}</div>
+                        ${needsToggle ? `<div class="post-content-full">${fullContent}</div>` : ''}
+                        ${needsToggle ? `<p><span class="content-toggle" data-toggle="expand">Rozwiń treść</span></p>` : ''}
+                        ${needsToggle ? `<p class="content-collapse" style="display: none;"><span class="content-toggle" data-toggle="collapse">Zwiń treść</span></p>` : ''}
                         ${isAuthenticated ? `<button class="btn btn-edit" data-id="${post.id}">Edytuj</button>` : ''}
                     `;
                     postsList.appendChild(postDiv);
+
+                    // Obsługa rozwijania/zwijania treści
+                    if (needsToggle) {
+                        const expandLink = postDiv.querySelector('.content-toggle[data-toggle="expand"]');
+                        const collapseLink = postDiv.querySelector('.content-toggle[data-toggle="collapse"]');
+                        const contentShort = postDiv.querySelector('.post-content');
+                        const contentFull = postDiv.querySelector('.post-content-full');
+                        const collapseP = postDiv.querySelector('.content-collapse');
+
+                        if (expandLink && collapseLink && contentShort && contentFull && collapseP) {
+                            expandLink.addEventListener('click', () => {
+                                contentShort.style.display = 'none';
+                                contentFull.style.display = 'block';
+                                expandLink.parentElement.style.display = 'none';
+                                collapseP.style.display = 'block';
+                                console.log(`Rozwinięto treść posta: ${post.title}`);
+                            });
+                            collapseLink.addEventListener('click', () => {
+                                contentShort.style.display = 'block';
+                                contentFull.style.display = 'none';
+                                expandLink.parentElement.style.display = 'block';
+                                collapseP.style.display = 'none';
+                                console.log(`Zwinięto treść posta: ${post.title}`);
+                            });
+                        }
+                    }
                 });
+
                 // Dodanie obsługi edycji
                 document.querySelectorAll('.btn-edit').forEach(button => {
                     button.addEventListener('click', (e) => {
