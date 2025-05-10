@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Barastion Dreamscape – Dziennik Snów. Osobista podróż przez świat snów.">
     <meta name="keywords" content="dziennik snów, Barastion Dreamscape, interpretacja snów, świadome śnienie, zapisywanie snów">
-    <meta name="author" content="Łukasz Baran">
+    <meta name="author" content="Barastion">
     <meta property="og:title" content="Barastion Dreamscape – Dziennik Snów">
     <meta property="og:description" content="Osobista podróż przez świat snów. Zapisz i odkryj znaczenie swoich snów.">
     <meta property="og:image" content="Dreamscape_logo.jpg">
@@ -13,7 +13,7 @@
     <meta property="og:type" content="website">
     <title>Barastion Dreamscape – Dziennik Snów</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/jpg" href="Dreamscape_logo.jpg">
+    <link rel="icon" type="image/png" href="logo.png">
 </head>
 <body>
     <div class="container">
@@ -93,7 +93,7 @@
                 </svg>
                 Zaloguj się przez Google
             </button>
-            <p class="modal-note">Tylko konto lukasz13d@gmail.com ma dostęp do edycji.</p>
+            <p class="modal-note">Tylko autor ma dostęp do edycji.</p>
         </div>
     </div>
 
@@ -307,7 +307,7 @@
                         adminModal.style.display = 'none';
                         openPostModal();
                     } else {
-                        alert('Dostęp tylko dla lukasz13d@gmail.com.');
+                        alert('Tylko autor ma dostęp do edycji.');
                         await signOut(auth);
                         console.log('Wylogowano nieautoryzowanego użytkownika.');
                     }
