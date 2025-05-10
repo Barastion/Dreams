@@ -11,7 +11,13 @@
     <meta property="og:image" content="Dreamscape_logo.jpg">
     <meta property="og:url" content="https://barastion.github.io/Dreamscape/">
     <meta property="og:type" content="website">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://*.firebaseio.com https://*.firebasedatabase.app https://*.web.app https://identitytoolkit.googleapis.com; connect-src 'self' https://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app https://*.web.app https://identitytoolkit.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://barastion.github.io;">
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline' https://www.gstatic.com https://*.firebaseio.com https://*.firebasedatabase.app https://*.web.app https://identitytoolkit.googleapis.com https://apis.google.com;
+        connect-src 'self' https://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app https://*.web.app https://identitytoolkit.googleapis.com https://apis.google.com;
+        style-src 'self' 'unsafe-inline';
+        img-src 'self' data: https://barastion.github.io;
+    ">
     <title>Barastion Dreamscape – Dziennik Snów</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="logo.png">
@@ -150,6 +156,10 @@
                 if (networkStatus) {
                     networkStatus.textContent = 'Błąd: Brak elementów wstępu.';
                     networkStatus.style.display = 'block';
+                    setTimeout(() => {
+                        networkStatus.style.opacity = '0';
+                        setTimeout(() => networkStatus.style.display = 'none', 500);
+                    }, 5000);
                 }
             }
 
