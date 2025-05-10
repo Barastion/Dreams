@@ -229,21 +229,25 @@ try {
                 isAuthenticated = true;
                 adminModal.style.display = 'none';
             } else {
-                alert('Tylko autor ma dostęp do edycji.');
                 await signOut(auth);
                 console.log('Wylogowano nieautoryzowanego użytkownika.');
                 networkStatus.textContent = 'Niepoprawne logowanie: Tylko autor ma dostęp.';
                 networkStatus.style.display = 'block';
                 setTimeout(hideNetworkStatus, 5000);
+                alert('Tylko autor ma dostęp do edycji.');
             }
         } catch (error) {
             console.error('Błąd logowania:', error);
-            networkStatus.textContent = `Błąd logowania: ${error.message} (Kod: ${error.code})`;
+            let errorMessage = `Błąd logowania: ${error.message} (Kod: ${error.code})`;
+            if (error.code === 'auth/popup-blocked') {
+                errorMessage = 'Popup zablokowany. Włącz wyskakujące okna dla tej strony.';
+            } else if (error.code === 'auth/internal-error') {
+                errorMessage = 'Błąd wewnętrzny autentykacji. Sprawdź ustawienia CSP lub połączenie sieciowe.';
+            }
+            networkStatus.textContent = errorMessage;
             networkStatus.style.display = 'block';
             setTimeout(hideNetworkStatus, 5000);
-            if (error.code === 'auth/popup-blocked') {
-                alert('Popup zablokowany. Włącz wyskakujące okna dla tej strony.');
-            }
+            alert(errorMessage);
         }
     });
 
