@@ -230,6 +230,7 @@
 
             // Funkcja otwierania formularza posta
             const openPostModal = (postId = null, postData = null) => {
+                console.log('Otwieranie postModal:', { postId, postData }); // Debug
                 postModalTitle.textContent = postId ? 'Edytuj sen' : 'Dodaj nowy sen';
                 postIdInput.value = postId || '';
                 document.getElementById('postTitle').value = postData?.title || '';
@@ -244,6 +245,7 @@
             let isAuthenticated = false;
             adminLink.addEventListener('click', (e) => {
                 e.preventDefault();
+                console.log('Kliknięto adminLink, isAuthenticated:', isAuthenticated); // Debug
                 if (isAuthenticated) {
                     openPostModal();
                 } else {
@@ -305,7 +307,8 @@
                     if (result.user.email === 'lukasz13d@gmail.com') {
                         isAuthenticated = true;
                         adminModal.style.display = 'none';
-                        openPostModal();
+                        // Nie otwieramy postModal automatycznie
+                        console.log('Zalogowano autora, postModal pozostaje zamknięty.');
                     } else {
                         alert('Dostęp tylko dla autora.');
                         await signOut(auth);
@@ -329,6 +332,9 @@
                     isAuthenticated = true;
                     adminLink.textContent = 'Dodaj nowy post';
                     logoutLink.style.display = 'inline';
+                    // Zapewniamy, że modale są zamknięte przy starcie
+                    adminModal.style.display = 'none';
+                    postModal.style.display = 'none';
                 } else {
                     console.log('Brak zalogowanego użytkownika lub nieprawidłowy email.');
                     isAuthenticated = false;
