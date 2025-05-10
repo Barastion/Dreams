@@ -373,12 +373,11 @@ h2 {
 }
 
 .logout-link {
-    font-size: 0.85rem;
+    font-size: 0.75rem; /* Taki sam rozmiar jak w .footer p */
     color: #cccccc;
     cursor: pointer;
     text-decoration: none;
     transition: text-decoration 0.3s, color 0.3s;
-    display: none;
 }
 
 .logout-link:hover {
@@ -396,7 +395,7 @@ h2 {
     min-height: 100vh;
     background: rgba(0, 0, 0, 0.8);
     z-index: 1000;
-    display: flex;
+    display: none; /* Domyślnie ukryty, aby zapobiec miganiu */
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
