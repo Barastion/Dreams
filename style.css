@@ -24,7 +24,7 @@ body {
     flex-direction: column;
 }
 
-/* Estetyczne scrollbalki w stylu Watchtower */
+/* Estetyczne scrollbalki w odcieniach szarości */
 ::-webkit-scrollbar {
     width: 8px; /* Pionowy scrollbar */
     height: 8px; /* Poziomy scrollbar */
@@ -36,13 +36,13 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--primary-yellow);
+    background: #666666; /* Jasnoszary zamiast żółtego */
     border-radius: 4px;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #e6c200;
+    background: #888888; /* Ciemniejszy szary przy hover */
 }
 
 /* Główny kontener */
@@ -60,7 +60,7 @@ body {
     padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     max-width: 960px;
-    margin: 16px auto; /* Skrócony margines górny (40px / 2.5 ≈ 16px) */
+    margin: 8px auto; /* Jeszcze mniejszy margines górny (16px → 8px) */
 }
 
 /* Jasny prostokąt za wszystkimi sekcjami */
@@ -181,7 +181,7 @@ h2 {
     color: #e6c200;
 }
 
-/* Posty */
+/カードポスト */
 .posts-container {
     margin-bottom: 20px;
 }
@@ -326,7 +326,7 @@ h2 {
     z-index: 1000;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; /* Centrowanie na środku */
     animation: fadeIn 0.3s ease-in;
 }
 
@@ -334,6 +334,7 @@ h2 {
     background: var(--dark-gray);
     width: 90%;
     max-width: 400px;
+    max-height: 80vh; /* Ograniczenie wysokości */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -341,13 +342,14 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow-y: visible; /* Bez scrollbarów */
+    overflow-y: auto; /* Scrollbar tylko jeśli potrzebny */
 }
 
 .large-modal {
     max-width: 800px;
+    max-height: 90vh; /* Większa wysokość dla formularza */
     padding: 25px;
-    overflow-y: visible; /* Bez scrollbarów */
+    overflow-y: auto; /* Scrollbar tylko jeśli potrzebny */
 }
 
 .modal h2 {
@@ -409,7 +411,7 @@ textarea:focus {
 
 textarea {
     resize: vertical;
-    min-height: 300px; /* Zmniejszona wysokość, aby zmieścić się w modal */
+    min-height: 200px; /* Mniejsza wysokość dla lepszego dopasowania */
 }
 
 .form-buttons {
@@ -532,7 +534,7 @@ textarea {
     .content-wrapper {
         padding: 15px;
         max-width: 100%;
-        margin: 10px auto;
+        margin: 8px auto;
     }
     .section-background {
         padding: 8px;
@@ -548,6 +550,7 @@ textarea {
     }
     .large-modal {
         max-width: 95%;
+        max-height: 85vh;
     }
     h1 {
         font-size: 1.3rem;
@@ -566,7 +569,7 @@ textarea {
         padding: 15px;
     }
     textarea {
-        min-height: 200px;
+        min-height: 150px;
     }
 }
 
@@ -603,7 +606,7 @@ textarea {
         margin: 8px auto;
     }
     textarea {
-        min-height: 150px;
+        min-height: 120px;
     }
     .footer-link {
         flex-direction: column;
