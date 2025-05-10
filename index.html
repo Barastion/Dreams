@@ -11,11 +11,13 @@
     <meta property="og:image" content="Dreamscape_logo.jpg">
     <meta property="og:url" content="https://barastion.github.io/Dreamscape/">
     <meta property="og:type" content="website">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://*.firebaseio.com https://*.firebasedatabase.app https://*.web.app; connect-src 'self' https://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app https://*.web.app; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
     <title>Barastion Dreamscape – Dziennik Snów</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="logo.png">
 </head>
 <body>
+    <div id="networkStatus" class="network-status"></div>
     <div class="container">
         <div class="content-wrapper">
             <header class="header">
@@ -122,9 +124,45 @@
         </div>
     </div>
 
-    <div id="networkStatus" class="network-status"></div>
-
     <script>
+        // Sprawdzanie statusu sieci
+        function updateNetworkStatus() {
+            const networkStatus = document.getElementById('networkStatus');
+            if (navigator.onLine) {
+                networkStatus.style.display = 'none';
+                networkStatus.textContent = '';
+            } else {
+                networkStatus.textContent = 'Brak połączenia z internetem';
+                networkStatus.style.display = 'block';
+            }
+        }
+
+        window.addEventListener('online', updateNetworkStatus);
+        window.addEventListener('offline', updateNetworkStatus);
+        window.addEventListener('load', updateNetworkStatus);
+
+        // Sprawdzanie, czy CSS się załadował
+        function checkCSSLoaded() {
+            const container = document.querySelector('.container');
+            const computedStyle = window.getComputedStyle(container);
+            if (computedStyle.backgroundColor !== 'rgb(30, 30, 30)') {
+                console.warn('CSS nie załadował się, ładuję fallback');
+                const style = document.createElement('style');
+                style.textContent = `
+                    body { font-family: 'Segoe UI', sans-serif; background: #1e1e1e; color: #fff; padding: 10px; }
+                    .container { max-width: 800px; margin: 0 auto; background: #1e1e1e; padding: 20px; }
+                    .section-box { background: #2d2d2d; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+                    .header { text-align: center; margin-bottom: 40px; }
+                    .footer { text-align: center; margin-top: 40px; }
+                    .modal { display: none !important; }
+                    .logout-link { font-size: 0.75rem; color: #cccccc; text-decoration: none; }
+                    .logout-link:hover { color: #e6c200; text-decoration: underline; }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
+        // Rozwijanie/zwijanie wstępu
         document.addEventListener('DOMContentLoaded', () => {
             const expandIntro = document.getElementById('expandIntro');
             const collapseIntro = document.getElementById('collapseIntro');
@@ -151,9 +189,18 @@
                     networkStatus.style.display = 'block';
                 }
             }
+
+            checkCSSLoaded();
         });
+
+        // Inicjalizacja strony
+        window.onload = function() {
+            console.log('Strona Dreamscape załadowana');
+            checkCSSLoaded();
+            updateNetworkStatus();
+        };
     </script>
 
-    <script type="module" src="firebase.js?v=7"></script>
+    <script type="module" src="firebase.js"></script>
 </body>
 </html>
