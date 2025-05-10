@@ -7,7 +7,7 @@
     <meta name="keywords" content="dziennik snów, Barastion Dreamscape, interpretacja snów, świadome śnienie, zapisywanie snów">
     <meta name="author" content="Barastion">
     <meta property="og:title" content="Barastion Dreamscape – Dziennik Snów">
-    <meta property="og:description" content="Osobista podróż przez świat snów. Zapisz i odkryj znaczenie swoich snów.">
+    <meta property="og:description" content="Tam, gdzie kończy się rzeczywistość, a zaczyna sen – spojrzenie w zakamarki podświadomości.">
     <meta property="og:image" content="Dreamscape_logo.jpg">
     <meta property="og:url" content="https://barastion.github.io/Dreamscape/">
     <meta property="og:type" content="website">
@@ -150,25 +150,6 @@
                     networkStatus.textContent = 'Błąd: Brak elementów wstępu.';
                     networkStatus.style.display = 'block';
                 }
-            }
-        });
-
-        window.addEventListener('load', () => {
-            console.log('Strona Dreamscape załadowana, próbuję wysłać wiadomość do Watchtower');
-            // Otwieramy Watchtower w nowej karcie i wysyłamy wiadomość
-            const watchtowerWindow = window.open('https://barastion.github.io/Barastion-Watchtower/', '_blank');
-            if (watchtowerWindow) {
-                const sendMessage = () => {
-                    console.log('Wysyłam wiadomość do Watchtower');
-                    watchtowerWindow.postMessage(
-                        { action: 'logVisit', source: 'dreamscape' },
-                        'https://barastion.github.io/Barastion-Watchtower/'
-                    );
-                };
-                // Czekamy, aż okno się załaduje (timeout jako zabezpieczenie)
-                setTimeout(sendMessage, 1000);
-            } else {
-                console.error('Nie udało się otworzyć okna Watchtower – blokada popupów?');
             }
         });
     </script>
