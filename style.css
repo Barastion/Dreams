@@ -1,6 +1,6 @@
 /* Reset stylów */
 * {
-    margin: 0;
+    margin: 12px;
     padding: 0;
     box-sizing: border-box;
 }
@@ -82,6 +82,17 @@ body {
     animation: fadeIn 1s ease-in;
 }
 
+.header-link {
+    text-decoration: none; /* Brak podkreślenia domyślnie */
+    display: inline-block; /* Dla poprawnego wyświetlania */
+    transition: text-decoration 0.3s, color 0.3s;
+}
+
+.header-link:hover {
+    text-decoration: underline;
+    color: #e6c200; /* Ten sam kolor hover jak inne linki */
+}
+
 .logo-frame {
     width: 100%;
     max-width: 640px;
@@ -152,6 +163,12 @@ h2 {
     margin-bottom: 20px;
 }
 
+.intro-content {
+    background: var(--light-gray); /* Takie samo tło jak posty */
+    padding: 15px;
+    border-radius: 8px;
+}
+
 .intro-text,
 .intro-full p,
 .post-content {
@@ -192,12 +209,6 @@ h2 {
 /* Posty */
 .posts-container {
     margin-bottom: 20px;
-}
-
-.posts-record {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
 }
 
 .posts-list {
@@ -285,8 +296,9 @@ h2 {
 }
 
 .expand-arrow {
-    font-size: 0.8rem;
+    font-size: 0.75rem; /* Mniejszy rozmiar dla strzałki */
     color: var(--primary-yellow);
+    line-height: 1;
 }
 
 /* Stopka */
@@ -329,13 +341,14 @@ h2 {
     font-size: 0.85rem;
     color: #cccccc;
     cursor: pointer;
-    text-decoration: none;
-    transition: font-weight 0.3s;
+    text-decoration: none; /* Brak podkreślenia domyślnie */
+    transition: text-decoration 0.3s, color 0.3s;
     display: none;
 }
 
 .logout-link:hover {
-    font-weight: 700;
+    text-decoration: underline; /* Podkreślenie przy hover */
+    color: #e6c200;
 }
 
 /* Modal */
@@ -446,7 +459,7 @@ textarea#postContent {
 
 textarea#postNotes {
     resize: vertical;
-    min-height: 100px; /* Mniejsza wysokość dla uwag */
+    min-height: 100px;
     max-height: none;
 }
 
@@ -488,17 +501,17 @@ textarea#postNotes {
 }
 
 .btn-edit {
-    background: none; /* Brak tła */
+    background: none;
     color: var(--primary-yellow);
     font-size: 0.85rem;
-    text-decoration: none; /* Bez podkreślenia domyślnie */
+    text-decoration: none;
     cursor: pointer;
     transition: text-decoration 0.3s, color 0.3s, transform 0.2s;
     margin-top: 10px;
 }
 
 .btn-edit:hover {
-    text-decoration: underline; /* Podkreślenie przy hover */
+    text-decoration: underline;
     color: #e6c200;
     transform: translateY(-2px);
 }
