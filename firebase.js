@@ -134,7 +134,7 @@ try {
         document.getElementById('postContent').value = postData?.content || '';
         postModal.style.display = 'block';
         adminModal.style.display = 'none';
-        console.log(postId ? `Otwarto formularz edycji dla posta: ${postId}` : 'Otwarto formularz dodawania.');
+        console.log(postId ? `Otwarto formularz edycji dla posta: ${postId}` : 'Otwarto formularz dodawania.', postData);
     };
 
     // Otwieranie modala logowania lub formularza
@@ -231,7 +231,7 @@ try {
             isAuthenticated = false;
             adminLink.textContent = 'Napisz nowy post';
             logoutLink.style.display = 'none';
-            adminModal.style.display = 'none';
+            admin坑Modal.style.display = 'none';
             postModal.style.display = 'none';
         }
     });
@@ -267,6 +267,25 @@ try {
             }
         }
         return fetchedPosts;
+    };
+
+    // Funkcja konfiguracji przycisków edycji
+    const setupEditButton = async () => {
+        const editButtons = document.querySelectorAll('.btn-edit');
+        editButtons.forEach(button => {
+            const postId = button.dataset.id;
+            button.addEventListener('click', async () => {
+                try {
+                    const postData = await fetchPost(postId);
+                    console.log('Kliknięto Edytuj dla posta:', postId, postData.title);
+                    openPostModal(postId, postData);
+                } catch (error) {
+                    console.error('Błąd ładowania danych do edycji:', error);
+                    networkStatus.textContent = 'Błąd ładowania danych do edycji.';
+                    networkStatus.style.display = 'block';
+                }
+            });
+        });
     };
 
     // Funkcja ładowania domyślnego widoku archiwum
@@ -309,26 +328,18 @@ try {
                                 <p><span class="return-link">Powrót do archiwum</span></p>
                             </div>
                         `;
-                        // Obsługa edycji
-                        if (isAuthenticated) {
-                            const editButton = document.querySelector('.btn-edit');
-                            if (editButton) {
-                                editButton.addEventListener('click', () => {
-                                    console.log('Kliknięto Edytuj dla posta:', fullPost.id);
-                                    openPostModal(fullPost.id, fullPost);
-                                });
-                            } else {
-                                console.warn('Brak przycisku Edytuj w widoku archiwum.');
-                            }
-                        }
                         // Obsługa powrotu do archiwum
                         const returnLink = document.querySelector('.return-link');
                         if (returnLink) {
                             returnLink.addEventListener('click', (e) => {
                                 e.preventDefault();
                                 console.log('Powrót do archiwum.');
-                                loadArchiveDefault(allPosts); // Ponowne renderowanie archiwum
+                                loadArchiveDefault(allPosts);
                             });
+                        }
+                        // Konfiguracja przycisków edycji
+                        if (isAuthenticated) {
+                            await setupEditButton();
                         }
                     } catch (error) {
                         console.error('Błąd ładowania posta z archiwum:', error);
@@ -419,20 +430,9 @@ try {
                 });
 
                 // Obsługa edycji
-                document.querySelectorAll('.btn-edit').forEach(button => {
-                    button.addEventListener('click', async (e) => {
-                        const postId = e.target.dataset.id;
-                        try {
-                            const postData = await fetchPost(postId);
-                            console.log('Ładowanie danych do edycji:', postId, postData.title);
-                            openPostModal(postId, postData);
-                        } catch (error) {
-                            console.error('Błąd ładowania danych do edycji:', error);
-                            networkStatus.textContent = 'Błąd ładowania danych do edycji.';
-                            networkStatus.style.display = 'block';
-                        }
-                    });
-                });
+                if (isAuthenticated) {
+                    await setupEditButton();
+                }
             }
 
             postsLoading.classList.remove('show');
