@@ -96,7 +96,7 @@ h1 {
 }
 
 .header-subtitle:last-of-type {
-    font-size: 1.1rem;
+    font-size: 1rem; /* Mniejsza czcionka dla podtytułu */
     font-weight: 400;
     color: #ffffff;
 }
@@ -124,12 +124,15 @@ h2 {
 }
 
 .intro-text,
-.intro-full p {
-    font-size: 0.95rem;
+.intro-full p,
+.post-content {
+    font-family: 'Segoe UI', sans-serif; /* Kompaktowa czcionka */
+    font-size: 0.9rem; /* Mniejszy rozmiar */
     color: #ffffff;
     margin-bottom: 10px;
     text-align: left;
-    line-height: 1.6;
+    line-height: 1.5; /* Mniejszy odstęp między liniami */
+    letter-spacing: -0.01em; /* Lepsza zwartość */
 }
 
 .intro-full {
@@ -190,14 +193,6 @@ h2 {
     color: #ffffff;
     margin-bottom: 8px;
     text-align: left;
-}
-
-.post-content {
-    font-size: 0.95rem;
-    color: #ffffff;
-    text-align: left;
-    white-space: pre-wrap;
-    margin-bottom: 10px;
 }
 
 .no-posts {
@@ -270,7 +265,7 @@ h2 {
 .footer-link a {
     color: var(--primary-yellow);
     text-decoration: none;
-    transition: color 0.3s;
+    transition: color 0.3s, text-decoration 0.3s;
 }
 
 .footer-link a:hover {
@@ -282,13 +277,14 @@ h2 {
     font-size: 0.85rem;
     color: #cccccc;
     cursor: pointer;
-    text-decoration: underline;
-    transition: color 0.3s;
+    text-decoration: none; /* Bez podkreślenia domyślnie */
+    transition: color 0.3s, text-decoration 0.3s;
     display: none; /* Ukryte domyślnie */
 }
 
 .logout-link:hover {
     color: var(--primary-yellow);
+    text-decoration: underline; /* Podkreślenie przy najechaniu */
 }
 
 /* Modal */
@@ -303,7 +299,7 @@ h2 {
     z-index: 1000;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; /* Wyśrodkowanie w pionie */
     animation: fadeIn 0.3s ease-in;
 }
 
@@ -318,6 +314,8 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-height: 80vh; /* Ograniczenie wysokości */
+    overflow-y: auto; /* Przewijanie, jeśli za duże */
 }
 
 .large-modal {
@@ -543,7 +541,7 @@ textarea {
         font-size: 1.1rem;
     }
     .header-subtitle:last-of-type {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
     h2 {
         font-size: 1.1rem;
@@ -562,7 +560,7 @@ textarea {
         font-size: 1rem;
     }
     .header-subtitle:last-of-type {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
     .post-title {
         font-size: 1.1rem;
