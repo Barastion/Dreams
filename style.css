@@ -51,6 +51,16 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+/* Ciemne prostokąty dla sekcji */
+.section-box {
+    background: var(--dark-gray);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    max-width: 95%; /* Węższe względem jasnoszarych */
+    margin: 15px auto; /* Wyśrodkowanie, równe marginesy góra/dół */
+}
+
 /* Nagłówek */
 .header {
     text-align: center;
@@ -108,14 +118,6 @@ h2 {
     color: var(--primary-yellow);
     margin-bottom: 12px;
     text-align: left;
-}
-
-/* Ciemne prostokąty dla sekcji */
-.section-box {
-    background: var(--dark-gray);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Sekcja wprowadzająca */
@@ -297,9 +299,9 @@ h2 {
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center; /* Wyśrodkowanie w pionie */
+    display: flex !important; /* Wymuszenie flex */
+    justify-content: center !important; /* Wyśrodkowanie poziome */
+    align-items: center !important; /* Wyśrodkowanie pionowe */
     animation: fadeIn 0.3s ease-in;
 }
 
@@ -526,6 +528,8 @@ textarea {
     }
     .section-box {
         padding: 15px;
+        max-width: 98%; /* Lepsze dopasowanie na mniejszych ekranach */
+        margin: 10px auto;
     }
     .logo-frame {
         max-width: 100%;
