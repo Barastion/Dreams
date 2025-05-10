@@ -13,7 +13,7 @@
     <meta property="og:type" content="website">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://*.firebaseio.com https://*.firebasedatabase.app https://*.web.app; connect-src 'self' https://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app https://*.web.app; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
     <title>Barastion Dreamscape – Dziennik Snów</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" onerror="console.error('Błąd ładowania style.css');">
     <link rel="icon" type="image/png" href="logo.png">
 </head>
 <body>
@@ -143,23 +143,28 @@
 
         // Sprawdzanie, czy CSS się załadował
         function checkCSSLoaded() {
-            const container = document.querySelector('.container');
-            const computedStyle = window.getComputedStyle(container);
-            if (computedStyle.backgroundColor !== 'rgb(30, 30, 30)') {
-                console.warn('CSS nie załadował się, ładuję fallback');
-                const style = document.createElement('style');
-                style.textContent = `
-                    body { font-family: 'Segoe UI', sans-serif; background: #1e1e1e; color: #fff; padding: 10px; }
-                    .container { max-width: 800px; margin: 0 auto; background: #1e1e1e; padding: 20px; }
-                    .section-box { background: #2d2d2d; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-                    .header { text-align: center; margin-bottom: 40px; }
-                    .footer { text-align: center; margin-top: 40px; }
-                    .modal { display: none !important; }
-                    .logout-link { font-size: 0.75rem; color: #cccccc; text-decoration: none; }
-                    .logout-link:hover { color: #e6c200; text-decoration: underline; }
-                `;
-                document.head.appendChild(style);
-            }
+            setTimeout(() => {
+                const container = document.querySelector('.container');
+                const computedStyle = window.getComputedStyle(container);
+                const backgroundColor = computedStyle.getPropertyValue('--background-dark').trim();
+                if (backgroundColor !== '#1e1e1e') {
+                    console.warn('CSS nie załadował się, ładuję fallback');
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        body { font-family: 'Segoe UI', sans-serif; background: #1e1e1e; color: #fff; padding: 10px; }
+                        .container { max-width: 800px; margin: 0 auto; background: #1e1e1e; padding: 20px; }
+                        .section-box { background: #2d2d2d; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+                        .header { text-align: center; margin-bottom: 40px; }
+                        .footer { text-align: center; margin-top: 40px; }
+                        .modal { display: none !important; }
+                        .logout-link { font-size: 0.75rem; color: #cccccc; text-decoration: none; }
+                        .logout-link:hover { color: #e6c200; text-decoration: underline; }
+                    `;
+                    document.head.appendChild(style);
+                } else {
+                    console.log('CSS załadowany poprawnie');
+                }
+            }, 100); // Opóźnienie 100ms
         }
 
         // Rozwijanie/zwijanie wstępu
