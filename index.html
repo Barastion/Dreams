@@ -146,8 +146,7 @@
             setTimeout(() => {
                 const container = document.querySelector('.container');
                 const computedStyle = window.getComputedStyle(container);
-                const backgroundColor = computedStyle.getPropertyValue('--background-dark').trim();
-                if (backgroundColor !== '#1e1e1e') {
+                if (computedStyle.backgroundColor !== 'rgb(30, 30, 30)') {
                     console.warn('CSS nie załadował się, ładuję fallback');
                     const style = document.createElement('style');
                     style.textContent = `
@@ -164,7 +163,7 @@
                 } else {
                     console.log('CSS załadowany poprawnie');
                 }
-            }, 100); // Opóźnienie 100ms
+            }, 500); // Opóźnienie 500ms
         }
 
         // Rozwijanie/zwijanie wstępu
