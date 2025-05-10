@@ -183,9 +183,9 @@ h2 {
     letter-spacing: -0.01em;
 }
 
-.post-data,
-.post-notes {
-    color: var(--primary-yellow); /* Żółty kolor, jak tytuł */
+.post-data strong,
+.post-notes strong {
+    color: var(--primary-yellow); /* Żółty tylko dla etykiet */
 }
 
 .post-content {
@@ -196,21 +196,28 @@ h2 {
     margin-bottom: 10px; /* Odstęp między akapitami */
 }
 
+.post-content-full {
+    display: none; /* Ukryta pełna treść */
+}
+
 .intro-full {
     display: none;
 }
 
 .intro-toggle,
+.content-toggle,
 .return-link {
     font-size: 0.85rem;
     color: var(--primary-yellow);
     text-decoration: underline;
     cursor: pointer;
     display: block;
+    margin-top: 10px; /* Odstęp od treści */
     transition: color 0.3s;
 }
 
 .intro-toggle:hover,
+.content-toggle:hover,
 .return-link:hover {
     color: #e6c200;
 }
@@ -297,7 +304,11 @@ h2 {
 }
 
 .archive-item span:first-child {
-    font-weight: 700; /* Pogrubienie tytułów w archiwum */
+    font-weight: 700; /* Pogrubienie tylko dla tytułu */
+}
+
+.archive-item span:not(:first-child) {
+    font-weight: 400; /* Normalna czcionka dla reszty */
 }
 
 .expand-arrow {
@@ -561,7 +572,9 @@ textarea#postNotes {
     width: 100%;
     padding: 8px;
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 
+
+0.9rem;
     background: #ff4d4d;
     color: #ffffff;
     display: none;
