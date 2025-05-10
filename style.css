@@ -60,7 +60,7 @@ body {
     padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     max-width: 960px;
-    margin: 4px auto; /* Zmniejszony margines górny (8px → 4px) */
+    margin: 4px auto;
 }
 
 /* Jasny prostokąt za wszystkimi sekcjami */
@@ -108,7 +108,7 @@ h1 {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--primary-yellow);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Osłabiony efekt glow */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     margin-bottom: 2px;
 }
 
@@ -117,14 +117,14 @@ h1 {
     font-weight: 700;
     color: var(--primary-yellow);
     margin: 2px 0;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Osłabiony efekt glow */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .header-subtitle.bold {
-    font-size: 1rem; /* Mniejsza czcionka dla podtytułu */
-    font-weight: 700; /* Pogrubienie */
+    font-size: 1rem;
+    font-weight: 700;
     color: #ffffff;
-    text-shadow: none; /* Bez glow dla tego tekstu */
+    text-shadow: none;
 }
 
 /* Sekcje */
@@ -134,7 +134,7 @@ h2 {
     color: var(--primary-yellow);
     margin-bottom: 12px;
     text-align: left;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Osłabiony efekt glow */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Ciemne prostokąty dla sekcji */
@@ -144,7 +144,7 @@ h2 {
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     margin: 10px;
-    max-width: calc(100% - 20px); /* Większe, bliżej krawędzi jasnego tła */
+    max-width: calc(100% - 20px);
 }
 
 /* Sekcja wprowadzająca */
@@ -155,13 +155,13 @@ h2 {
 .intro-text,
 .intro-full p,
 .post-content {
-    font-family: 'Segoe UI', sans-serif; /* Kompaktowa czcionka */
-    font-size: 0.9rem; /* Mniejszy rozmiar */
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.9rem;
     color: #ffffff;
     margin-bottom: 10px;
     text-align: left;
-    line-height: 1.5; /* Mniejszy odstęp między liniami */
-    letter-spacing: -0.01em; /* Lepsza zwartość */
+    line-height: 1.5;
+    letter-spacing: -0.01em;
 }
 
 .intro-full {
@@ -173,7 +173,7 @@ h2 {
     color: var(--primary-yellow);
     text-decoration: underline;
     cursor: pointer;
-    display: block; /* Nowa linia dla toggle */
+    display: block;
     transition: color 0.3s;
 }
 
@@ -269,15 +269,15 @@ h2 {
 /* Stopka */
 .footer {
     text-align: center;
-    padding: 12px 20px; /* Zachowany padding */
-    margin-top: 10px; /* Zmniejszony margines górny (20px → 10px) */
+    padding: 12px 20px;
+    margin-top: 5px; /* Jeszcze mniejszy margines (10px → 5px) */
 }
 
 /* Stopka - linki i tekst */
 .footer p {
     font-size: 0.85rem;
     color: #888888;
-    margin-bottom: 4px; /* Mniejszy odstęp między wierszami */
+    margin-bottom: 4px;
 }
 
 .footer-link {
@@ -288,7 +288,7 @@ h2 {
 }
 
 .footer-text {
-    color: #ffffff; /* Biały dla "Odwiedź" */
+    color: #ffffff;
 }
 
 .footer-link a {
@@ -306,29 +306,29 @@ h2 {
     font-size: 0.85rem;
     color: #cccccc;
     cursor: pointer;
-    text-decoration: none; /* Bez podkreślenia domyślnie */
-    transition: font-weight 0.3s; /* Zmiana na przejście dla pogrubienia */
-    display: none; /* Ukryte domyślnie */
+    text-decoration: none;
+    transition: font-weight 0.3s;
+    display: none;
 }
 
 .logout-link:hover {
-    font-weight: 700; /* Pogrubienie po najechaniu */
+    font-weight: 700;
 }
 
 /* Modal */
 .modal {
+    /* Styl odpowiedzialny za wyśrodkowanie - nie zmieniać bez testów! */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    min-height: 100vh; /* Pełna wysokość viewportu */
+    min-height: 100vh; /* Zapewnia pełną wysokość viewportu */
     background: rgba(0, 0, 0, 0.8);
     z-index: 1000;
     display: flex;
     justify-content: center;
     align-items: center; /* Wyśrodkowanie pionowe i poziome */
-    overflow: auto; /* Scrollbar dla całego modala jeśli potrzebny */
     box-sizing: border-box;
     animation: fadeIn 0.3s ease-in;
 }
@@ -337,7 +337,7 @@ h2 {
     background: var(--dark-gray);
     width: 90%;
     max-width: 400px;
-    max-height: 80vh; /* Ograniczenie wysokości */
+    max-height: 80vh;
     padding: 20px;
     margin: auto; /* Centrowanie w flexbox */
     border-radius: 8px;
@@ -346,14 +346,16 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow-y: auto; /* Scrollbar tylko jeśli potrzebny */
+    overflow-y: auto;
 }
 
 .large-modal {
-    max-width: 800px;
-    max-height: 90vh; /* Większa wysokość dla formularza */
+    max-width: 900px; /* Zwiększona szerokość (800px → 900px) */
+    max-height: 95vh; /* Zwiększona wysokość (90vh → 95vh) */
+    min-height: 60vh; /* Minimalna wysokość dla większego modala */
+    height: auto; /* Automatyczna wysokość */
     padding: 25px;
-    overflow-y: auto; /* Scrollbar tylko jeśli potrzebny */
+    overflow-y: auto; /* Scrollbar tylko w ekstremalnych przypadkach */
 }
 
 .modal h2 {
@@ -415,7 +417,8 @@ textarea:focus {
 
 textarea {
     resize: vertical;
-    min-height: 200px; /* Mniejsza wysokość dla lepszego dopasowania */
+    min-height: 400px; /* Zwiększona wysokość pola (200px → 400px) */
+    max-height: none; /* Brak ograniczenia wysokości dla textarea */
 }
 
 .form-buttons {
@@ -538,7 +541,7 @@ textarea {
     .content-wrapper {
         padding: 15px;
         max-width: 100%;
-        margin: 4px auto; /* Zachowany zmniejszony margines */
+        margin: 4px auto;
     }
     .section-background {
         padding: 8px;
@@ -554,7 +557,8 @@ textarea {
     }
     .large-modal {
         max-width: 95%;
-        max-height: 85vh;
+        max-height: 90vh; /* Mniejsza wysokość na tabletach */
+        min-height: 50vh; /* Minimalna wysokość dostosowana */
     }
     h1 {
         font-size: 1.3rem;
@@ -573,10 +577,10 @@ textarea {
         padding: 15px;
     }
     textarea {
-        min-height: 150px;
+        min-height: 300px; /* Mniejsza wysokość textarea na tabletach */
     }
     .footer {
-        margin-top: 8px; /* Lżejsza responsywność dla stopki */
+        margin-top: 4px; /* Zmniejszony margines (8px → 4px) */
     }
 }
 
@@ -613,13 +617,13 @@ textarea {
         margin: 8px auto;
     }
     textarea {
-        min-height: 120px;
+        min-height: 250px; /* Jeszcze mniejsza wysokość na małych ekranach */
     }
     .footer-link {
         flex-direction: column;
         gap: 4px;
     }
     .footer {
-        margin-top: 6px; /* Jeszcze mniejszy margines na małych ekranach */
+        margin-top: 3px; /* Zmniejszony margines (6px → 3px) */
     }
 }
