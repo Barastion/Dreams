@@ -75,14 +75,44 @@ try {
             .join('');
     };
 
-    // Funkcja obcinania treści do 800 znaków
+    // Funkcja obcinania treści w przedziale 800–900 znaków
     const truncateContent = (content) => {
         if (!content) return { short: 'Brak treści', needsToggle: false };
         if (content.length <= 800) {
             return { short: content, needsToggle: false };
         }
-        const short = content.slice(0, 800);
-        return { short, needsToggle: true };
+
+        // Wyszukaj w przedziale 800–900 znaków
+        const substring = content.slice(800, 900);
+        
+        // Priorytet 1: Ostatnia kropka (koniec zdania)
+        const lastPeriodIndex = substring.lastIndexOf('.');
+        if (lastPeriodIndex !== -1) {
+            const cutIndex = 800 + lastPeriodIndex + 1;
+            return { short: content.slice(0, cutIndex), needsToggle: true };
+        }
+
+        // Priorytet 2: Ostatni przecinek
+        const lastCommaIndex = substring.lastIndexOf(',');
+        if (lastCommaIndex !== -1) {
+            const cutIndex = 800 + lastCommaIndex + 1;
+            return { short: content.slice(0, cutIndex), needsToggle: true };
+        }
+
+        // Priorytet 3: Ostatnie pełne słowo (spacja lub nowa linia)
+        let endIndex = 900;
+        if (content.length < 900) {
+            endIndex = content.length;
+        }
+        while (endIndex > 800 && content[endIndex] !== ' ' && content[endIndex] !== '\n') {
+            endIndex--;
+        }
+        if (endIndex > 800) {
+            return { short: content.slice(0, endIndex).trim(), needsToggle: true };
+        }
+
+        // Ostatnia opcja: Obcięcie po 800 znakach
+        return { short: content.slice(0, 800), needsToggle: true };
     };
 
     // Funkcja otwierania formularza posta
