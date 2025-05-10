@@ -86,7 +86,7 @@ try {
         const searchText = content.slice(0, 900);
         const lastEmptyLineIndex = searchText.lastIndexOf('\n\n');
         if (lastEmptyLineIndex >= 700) {
-            const cutIndex = lastEmptyLineIndex + 2;
+            const cutIndex = lastEmptyLineIndex;
             return { short: content.slice(0, cutIndex), needsToggle: true };
         }
 
@@ -269,7 +269,7 @@ try {
             .filter(post => post.sortTime > 0)
             .sort((a, b) => b.sortTime - a.sortTime); // Od najnowszego
 
-        console.log('Posortowane posty:', sortedPosts.map(p => ({ title: p.title, postDate: p.postDate, createdAt: p.createdAt, sortTime: p.sortTime })));
+        console.log('Posortowane posty:', sortedPosts.map(p => ({ title: p.title, postDate: p.postDate, createdAt: p.sortTime })));
 
         const fetchedPosts = [];
         for (const post of sortedPosts) {
@@ -424,8 +424,14 @@ try {
                     const postDiv = document.createElement('div');
                     postDiv.className = 'post';
                     const { short, needsToggle } = truncateContent(post.content);
-                    const shortContent = formatContent(short);
+                    let shortContent = formatContent(short);
                     const fullContent = formatContent(post.content);
+
+                    // Jeśli treść została obcięta na pustej linii, wstawiamy link "Rozwiń treść" przed nią
+                    if (needsToggle && short.endsWith('\n\n')) {
+                        shortContent = shortContent.slice(0, -7) + '<p><span class="content-toggle" data-toggle="expand">Rozwiń treść</span></p>';
+                    }
+
                     postDiv.innerHTML = `
                         <div class="post-meta">Opublikowano: ${post.postDate || 'Brak daty'} o ${post.postTime || 'Brak godziny'}</div>
                         <h3 class="post-title">${post.title || 'Bez tytułu'}</h3>
@@ -433,7 +439,7 @@ try {
                         ${post.notes ? `<div class="post-notes"><strong>Uwagi:</strong> <span>${post.notes}</span></div>` : ''}
                         <div class="post-content">${shortContent}</div>
                         ${needsToggle ? `<div class="post-content-full">${fullContent}</div>` : ''}
-                        ${needsToggle ? `<p><span class="content-toggle" data-toggle="expand">Rozwiń treść</span></p>` : ''}
+                        ${needsToggle && !short.endsWith('\n\n') ? `<p><span class="content-toggle" data-toggle="expand">Rozwiń treść</span></p>` : ''}
                         ${needsToggle ? `<p class="content-collapse" style="display: none;"><span class="content-toggle" data-toggle="collapse">Zwiń treść</span></p>` : ''}
                         ${isAuthenticated ? `<button class="btn btn-edit" data-id="${post.id}">Edytuj</button>` : ''}
                     `;
@@ -457,7 +463,9 @@ try {
                             collapseLink.addEventListener('click', () => {
                                 contentShort.style.display = 'block';
                                 contentFull.style.display = 'none';
-                                expandLink.parentElement.style.display = 'block';
+                                if (!short.endsWith('\n\n')) {
+                                    expandLink.parentElement.style.display = 'block';
+                                }
                                 collapseP.style.display = 'none';
                                 console.log(`Zwinięto treść posta: ${post.title}`);
                             });
@@ -501,7 +509,7 @@ try {
 
         let postData;
         if (postId) {
-            // Edycja: Zachowaj oryginalne postDate i createdAt
+            // Edycja: Zachowaj oryginalne postDate
             try {
                 const existingPost = await fetchPost(postId);
                 postData = {
@@ -509,7 +517,7 @@ try {
                     dreamDate,
                     notes: notes || null,
                     content,
-                    postDate: existingPost.postDate || postDate,
+                    postDate: existingPost.postDate, // Zachowujemy oryginalne postDate
                     postTime,
                     createdAt: existingPost.createdAt || serverTimestamp()
                 };
