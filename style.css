@@ -7,10 +7,10 @@
 
 /* Zmienne */
 :root {
-    --primary-yellow: #ffeb3b; /* Żółty z Watchtower */
-    --light-gray: #3a3a3a; /* Jasny prostokąt */
-    --dark-gray: #2d2d2d; /* Ciemny prostokąt */
-    --background-dark: #1e1e1e; /* Tło strony */
+    --primary-yellow: #ffeb3b;
+    --light-gray: #3a3a3a;
+    --dark-gray: #2d2d2d;
+    --background-dark: #1e1e1e;
 }
 
 /* Podstawowe style strony */
@@ -24,10 +24,10 @@ body {
     flex-direction: column;
 }
 
-/* Estetyczne scrollbalki w odcieniach szarości */
+/* Estetyczne scrollbalki */
 ::-webkit-scrollbar {
-    width: 8px; /* Pionowy scrollbar */
-    height: 8px; /* Poziomy scrollbar */
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -36,13 +36,13 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #666666; /* Jasnoszary */
+    background: #666666;
     border-radius: 4px;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #888888; /* Ciemniejszy szary przy hover */
+    background: #888888;
 }
 
 /* Główny kontener */
@@ -53,7 +53,7 @@ body {
     flex: 1;
 }
 
-/* Szary prostokąt jako tło sekcji roboczej */
+/* Szary prostokąt */
 .content-wrapper {
     background: var(--dark-gray);
     border-radius: 8px;
@@ -63,7 +63,7 @@ body {
     margin: 4px auto;
 }
 
-/* Jasny prostokąt za wszystkimi sekcjami */
+/* Jasny prostokąt */
 .section-background {
     background: var(--light-gray);
     border-radius: 8px;
@@ -83,14 +83,14 @@ body {
 }
 
 .header-link {
-    text-decoration: none; /* Brak podkreślenia domyślnie */
-    display: inline-block; /* Dla poprawnego wyświetlania */
+    text-decoration: none;
+    display: inline-block;
     transition: text-decoration 0.3s, color 0.3s;
 }
 
 .header-link:hover {
     text-decoration: underline;
-    color: #e6c200; /* Ten sam kolor hover jak inne linki */
+    color: #e6c200;
 }
 
 .logo-frame {
@@ -148,7 +148,7 @@ h2 {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* Ciemne prostokąty dla sekcji */
+/* Ciemne prostokąty */
 .section-box {
     background: var(--dark-gray);
     padding: 20px;
@@ -164,7 +164,7 @@ h2 {
 }
 
 .intro-content {
-    background: var(--light-gray); /* Takie samo tło jak posty */
+    background: var(--light-gray);
     padding: 15px;
     border-radius: 8px;
 }
@@ -172,6 +172,7 @@ h2 {
 .intro-text,
 .intro-full p,
 .post-content,
+.post-content-full,
 .post-data,
 .post-notes {
     font-family: 'Segoe UI', sans-serif;
@@ -183,21 +184,30 @@ h2 {
     letter-spacing: -0.01em;
 }
 
-.post-data strong,
-.post-notes strong {
-    color: var(--primary-yellow); /* Żółty tylko dla etykiet */
+.post-content p,
+.post-content-full p {
+    margin-bottom: 10px;
 }
 
-.post-content {
+/* Obsługa pustych akapitów */
+.post-content p:empty,
+.post-content-full p:empty {
+    height: 1.5em; /* Odstęp dla pustych linii */
+    margin-bottom: 10px;
+}
+
+.post-data strong,
+.post-notes strong {
+    color: var(--primary-yellow);
+}
+
+.post-content,
+.post-content-full {
     white-space: pre-wrap; /* Zachowuje puste linie i białe znaki */
 }
 
-.post-content p {
-    margin-bottom: 10px; /* Odstęp między akapitami */
-}
-
 .post-content-full {
-    display: none; /* Ukryta pełna treść */
+    display: none;
 }
 
 .intro-full {
@@ -212,7 +222,7 @@ h2 {
     text-decoration: underline;
     cursor: pointer;
     display: block;
-    margin-top: 10px; /* Odstęp od treści */
+    margin-top: 10px;
     transition: color 0.3s;
 }
 
@@ -259,11 +269,11 @@ h2 {
 
 .post-data strong,
 .post-notes strong {
-    font-weight: 600; /* Pogrubienie dla etykiet */
+    font-weight: 600;
 }
 
 .post-notes span {
-    font-weight: 400; /* Normalna waga dla treści notatek */
+    font-weight: 400;
 }
 
 .no-posts {
@@ -303,16 +313,16 @@ h2 {
     transform: translateY(-2px);
 }
 
-.archive-item span:first-child {
+.archive-item .archive-title {
     font-weight: 700; /* Pogrubienie tylko dla tytułu */
 }
 
-.archive-item span:not(:first-child) {
-    font-weight: 400; /* Normalna czcionka dla reszty */
+.archive-item .archive-date {
+    font-weight: 400; /* Normalna czcionka dla daty */
 }
 
 .expand-arrow {
-    font-size: 0.75rem; /* Mniejszy rozmiar dla strzałki */
+    font-size: 0.75rem;
     color: var(--primary-yellow);
 }
 
@@ -323,7 +333,6 @@ h2 {
     margin-top: 5px;
 }
 
-/* Stopka - linki i tekst */
 .footer p {
     font-size: 0.85rem;
     color: #888888;
@@ -356,19 +365,18 @@ h2 {
     font-size: 0.85rem;
     color: #cccccc;
     cursor: pointer;
-    text-decoration: none; /* Brak podkreślenia domyślnie */
+    text-decoration: none;
     transition: text-decoration 0.3s, color 0.3s;
     display: none;
 }
 
 .logout-link:hover {
-    text-decoration: underline; /* Podkreślenie przy hover */
+    text-decoration: underline;
     color: #e6c200;
 }
 
 /* Modal */
 .modal {
-    /* Styl odpowiedzialny za wyśrodkowanie - nie zmieniać bez testów! */
     position: fixed;
     top: 0;
     left: 0;
@@ -572,9 +580,7 @@ textarea#postNotes {
     width: 100%;
     padding: 8px;
     text-align: center;
-    font-size: 
-
-0.9rem;
+    font-size: 0.9rem;
     background: #ff4d4d;
     color: #ffffff;
     display: none;
