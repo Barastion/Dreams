@@ -83,16 +83,17 @@ try {
             return { short: content, needsToggle: false };
         }
 
-        // Wyszukaj w przedziale 700–900 znaków
-        const substring = content.slice(700, 900);
-        
-        // Priorytet 1: Ostatnia pusta linia (\n\n)
-        const lastEmptyLineIndex = substring.lastIndexOf('\n\n');
-        if (lastEmptyLineIndex !== -1) {
-            const cutIndex = 700 + lastEmptyLineIndex + 2;
+        // Wyszukaj ostatnią pustą linię do 900 znaków
+        const searchText = content.slice(0, 900);
+        const lastEmptyLineIndex = searchText.lastIndexOf('\n\n');
+        if (lastEmptyLineIndex >= 700) {
+            const cutIndex = lastEmptyLineIndex + 2;
             return { short: content.slice(0, cutIndex), needsToggle: true };
         }
 
+        // Wyszukaj w przedziale 700–900 znaków
+        const substring = content.slice(700, 900);
+        
         // Priorytet 2: Ostatnia kropka (koniec zdania)
         const lastPeriodIndex = substring.lastIndexOf('.');
         if (lastPeriodIndex !== -1) {
@@ -133,7 +134,7 @@ try {
         document.getElementById('postContent').value = postData?.content || '';
         postModal.style.display = 'block';
         adminModal.style.display = 'none';
-        console.log(postId ? 'Otwarto formularz edycji.' : 'Otwarto formularz dodawania.');
+        console.log(postId ? `Otwarto formularz edycji dla posta: ${postId}` : 'Otwarto formularz dodawania.');
     };
 
     // Otwieranie modala logowania lub formularza
@@ -296,6 +297,7 @@ try {
                 archiveItem.addEventListener('click', async () => {
                     try {
                         const fullPost = await fetchPost(post.id);
+                        console.log('Ładowanie posta z archiwum:', fullPost.title, fullPost.id);
                         archiveList.innerHTML = `
                             <div class="post">
                                 <div class="post-meta">Opublikowano: ${fullPost.postDate || 'Brak daty'} o ${fullPost.postTime || 'Brak godziny'}</div>
@@ -303,8 +305,8 @@ try {
                                 <div class="post-data"><strong>Data snu:</strong> ${fullPost.dreamDate || 'Brak daty'}</div>
                                 ${fullPost.notes ? `<div class="post-notes"><strong>Uwagi:</strong> <span>${fullPost.notes}</span></div>` : ''}
                                 <div class="post-content">${formatContent(fullPost.content)}</div>
-                                ${isAuthenticated ? `<button class="btn btn-edit" data-id="${post.id}">Edytuj</button>` : ''}
-                                <p><span class="return-link">Powrót do strony głównej</span></p>
+                                ${isAuthenticated ? `<button class="btn btn-edit" data-id="${fullPost.id}">Edytuj</button>` : ''}
+                                <p><span class="return-link">Powrót do archiwum</span></p>
                             </div>
                         `;
                         // Obsługa edycji
@@ -312,16 +314,20 @@ try {
                             const editButton = document.querySelector('.btn-edit');
                             if (editButton) {
                                 editButton.addEventListener('click', () => {
-                                    openPostModal(post.id, fullPost);
+                                    console.log('Kliknięto Edytuj dla posta:', fullPost.id);
+                                    openPostModal(fullPost.id, fullPost);
                                 });
+                            } else {
+                                console.warn('Brak przycisku Edytuj w widoku archiwum.');
                             }
                         }
-                        // Obsługa powrotu
+                        // Obsługa powrotu do archiwum
                         const returnLink = document.querySelector('.return-link');
                         if (returnLink) {
                             returnLink.addEventListener('click', (e) => {
                                 e.preventDefault();
-                                window.location.reload();
+                                console.log('Powrót do archiwum.');
+                                loadArchiveDefault(allPosts); // Ponowne renderowanie archiwum
                             });
                         }
                     } catch (error) {
@@ -418,6 +424,7 @@ try {
                         const postId = e.target.dataset.id;
                         try {
                             const postData = await fetchPost(postId);
+                            console.log('Ładowanie danych do edycji:', postId, postData.title);
                             openPostModal(postId, postData);
                         } catch (error) {
                             console.error('Błąd ładowania danych do edycji:', error);
