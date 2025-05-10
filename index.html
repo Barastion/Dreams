@@ -11,13 +11,12 @@
     <meta property="og:image" content="Dreamscape_logo.jpg">
     <meta property="og:url" content="https://barastion.github.io/Dreamscape/">
     <meta property="og:type" content="website">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://*.firebaseio.com https://*.firebasedatabase.app https://*.web.app; connect-src 'self' https://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app https://*.web.app https://identitytoolkit.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self' https://dziennik-snow.firebaseapp.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://*.firebaseio.com https://*.firebasedatabase.app https://*.web.app https://identitytoolkit.googleapis.com; connect-src 'self' https://*.firebaseio.com https://*.firebasedatabase.app wss://*.firebasedatabase.app https://*.web.app https://identitytoolkit.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://barastion.github.io;">
     <title>Barastion Dreamscape – Dziennik Snów</title>
-    <link rel="stylesheet" href="style.css" onerror="console.error('Błąd ładowania style.css');">
+    <link rel="stylesheet" href="style.css?v=7">
     <link rel="icon" type="image/png" href="logo.png">
 </head>
 <body>
-    <div id="networkStatus" class="network-status"></div>
     <div class="container">
         <div class="content-wrapper">
             <header class="header">
@@ -124,24 +123,9 @@
         </div>
     </div>
 
+    <div id="networkStatus" class="network-status"></div>
+
     <script>
-        // Sprawdzanie statusu sieci
-        function updateNetworkStatus() {
-            const networkStatus = document.getElementById('networkStatus');
-            if (navigator.onLine) {
-                networkStatus.style.display = 'none';
-                networkStatus.textContent = '';
-            } else {
-                networkStatus.textContent = 'Brak połączenia z internetem';
-                networkStatus.style.display = 'block';
-            }
-        }
-
-        window.addEventListener('online', updateNetworkStatus);
-        window.addEventListener('offline', updateNetworkStatus);
-        window.addEventListener('load', updateNetworkStatus);
-
-        // Rozwijanie/zwijanie wstępu
         document.addEventListener('DOMContentLoaded', () => {
             const expandIntro = document.getElementById('expandIntro');
             const collapseIntro = document.getElementById('collapseIntro');
@@ -168,9 +152,49 @@
                     networkStatus.style.display = 'block';
                 }
             }
+
+            // Funkcja czyszczenia cache
+            function cleanOldCache() {
+                const now = Date.now();
+                const cleanupInterval = 3600000; // 1 godzina
+                const lastCleanupTime = localStorage.getItem('lastCleanupTime');
+                const cleanupThreshold = 48 * 60 * 60 * 1000; // 48 godzin
+                const isCleanupTriggered = localStorage.getItem('isCleanupTriggered');
+
+                if (isCleanupTriggered === 'true' || (lastCleanupTime && (now - parseInt(lastCleanupTime) < cleanupInterval))) {
+                    console.debug('Czyszczenie pominięte');
+                    return;
+                }
+
+                console.log('Rozpoczynam czyszczenie localStorage...');
+                localStorage.setItem('isCleanupTriggered', 'true');
+
+                const keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key === 'posts_time') {
+                        const cachedTime = parseInt(localStorage.getItem(key));
+                        if (now - cachedTime > cleanupThreshold) {
+                            keysToRemove.push(key, 'posts');
+                        }
+                    }
+                }
+
+                keysToRemove.forEach(key => {
+                    console.log(`Usuwam klucz: ${key}`);
+                    localStorage.removeItem(key);
+                });
+
+                localStorage.setItem('lastCleanupTime', now.toString());
+                localStorage.removeItem('isCleanupTriggered');
+                console.log('Czyszczenie localStorage zakończone');
+            }
+
+            // Uruchom czyszczenie przy ładowaniu strony
+            window.addEventListener('load', cleanOldCache);
         });
     </script>
 
-    <script type="module" src="firebase.js"></script>
+    <script type="module" src="firebase.js?v=7"></script>
 </body>
 </html>
