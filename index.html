@@ -75,8 +75,8 @@
 
             <footer class="footer">
                 <p>© 2025 Barastion Dreamscape. Wszelkie prawa zastrzeżone.</p>
-                <p class="footer-link"><a href="https://barastion.github.io/Barastion-Watchtower/" target="_blank">Odwiedź Barastion Watchtower</a></p>
-                <p class="footer-link"><a href="#" id="adminLink">Napisz nowy post – sekcja twórcy</a></p>
+                <p class="footer-link"><span class="footer-text">Odwiedź</span> <a href="https://barastion.github.io/Barastion-Watchtower/" target="_blank">Barastion Watchtower</a></p>
+                <p class="footer-link"><a href="#" id="adminLink">Napisz nowy post</a> <span id="logoutLink" class="logout-link">Wyloguj</span></p>
             </footer>
         </div>
     </div>
@@ -184,6 +184,7 @@
             const adminModal = document.getElementById('adminModal');
             const postModal = document.getElementById('postModal');
             const adminLink = document.getElementById('adminLink');
+            const logoutLink = document.getElementById('logoutLink');
             const googleLogin = document.getElementById('googleLogin');
             const closes = document.querySelectorAll('.close');
             const networkStatus = document.getElementById('networkStatus');
@@ -197,9 +198,9 @@
             const postIdInput = document.getElementById('postId');
 
             // Sprawdzenie elementów
-            if (!adminModal || !postModal || !adminLink || !googleLogin || !closes.length || !networkStatus || !postsList || !archiveList || !dreamForm || !postsLoading || !archiveLoading || !closeForm || !postModalTitle || !postIdInput) {
+            if (!adminModal || !postModal || !adminLink || !logoutLink || !googleLogin || !closes.length || !networkStatus || !postsList || !archiveList || !dreamForm || !postsLoading || !archiveLoading || !closeForm || !postModalTitle || !postIdInput) {
                 console.error('Brak elementów DOM:', {
-                    adminModal, postModal, adminLink, googleLogin, closes, networkStatus,
+                    adminModal, postModal, adminLink, logoutLink, googleLogin, closes, networkStatus,
                     postsList, archiveList, dreamForm, postsLoading, archiveLoading, closeForm, postModalTitle, postIdInput
                 });
                 networkStatus.textContent = 'Błąd: Brak elementów strony.';
@@ -210,6 +211,7 @@
             // Inicjalny stan modalów
             adminModal.style.display = 'none';
             postModal.style.display = 'none';
+            logoutLink.style.display = 'none';
 
             // Status sieci
             const updateNetworkStatus = () => {
@@ -248,6 +250,26 @@
                     adminModal.style.display = 'block';
                     postModal.style.display = 'none';
                     console.log('Otwarto modal logowania.');
+                }
+            });
+
+            // Wylogowanie
+            logoutLink.addEventListener('click', async (e) => {
+                e.preventDefault();
+                try {
+                    await signOut(auth);
+                    console.log('Wylogowano pomyślnie.');
+                    isAuthenticated = false;
+                    adminLink.textContent = 'Napisz nowy post';
+                    logoutLink.style.display = 'none';
+                    adminModal.style.display = 'none';
+                    postModal.style.display = 'none';
+                    alert('Wylogowano pomyślnie.');
+                } catch (error) {
+                    console.error('Błąd wylogowania:', error);
+                    alert(`Błąd wylogowania: ${error.message}`);
+                    networkStatus.textContent = 'Błąd wylogowania. Sprawdź konsolę.';
+                    networkStatus.style.display = 'block';
                 }
             });
 
@@ -305,11 +327,13 @@
                 if (user && user.email === 'lukasz13d@gmail.com') {
                     console.log('Zalogowano:', user.email);
                     isAuthenticated = true;
-                    adminLink.textContent = 'Dodaj nowy post (zalogowano)';
+                    adminLink.textContent = 'Dodaj nowy post';
+                    logoutLink.style.display = 'inline';
                 } else {
                     console.log('Brak zalogowanego użytkownika lub nieprawidłowy email.');
                     isAuthenticated = false;
-                    adminLink.textContent = 'Napisz nowy post – sekcja twórcy';
+                    adminLink.textContent = 'Napisz nowy post';
+                    logoutLink.style.display = 'none';
                     adminModal.style.display = 'none';
                     postModal.style.display = 'none';
                 }
