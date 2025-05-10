@@ -326,7 +326,7 @@ h2 {
 
 .large-modal {
     max-width: 800px;
-    min-height: 600px;
+    min-height: 700px; /* Zwiększona wysokość modala */
     padding: 25px;
 }
 
@@ -389,7 +389,7 @@ textarea:focus {
 
 textarea {
     resize: vertical;
-    min-height: 300px;
+    min-height: 400px; /* Zwiększona wysokość textarea */
 }
 
 .form-buttons {
@@ -528,7 +528,7 @@ textarea {
     }
     .large-modal {
         max-width: 95%;
-        min-height: 500px;
+        min-height: 600px; /* Dostosowana wysokość na mniejszych ekranach */
     }
     h1 {
         font-size: 1.3rem;
@@ -545,6 +545,9 @@ textarea {
     .modal-content {
         width: 95%;
         padding: 15px;
+    }
+    textarea {
+        min-height: 300px; /* Dostosowana wysokość na mniejszych ekranach */
     }
 }
 
@@ -574,7 +577,7 @@ textarea {
         font-size: 0.85rem;
     }
     .large-modal {
-        min-height: 400px;
+        min-height: 500px; /* Dostosowana wysokość na bardzo małych ekranach */
     }
     .section-container {
         max-width: 98%; /* Węższe na bardzo małych ekranach */
@@ -584,7 +587,7 @@ textarea {
         margin: 8px auto;
     }
     textarea {
-        min-height: 200px;
+        min-height: 200px; /* Dostosowana wysokość na bardzo małych ekranach */
     }
     .footer-link {
         flex-direction: column;
