@@ -327,9 +327,8 @@ h2 {
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     z-index: 1000;
-    display: flex !important; /* Wymuszenie flex */
-    justify-content: center !important; /* Wyśrodkowanie poziome */
-    align-items: center !important; /* Wyśrodkowanie pionowe */
+    justify-content: center;
+    align-items: center;
     animation: fadeIn 0.3s ease-in;
 }
 
